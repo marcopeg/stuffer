@@ -1,0 +1,91 @@
+version: '2.1'
+services:
+
+    barn:
+        build:
+            context: ./services/barn
+            dockerfile: Dockerfile
+        networks:
+            - production
+        environment:
+            PG_HOST: postgres
+            PG_PORT: 5432
+            PG_DATABASE: ${PG_DATABASE}
+            PG_USERNAME: ${PG_USERNAME}
+            PG_PASSWORD: ${PG_PASSWORD}
+            API_DEFAULT_TOKEN: ${API_TOKEN}
+
+    reaper:
+        build:
+            context: ./services/reaper
+            dockerfile: Dockerfile
+        networks:
+            - production
+        environment:
+            HOST_NAME: localhost
+            API_ENDPOINT: http://barn:8080/api
+            API_TOKEN: ${API_TOKEN}
+        volumes:
+            - /var/lib/docker/containers:/var/lib/docker/containers:ro
+            - /var/run/docker.sock:/var/run/docker.sock
+
+    grafana:
+        image: grafana/grafana:5.4.3
+        networks:
+            - production
+        environment:
+            GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD}
+            GF_SERVER_ROOT_URL: http://grafana:3000/grafana/
+        volumes:
+            - ${HUMBLE_DATA}/grafana:/var/lib/grafana
+
+    boards:
+        image: grafana/grafana:5.4.3
+        networks:
+            - production
+        environment:
+            - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-grafana}
+            - GF_SERVER_ROOT_URL=http://grafana:3000/boards/
+            - GF_AUTH_PROXY_AUTO_SIGN_UP=false
+            - GF_AUTH_PROXY_ENABLED=true
+        volumes:
+            - ${HUMBLE_DATA}/grafana:/var/lib/grafana
+
+    postgres:
+        image: timescale/timescaledb:1.2.0-pg11
+        networks:
+            - production
+        ports:
+            - ${PG_PORT}:5432
+        environment:
+            POSTGRES_USER: ${PG_USERNAME}
+            POSTGRES_PASSWORD: ${PG_PASSWORD}
+            POSTGRES_DB: ${PG_DATABASE}
+        volumes:
+            - ${HUMBLE_DATA}/pg:/var/lib/postgresql/data
+            - ${HUMBLE_BACKUP}:/backup
+        restart: always
+        healthcheck:
+            test: ["CMD", "pg_isready", "-q", "-d", "${PG_PASSWORD}", "-U", "${PG_USERNAME}"]
+            interval: 10s
+            timeout: 10s
+            retries: 10
+
+    proxy:
+        build:
+            context: ./services/proxy
+            dockerfile: Dockerfile
+        depends_on:
+            - barn
+            - grafana
+            - postgres
+        networks:
+            - production
+        environment:
+            - BOARDS_ENABLED=${BOARDS_ENABLED}
+            - BOARDS_TOKEN=${BOARDS_TOKEN}
+        ports:
+            - ${PROXY_PORT}:80
+
+networks:
+    production:
