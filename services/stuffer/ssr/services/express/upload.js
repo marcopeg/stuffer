@@ -3,10 +3,11 @@ import path from 'path'
 import busboy from 'connect-busboy'
 import mkdirp from 'mkdirp'
 import AWS from 'aws-sdk'
+import zlib from 'zlib'
+import s3UploadStream from 's3-upload-stream'
 import { createHook } from '@marcopeg/hooks'
 import { logError, logVerbose } from 'ssr/services/logger'
 import { EXPRESS_ROUTE, EXPRESS_UPLOAD, EXPRESS_UPLOAD_CONFIG } from './hooks'
-import { SIGUSR2 } from 'constants';
 
 const getTodayFolderName = () => {
     const date = new Date()
@@ -110,39 +111,78 @@ const handler = async ({ app, settings }) => {
                 })
             }))
 
-            // S3 Storage
-            req.upload._promises.push(new Promise((resolve, reject) =>
-                new AWS.S3({
+            req.upload._promises.push(new Promise((resolve, reject) => {
+                const s3Client = new AWS.S3({
                     accessKeyId: options.aws.key,
                     secretAccessKey: options.aws.secret,
                     region: options.aws.region,
-                    params: {
-                        Body: file,
-                        Bucket: options.aws.bucket,
-                        ContentType: mimeType,
-                        Key: fileName,
-                    },
-                    options: {
-                        partSize: 5 * 1024 * 1024, // 5 MB
-                        queueSize: 100,
-                    },
                 })
-                    .upload()
-                    .on('httpUploadProgress', (evt) => {
-                        console.log(evt)
-                    })
-                    .send(function (err, data) {
-                        if (err) {
-                            fileInfo.s3.success = false
-                            fileInfo.s3.error = err
-                            fileInfo.errors.push(err.message)
-                        } else {
-                            fileInfo.s3.success = true
-                            fileInfo.s3.data = data
-                        }
-                        resolve()
-                    })
-            ))
+                const s3Stream = s3UploadStream(s3Client)
+                const compress = zlib.createGzip()
+
+                const upload = s3Stream.upload({
+                    Bucket: options.aws.bucket,
+                    Key: fileName,
+                    ContentType: "binary/octet-stream",
+                })
+
+                // upload.maxPartSize(20971520)
+                // upload.concurrentParts(5)
+
+                upload.on('error', function (error) {
+                    console.log(error)
+                    fileInfo.s3.success = false
+                    fileInfo.s3.error = error
+                    resolve()
+                })
+
+                upload.on('part', function (details) {
+                    console.log(details)
+                })
+
+                upload.on('uploaded', function (details) {
+                    console.log(details)
+                    fileInfo.s3.success = true
+                    fileInfo.s3.details = details
+                    resolve()
+                })
+
+                file.pipe(compress).pipe(upload)
+            }))
+
+            // S3 Storage
+            // req.upload._promises.push(new Promise((resolve, reject) =>
+            //     new AWS.S3({
+            //         accessKeyId: options.aws.key,
+            //         secretAccessKey: options.aws.secret,
+            //         region: options.aws.region,
+            //         params: {
+            //             Body: file,
+            //             Bucket: options.aws.bucket,
+            //             ContentType: mimeType,
+            //             Key: fileName,
+            //         },
+            //         options: {
+            //             partSize: 5 * 1024 * 1024, // 5 MB
+            //             queueSize: 100,
+            //         },
+            //     })
+            //         .upload()
+            //         .on('httpUploadProgress', (evt) => {
+            //             console.log(evt)
+            //         })
+            //         .send(function (err, data) {
+            //             if (err) {
+            //                 fileInfo.s3.success = false
+            //                 fileInfo.s3.error = err
+            //                 fileInfo.errors.push(err.message)
+            //             } else {
+            //                 fileInfo.s3.success = true
+            //                 fileInfo.s3.data = data
+            //             }
+            //             resolve()
+            //         })
+            // ))
         })
 
         req.busboy.on('finish', () => {

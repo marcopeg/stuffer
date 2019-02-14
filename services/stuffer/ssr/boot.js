@@ -11,18 +11,16 @@ import {
 } from '@marcopeg/hooks'
 import { logInfo } from 'ssr/services/logger'
 
-// require('es6-promise').polyfill()
-// require('isomorphic-fetch')
-
-
 const services = [
     require('./services/env'),
     require('./services/logger'),
-    require('./services/express/upload'),
+    // require('./services/express/upload'),
     require('./services/express'),
 ]
 
-const features = []
+const features = [
+    require('./features/upload'),
+]
 
 // development extensions from a local folder
 // @NOTE: extensions should be plain NodeJS compatible, if you want to use
@@ -38,22 +36,17 @@ const communityExtensions = glob
     .sync(path.resolve('/', 'var', 'lib', 'pigtail', 'extensions', '[!_]*', 'index.js'))
 
 registerAction({
-    hook: require('./services/express/hooks').EXPRESS_UPLOAD_CONFIG,
+    hook: require('./features/upload/hooks').UPLOAD_CONFIG,
     name: '♦ boot',
     handler: ({ options }) => {
-        options.mountPoint = config.get('UPLOAD_MOUNT')
-        options.destPath = config.get('UPLOAD_TARGET')
-        options.bufferSize = 2 * 1024 * 1024 // Set 2MiB buffer
-        options.limits = {
-            fields: 0,
-            // fileSize: 1000000,
-        }
-        options.aws = {
-            key: config.get('AWS_KEY'),
-            secret: config.get('AWS_SECRET'),
-            region: config.get('AWS_REGION'),
-            bucket: config.get('AWS_BUCKET'),
-        }
+        options.mountPoint = config.get('UPLOAD_MOUNT_POINT')
+        options.tempFolder = config.get('UPLOAD_TEMP_FOLDER')
+        options.bufferSize = Number(config.get('UPLOAD_BUFFER_SIZE', 2 * 1048576)) // Set 2MiB buffer
+        options.maxSize = Number(config.get('UPLOAD_MAX_SIZE', 100 * 1048576)) // 100Mb
+        options.maxFiles = Number(config.get('UPLOAD_MAX_FILES', 10))
+        options.maxFileSize = Number(config.get('UPLOAD_MAX_FILE_SIZE', 100 * 1048576)) // 100Mb
+        options.maxFields = Number(config.get('UPLOAD_MAX_FIELDS', 10))
+        options.maxFieldSize = Number(config.get('UPLOAD_MAX_FIELD_SIZE', 100 * 1024)) // 100Kb
     },
 })
 
