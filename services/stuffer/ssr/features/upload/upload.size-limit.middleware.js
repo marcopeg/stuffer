@@ -10,7 +10,7 @@ export default options => ({
     priority: 200,
     handler: (req, res, next) => {
         if (req.headers['content-length'] > options.maxSize) {
-            res.send(413, `Max upload size set to: ${options.maxSize}`)
+            res.status(413).send(`Max upload size set to: ${options.maxSize}`)
         } else {
             next()
         }

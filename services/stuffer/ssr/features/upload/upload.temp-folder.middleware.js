@@ -32,8 +32,7 @@ export default options => ({
         const tokens = getTodayTokens()
         const tempIndex = `${tokens.Y}-${tokens.M}-${tokens.D}`
 
-        // req.data.upload.tempPath = path.join(options.tempFolder, tempIndex, req.data.upload.space, req.data.upload.uuid)
-        req.data.upload.tempPath = path.join(options.tempFolder, req.data.upload.uuid)
+        req.data.upload.tempPath = path.join(options.tempFolder, tempIndex)
         mkdirp(req.data.upload.tempPath, next)
     },
 })

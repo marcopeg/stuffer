@@ -5,6 +5,7 @@
 import fs from 'fs'
 import path from 'path'
 import Busboy from 'busboy'
+import uuid from 'uuid/v4'
 
 export default options => ({
     name: 'stream',
@@ -15,6 +16,8 @@ export default options => ({
             files: {},
             errors: [],
         }
+
+        const promises = []
 
         const busboy = new Busboy({
             headers: req.headers,
@@ -41,12 +44,15 @@ export default options => ({
         })
 
         busboy.on('file', (fieldName, file, fileName, encoding, mymeType) => {
+            const id = uuid()
             const info = {
                 fieldName,
                 fileName,
+                space: req.data.upload.space,
+                uuid: id,
                 encoding,
                 mymeType,
-                tempPath: path.join(req.data.upload.tempPath, fileName),
+                tempPath: path.join(req.data.upload.tempPath, `${req.data.upload.space}__${id}__${fileName}`),
                 bytesWritten: 0,
                 bytesReceived: 0,
                 truncated: false,
@@ -68,21 +74,27 @@ export default options => ({
             // @TODO: handle fileStream error
             // try to write to a folder that is assigned to "root" with the terminal
 
-            fileStream.on('close', () => {
-                info.truncated = file.truncated
-                info.bytesWritten = fileStream.bytesWritten
+            promises.push(new Promise((resolve) => {
+                fileStream.on('close', () => {
+                    info.truncated = file.truncated
+                    info.bytesWritten = fileStream.bytesWritten
 
-                if (!file.truncated) {
-                    form.files[fileName] = info
-                }
-            })
+                    if (!file.truncated) {
+                        form.files[fileName] = info
+                    }
+
+                    resolve()
+                })
+            }))
 
             file.pipe(fileStream)
         })
 
         busboy.on('finish', () => {
             req.data.upload.form = form
-            next()
+            Promise.all(promises)
+                .then(() => next())
+                .catch(err => next(err))
         })
 
         req.pipe(busboy)

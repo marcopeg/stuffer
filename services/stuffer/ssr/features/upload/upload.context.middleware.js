@@ -1,4 +1,3 @@
-import uuid from 'uuid/v4'
 
 export default options => ({
     name: 'context',
@@ -6,7 +5,6 @@ export default options => ({
     handler: (req, res, next) => {
         req.data.upload = {
             space: 'public',
-            uuid: uuid(),
         }
         next()
     },
