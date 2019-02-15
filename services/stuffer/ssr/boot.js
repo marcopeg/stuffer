@@ -3,24 +3,22 @@ import glob from 'glob'
 import * as config from '@marcopeg/utils/lib/config'
 import {
     registerAction,
-    createHook,
     createHookApp,
     logBoot,
     SETTINGS,
     FINISH,
 } from '@marcopeg/hooks'
-import { logInfo } from 'ssr/services/logger'
 
 const services = [
     require('./services/env'),
     require('./services/logger'),
-    // require('./services/express/upload'),
     require('./services/express'),
 ]
 
 const features = [
-    require('./features/store'),
     require('./features/upload'),
+    require('./features/store'),
+    require('./features/download'),
 ]
 
 registerAction({
@@ -46,6 +44,10 @@ registerAction({
             base: config.get('STORE_BASE'),
         }
 
+        settings.download = {
+            baseUrl: config.get('DOWNLOAD_BASE_URL'),
+            mountPoint: config.get('DOWNLOAD_MOUNT_POINT'),
+        }
 
         settings.express = {
             nodeEnv: config.get('NODE_ENV'),

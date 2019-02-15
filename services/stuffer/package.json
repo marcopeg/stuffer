@@ -61,6 +61,7 @@
     "md5-file": "^4.0.0",
     "mkdirp": "^0.5.1",
     "node-env-file": "^0.1.8",
+    "pretty-bytes": "^5.1.0",
     "react": "16.7.0-alpha.2",
     "react-container-dimensions": "^1.4.1",
     "react-dom": "16.7.0-alpha.2",

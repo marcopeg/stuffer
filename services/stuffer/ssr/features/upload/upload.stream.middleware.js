@@ -56,7 +56,7 @@ export default options => ({
             }
         })
 
-        busboy.on('file', (fieldName, file, fileName, encoding, mymeType) => {
+        busboy.on('file', (fieldName, file, fileName, encoding, mimeType) => {
             const uuid = generateUploadId()
             const tempFileName = `${req.data.upload.space}__${uuid}__${fileName}`
             const tempPath = path.join(req.data.upload.tempPath, tempFileName)
@@ -66,7 +66,7 @@ export default options => ({
                 uuid,
                 space: req.data.upload.space,
                 encoding,
-                mymeType,
+                mimeType,
                 bytesReceived: 0,
                 bytesWritten: 0,
                 tempPath,

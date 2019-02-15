@@ -23,5 +23,11 @@ export const uploadRoute = options => async (req, res) => {
         },
     })
 
-    res.send(results)
+    res.send({
+        files: Object.keys(results.files).map(field => ({
+            field,
+            ...results.files[field],
+        })),
+        errors: results.errors,
+    })
 }
