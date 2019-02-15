@@ -4,10 +4,9 @@
  */
 
 import prettyBytes from 'pretty-bytes'
-import { get } from './settings'
 
-export const handler = async ({ files, errors, options }) => {
-    const serverUrl = `${get('baseUrl')}${get('mountPoint')}`
+export const handler = settings => async ({ files, errors, options }) => {
+    const serverUrl = `${settings.baseUrl}${settings.mountPoint}`
 
     for (const field in files) {
         const file = files[field]

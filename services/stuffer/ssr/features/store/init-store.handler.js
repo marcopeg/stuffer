@@ -11,8 +11,8 @@ const ensure = fpath => new Promise((resolve, reject) => {
     })
 })
 
-export const handler = async ({ store }) =>
+export const handler = ({ base }) => async () =>
     Promise.all([
-        ensure(path.join(store.base, 'files')),
-        ensure(path.join(store.base, 'meta')),
+        ensure(path.join(base, 'files')),
+        ensure(path.join(base, 'meta')),
     ])

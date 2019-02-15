@@ -5,16 +5,13 @@
 
 import fs from 'fs-extra'
 import path from 'path'
-import { get } from './settings'
 
 const getMetaName = file =>
     process.env.NODE_ENV === 'development'
         ? `${file.name}__meta.json`
         : 'meta.json'
 
-export const handler = async ({ files, errors, options }) => {
-    const base = get('base')
-
+export const handler = ({ base }) => async ({ files, errors, options }) => {
     for (const field in files) {
         const file = files[field]
         try {
