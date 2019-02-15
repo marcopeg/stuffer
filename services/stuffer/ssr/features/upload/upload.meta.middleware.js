@@ -12,7 +12,7 @@ export default options => ({
     handler: (req, res, next) => {
         const makeMetaFile = fieldName => new Promise((resolve, reject) => {
             const fileInfo = req.data.upload.form.files[fieldName]
-            const fileName = fileInfo.fileName
+            const fileName = fileInfo.name
             const fileMeta = { checksum: null, data: (req.data.upload.form.fields[`${fieldName}_meta`] || {}) }
             const fileChecksum = req.data.upload.form.fields[`${fieldName}_checksum`]
 

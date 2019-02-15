@@ -45,8 +45,8 @@ registerAction({
         options.maxSize = Number(config.get('UPLOAD_MAX_SIZE', 100 * 1048576)) // 100Mb
         options.maxFiles = Number(config.get('UPLOAD_MAX_FILES', 10))
         options.maxFileSize = Number(config.get('UPLOAD_MAX_FILE_SIZE', 100 * 1048576)) // 100Mb
-        options.maxFields = Number(config.get('UPLOAD_MAX_FIELDS', 10))
-        options.maxFieldSize = Number(config.get('UPLOAD_MAX_FIELD_SIZE', 100 * 1024)) // 100Kb
+        options.maxFields = Number(config.get('UPLOAD_MAX_FIELDS', options.maxFiles * 2))
+        options.maxFieldSize = Number(config.get('UPLOAD_MAX_FIELD_SIZE', 5 * 1024)) // 5Kb - cookie style
     },
 })
 

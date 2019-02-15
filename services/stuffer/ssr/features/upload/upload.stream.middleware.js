@@ -61,17 +61,16 @@ export default options => ({
             const tempFileName = `${req.data.upload.space}__${uuid}__${fileName}`
             const tempPath = path.join(req.data.upload.tempPath, tempFileName)
             const info = {
-                fieldName,
-                fileName,
-                space: req.data.upload.space,
+                success: null,
+                name: fileName,
                 uuid,
+                space: req.data.upload.space,
                 encoding,
                 mymeType,
+                bytesReceived: 0,
+                bytesWritten: 0,
                 tempPath,
                 metaPath: null,
-                bytesWritten: 0,
-                bytesReceived: 0,
-                success: null,
                 errors: [],
             }
 
