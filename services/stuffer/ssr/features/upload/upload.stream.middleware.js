@@ -7,9 +7,9 @@ import path from 'path'
 import Busboy from 'busboy'
 import uuid from 'uuid/v4'
 
-const generateUploadId = () =>
+const generateUploadId = (fileName) =>
     process.env.NODE_ENV === 'development'
-        ? 'dev'
+        ? `dev-${fileName}`
         : uuid()
 
 export default options => ({
@@ -57,11 +57,12 @@ export default options => ({
         })
 
         busboy.on('file', (fieldName, file, fileName, encoding, mimeType) => {
-            const uuid = generateUploadId()
+            const uuid = generateUploadId(fileName)
             const tempFileName = `${req.data.upload.space}__${uuid}__${fileName}`
             const tempPath = path.join(req.data.upload.tempPath, tempFileName)
             const info = {
                 success: null,
+                field: fieldName,
                 name: fileName,
                 uuid,
                 space: req.data.upload.space,

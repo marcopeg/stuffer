@@ -1,11 +1,11 @@
 import { INIT_FEATURE } from '@marcopeg/hooks'
 import { UPLOAD_COMPLETED } from 'ssr/features/upload/hooks'
-import { DOWNLOAD_SOURCE_FILE } from 'ssr/features/download/hooks'
+import { DOWNLOAD_VALIDATE_META } from 'ssr/features/download/hooks'
 import { FEATURE_NAME } from './hooks'
 
 import { handler as initStoreHandler } from './init-store.handler'
 import { handler as uploadCompletedHandler } from './upload-completed.handler'
-import { handler as sourceFileHandler } from './source-file.handler'
+import { handler as downloadValidateMetaHandler } from './download-validate-meta.handler'
 
 export const register = ({ settings, registerAction }) => {
     registerAction({
@@ -23,9 +23,9 @@ export const register = ({ settings, registerAction }) => {
     })
 
     registerAction({
-        hook: DOWNLOAD_SOURCE_FILE,
+        hook: DOWNLOAD_VALIDATE_META,
         name: FEATURE_NAME,
         trace: __filename,
-        handler: sourceFileHandler(settings.store),
+        handler: downloadValidateMetaHandler(settings.store),
     })
 }

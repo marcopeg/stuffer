@@ -1,10 +1,5 @@
 import fs from 'fs-extra'
 
-const getMetaName = file =>
-    process.env.NODE_ENV === 'development'
-        ? `${file.name}__meta.json`
-        : 'meta.json'
-
 export const handler = ({ base }) => async ({ file }) => {
     file.fullPath = [
         base,
@@ -18,8 +13,7 @@ export const handler = ({ base }) => async ({ file }) => {
         base,
         'meta',
         file.space,
-        file.uuid,
-        getMetaName(file),
+        `${file.uuid}.json`,
     ].join('/')
 
     // Read file meta

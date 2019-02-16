@@ -1,8 +1,12 @@
+/**
+ * Just prepare the data space for the download
+ */
+
 import { createHook } from '@marcopeg/hooks'
-import { DOWNLOAD_SOURCE_FILE } from './hooks'
+import { DOWNLOAD_CONTEXT } from '../hooks'
 
 export default options => ({
-    name: 'source-file',
+    name: 'context',
     priority: 100,
     handler: async (req, res, next) => {
         const file = {
@@ -10,23 +14,18 @@ export default options => ({
             uuid: req.params.uuid,
             name: req.params.name,
             exists: null,
-            filePath: null,
-            metaPath: null,
             meta: null,
+            metaPath: null,
+            filePath: null,
             errors: [],
         }
 
-        await createHook(DOWNLOAD_SOURCE_FILE, {
+        await createHook(DOWNLOAD_CONTEXT, {
             async: 'serie',
             args: {
                 file,
             },
         })
-
-        // if (!file.exists) {
-        //     res.status(404).send('file not found')
-        //     return
-        // }
 
         req.data.download = file
         next()

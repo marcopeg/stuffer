@@ -2,7 +2,7 @@
  * Creates the upload meta file
  */
 
-import fs from 'fs'
+import fs from 'fs-extra'
 import path from 'path'
 import md5File from 'md5-file'
 
@@ -13,8 +13,16 @@ export default options => ({
         const makeMetaFile = fieldName => new Promise((resolve, reject) => {
             const fileInfo = req.data.upload.form.files[fieldName]
             const fileName = fileInfo.name
-            const fileMeta = { checksum: null, data: (req.data.upload.form.fields[`${fieldName}_meta`] || {}) }
             const fileChecksum = req.data.upload.form.fields[`${fieldName}_checksum`]
+
+            const fileMeta = {
+                name: fileInfo.name,
+                type: fileInfo.mimeType,
+                encoding: fileInfo.encoding,
+                bytes: fileInfo.bytesWritten,
+                checksum: null,
+                data: (req.data.upload.form.fields[`${fieldName}_meta`] || {}),
+            }
 
             const markAsError = (error) => {
                 fileInfo.success = false
@@ -44,22 +52,14 @@ export default options => ({
                 })
             }
 
-            // encode the meta information for file storage
-            let encodedFileMeta = null
-            try {
-                encodedFileMeta = JSON.stringify(fileMeta)
-            } catch (err) {
-                return markAsError({
-                    type: 'encode',
-                    message: 'can not encode file meta',
-                    details: { originalError: err },
-                })
-            }
-
             // serialize to disk
+            const jsonSerializeOptions = process.env.NODE_ENV === 'development'
+                ? { spaces: 4 }
+                : {}
+
             const metaFileName = `${fileInfo.space}__${fileInfo.uuid}__${fileName}__meta.json`
             const metaFilePath = path.join(req.data.upload.tempPath, metaFileName)
-            fs.writeFile(metaFilePath, encodedFileMeta, 'utf8', (err) => {
+            fs.writeJson(metaFilePath, fileMeta, jsonSerializeOptions, (err) => {
                 if (err) {
                     markAsError({
                         type: 'fwrite',

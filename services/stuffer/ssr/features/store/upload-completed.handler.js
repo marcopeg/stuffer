@@ -6,11 +6,6 @@
 import fs from 'fs-extra'
 import path from 'path'
 
-const getMetaName = file =>
-    process.env.NODE_ENV === 'development'
-        ? `${file.name}__meta.json`
-        : 'meta.json'
-
 export const handler = ({ base }) => async ({ files, errors, options }) => {
     for (const field in files) {
         const file = files[field]
@@ -18,8 +13,8 @@ export const handler = ({ base }) => async ({ files, errors, options }) => {
             const fileBase = path.join(base, 'files', file.space, file.uuid)
             const filePath = path.join(fileBase, file.name)
 
-            const metaBase = path.join(base, 'meta', file.space, file.uuid)
-            const metaPath = path.join(metaBase, getMetaName(file))
+            const metaBase = path.join(base, 'meta', file.space)
+            const metaPath = path.join(metaBase, `${file.uuid}.json`)
 
             await fs.ensureDir(fileBase)
             await fs.ensureDir(metaBase)
