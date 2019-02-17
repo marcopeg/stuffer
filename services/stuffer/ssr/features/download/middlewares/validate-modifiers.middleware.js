@@ -59,7 +59,7 @@ export default (settings, modifiers) => ({
 
                     // validators can access download informations and trigger
                     // exceptions to block the download, or return falsy value
-                    if (!modifier.validate(value, req, res)) {
+                    if (!modifier.validate(value, req.data.download, req, res)) {
                         throw new Error(`failed to validate - ${name}`)
                     }
 

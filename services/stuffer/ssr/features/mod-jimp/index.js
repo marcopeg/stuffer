@@ -2,13 +2,17 @@
 import { DOWNLOAD_MODIFIERS } from 'ssr/features/download/hooks'
 import { FEATURE_NAME } from './hooks'
 
-import { handler as downloadHandler } from './download.handler'
+import resizeModifier from './resize.modifier'
+import filterModifier from './filter.modifier'
 
 export const register = ({ settings, registerAction }) => {
     registerAction({
         hook: DOWNLOAD_MODIFIERS,
         name: FEATURE_NAME,
         trace: __filename,
-        handler: downloadHandler(settings.jimp),
+        handler: ({ modifiers }) => {
+            modifiers.resize = resizeModifier(settings)
+            modifiers.filter = filterModifier(settings)
+        },
     })
 }
