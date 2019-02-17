@@ -8,10 +8,11 @@ import md5File from 'md5-file'
 
 export default options => ({
     name: 'meta',
-    priority: 500,
+    priority: 600,
     handler: (req, res, next) => {
         const makeMetaFile = fieldName => new Promise((resolve, reject) => {
             const fileInfo = req.data.upload.form.files[fieldName]
+            console.log('****', fileInfo.tempPath)
             const fileName = fileInfo.name
             const fileChecksum = req.data.upload.form.fields[`${fieldName}_checksum`]
 

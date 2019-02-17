@@ -19,7 +19,7 @@ const deletePartialFile = file => new Promise((resolve, reject) => {
 
 export default options => ({
     name: 'cleanup',
-    priority: 600,
+    priority: 700,
     handler: (req, res, next) => {
         const promises = req.data.upload.form.errors
             .filter(err => err.type === 'file')

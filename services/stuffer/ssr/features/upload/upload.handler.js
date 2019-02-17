@@ -3,12 +3,13 @@ import { logVerbose } from 'ssr/services/logger'
 import { UPLOAD_CONFIG, UPLOAD_MIDDLEWARES } from './hooks'
 import { uploadRoute } from './upload.route'
 
-import uploadContext from './upload.context.middleware'
-import uploadSizeLimit from './upload.size-limit.middleware'
-import uploadTempFolder from './upload.temp-folder.middleware'
-import uploadStream from './upload.stream.middleware'
-import uploadMeta from './upload.meta.middleware'
-import uploadCleanup from './upload.cleanup.middleware'
+import uploadContext from './middlewares/upload.context.middleware'
+import uploadSizeLimit from './middlewares/upload.size-limit.middleware'
+import uploadTempFolder from './middlewares/upload.temp-folder.middleware'
+import uploadStream from './middlewares/upload.stream.middleware'
+import uploadCustomUUID from './middlewares/upload.custom-uuid.middleware'
+import uploadMeta from './middlewares/upload.meta.middleware'
+import uploadCleanup from './middlewares/upload.cleanup.middleware'
 
 export const handler = ({ app }) => {
     // Let options be driven by extensions
@@ -24,6 +25,7 @@ export const handler = ({ app }) => {
         uploadSizeLimit(options),
         uploadTempFolder(options),
         uploadStream(options),
+        uploadCustomUUID(options),
         uploadMeta(options),
         uploadCleanup(options),
     ]
