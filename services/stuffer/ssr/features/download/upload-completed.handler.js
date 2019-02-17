@@ -6,7 +6,8 @@
 import prettyBytes from 'pretty-bytes'
 
 export const handler = settings => async ({ files, errors, options }) => {
-    const serverUrl = `${settings.baseUrl}${settings.mountPoint}`
+    const { mountPoint } = settings
+    const serverUrl = `${settings.baseUrl}${mountPoint === '/' ? '' : mountPoint}`
 
     for (const field in files) {
         const file = files[field]

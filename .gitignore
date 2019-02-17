@@ -7,3 +7,7 @@ data
 .env.development.local
 .env.test.local
 .env.production.local
+
+# gitbook
+node_modules
+_book

@@ -46,7 +46,7 @@ registerAction({
 
         settings.download = {
             baseUrl: config.get('DOWNLOAD_BASE_URL'),
-            mountPoint: config.get('DOWNLOAD_MOUNT_POINT'),
+            mountPoint: config.get('DOWNLOAD_MOUNT_POINT', '/'),
         }
 
         settings.express = {

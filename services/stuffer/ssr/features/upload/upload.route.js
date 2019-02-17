@@ -28,7 +28,7 @@ export const uploadRoute = options => async (req, res) => {
             field,
             ...results.files[field],
         })),
-        form: req.data.upload.form,
         errors: results.errors,
+        // form: req.data.upload.form,
     })
 }
