@@ -1,5 +1,3 @@
-import path from 'path'
-import glob from 'glob'
 import * as config from '@marcopeg/utils/lib/config'
 import {
     registerAction,
@@ -16,6 +14,7 @@ const services = [
 ]
 
 const features = [
+    require('./features/mod-jimp'),
     require('./features/upload'),
     require('./features/store'),
     require('./features/download'),

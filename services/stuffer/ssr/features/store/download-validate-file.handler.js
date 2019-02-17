@@ -1,6 +1,6 @@
 /**
  * The responsability is to validate the original file to exists and
- * provide a fullPath to it for the streamer to take action.
+ * provide a filePath to it for the streamer to take action.
  *
  * If an external storage feature is active, it might need to fetch
  * the file from the outside and maintain a local cache.

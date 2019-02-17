@@ -1,14 +1,6 @@
 import fs from 'fs-extra'
 
 export const handler = ({ base }) => async ({ file }) => {
-    file.fullPath = [
-        base,
-        'files',
-        file.space,
-        file.uuid,
-        file.name,
-    ].join('/')
-
     file.metaPath = [
         base,
         'meta',

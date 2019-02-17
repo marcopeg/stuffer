@@ -9,7 +9,7 @@
  */
 
 export default ({ file, base }) => {
-    file.fullPath = [
+    file.filePath = [
         base,
         'files',
         file.space,
