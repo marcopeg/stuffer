@@ -34,7 +34,7 @@ const getParamsModifiers = (req) => {
 }
 
 export default (settings, modifiers) => ({
-    name: 'parse-modifiers',
+    name: 'validate-modifiers',
     priority: 300,
     handler: async (req, res, next) => {
         try {

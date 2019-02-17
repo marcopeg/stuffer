@@ -1,12 +1,12 @@
-import { createHook } from '@marcopeg/hooks'
+// import { createHook } from '@marcopeg/hooks'
 import { logVerbose } from 'ssr/services/logger'
-import { DOWNLOAD_MIDDLEWARES } from './hooks'
+// import { DOWNLOAD_MIDDLEWARES } from './hooks'
 
 import contextMiddleware from './middlewares/context.middleware'
 import validateMetaMiddleware from './middlewares/validate-meta.middleware'
-import parseModifiersMiddleware from './middlewares/parse-modifiers.middleware'
+import validateModifiersMiddleware from './middlewares/validate-modifiers.middleware'
 import validateFileMiddleware from './middlewares/validate-file.middleware'
-import outMiddleware from './middlewares/out.middleware'
+import streamerMiddleware from './middlewares/streamer.middleware'
 
 export const handler = ({ mountPoint, ...settings }) => ({ app }) => {
     // Build a list of available modifiers
@@ -30,9 +30,9 @@ export const handler = ({ mountPoint, ...settings }) => ({ app }) => {
         // token middleware
         contextMiddleware(settings),
         validateMetaMiddleware(settings),
-        parseModifiersMiddleware(settings, modifiers),
+        validateModifiersMiddleware(settings, modifiers),
         validateFileMiddleware(settings),
-        outMiddleware(settings),
+        streamerMiddleware(settings),
     ]
 
     // createHook(DOWNLOAD_MIDDLEWARES, { args: { middlewares } })
