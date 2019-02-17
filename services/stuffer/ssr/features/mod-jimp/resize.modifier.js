@@ -26,7 +26,7 @@ export default (settings) => ({
 
     // should return a string that will be used to formulate a cache file name
     // for a list of modifierss
-    cacheName: v => `size-${v}`,
+    cacheName: v => `jimp-resize-${v}`,
 
     handler: (buff, value, file) => {
         const size = file.meta.data.resize[value]

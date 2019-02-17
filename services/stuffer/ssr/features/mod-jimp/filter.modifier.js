@@ -19,7 +19,7 @@ export default (settings) => ({
 
     // should return a string that will be used to formulate a cache file name
     // for a list of modifierss
-    cacheName: v => `filter-${v}`,
+    cacheName: v => `jimp-filter-${v}`,
 
     handler: (buff, policy) =>
         Jimp.read(buff)

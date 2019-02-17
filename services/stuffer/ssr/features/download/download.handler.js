@@ -5,6 +5,7 @@ import { DOWNLOAD_MIDDLEWARES, DOWNLOAD_MODIFIERS } from './hooks'
 import contextMiddleware from './middlewares/context.middleware'
 import validateMetaMiddleware from './middlewares/validate-meta.middleware'
 import validateModifiersMiddleware from './middlewares/validate-modifiers.middleware'
+import cacheReadMiddleware from './middlewares/cache-read.middleware'
 import validateFileMiddleware from './middlewares/validate-file.middleware'
 import applyModifiersMiddleware from './middlewares/apply-modifiers.middleware'
 import streamerMiddleware from './middlewares/streamer.middleware'
@@ -20,6 +21,7 @@ export const handler = ({ mountPoint, ...settings }) => ({ app }) => {
         contextMiddleware(settings),
         validateMetaMiddleware(settings),
         validateModifiersMiddleware(settings, modifiers),
+        cacheReadMiddleware(settings, modifiers),
         validateFileMiddleware(settings),
         applyModifiersMiddleware(settings, modifiers),
         streamerMiddleware(settings),

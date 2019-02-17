@@ -4,10 +4,14 @@
  * that points to the thing that should actually handle the stream out.
  */
 
-export default options => ({
+import fs from 'fs-extra'
+
+export default (settings) => ({
     name: 'streamer',
     priority: 9999,
     handler: async (req, res) => {
+        await fs.ensureDir(settings.cacheBase)
+        await fs.copy(req.data.download.filePath, req.data.cachePath)
         res.sendFile(req.data.download.filePath)
     },
 })
