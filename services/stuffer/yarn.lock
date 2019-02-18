@@ -4873,7 +4873,7 @@ iconv-lite@0.4.23:
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
-iconv-lite@0.4.24, iconv-lite@^0.4.24, iconv-lite@^0.4.4:
+iconv-lite@0.4.24, iconv-lite@^0.4.24, iconv-lite@^0.4.4, iconv-lite@~0.4.11:
   version "0.4.24"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
   dependencies:
@@ -9029,6 +9029,13 @@ sane@^2.0.0:
   optionalDependencies:
     fsevents "^1.2.3"
 
+sanitize-filename@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/sanitize-filename/-/sanitize-filename-1.6.1.tgz#612da1c96473fa02dccda92dcd5b4ab164a6772a"
+  integrity sha1-YS2hyWRz+gLczaktzVtKsWSmdyo=
+  dependencies:
+    truncate-utf8-bytes "^1.0.0"
+
 sass-loader@7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-7.1.0.tgz#16fd5138cb8b424bf8a759528a1972d72aad069d"
@@ -9905,6 +9912,13 @@ trough@^1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/trough/-/trough-1.0.3.tgz#e29bd1614c6458d44869fc28b255ab7857ef7c24"
 
+truncate-utf8-bytes@^1.0.0:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/truncate-utf8-bytes/-/truncate-utf8-bytes-1.0.2.tgz#405923909592d56f78a5818434b0b78489ca5f2b"
+  integrity sha1-QFkjkJWS1W94pYGENLC3hInKXys=
+  dependencies:
+    utf8-byte-length "^1.0.1"
+
 tryer@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/tryer/-/tryer-1.0.1.tgz#f2c85406800b9b0f74c9f7465b81eaad241252f8"
@@ -10171,9 +10185,21 @@ url@^0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
+urlencode@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/urlencode/-/urlencode-1.1.0.tgz#1f2ba26f013c85f0133f7a3ad6ff2730adf7cbb7"
+  integrity sha1-HyuibwE8hfATP3o61v8nMK33y7c=
+  dependencies:
+    iconv-lite "~0.4.11"
+
 use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
+
+utf8-byte-length@^1.0.1:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/utf8-byte-length/-/utf8-byte-length-1.0.4.tgz#f45f150c4c66eee968186505ab93fcbb8ad6bf61"
+  integrity sha1-9F8VDExm7uloGGUFq5P8u4rWv2E=
 
 utif@^2.0.1:
   version "2.0.1"

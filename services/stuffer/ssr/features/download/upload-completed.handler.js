@@ -4,6 +4,7 @@
  */
 
 import prettyBytes from 'pretty-bytes'
+import urlencode from 'urlencode'
 
 export const handler = settings => async ({ files, errors, options }) => {
     const { mountPoint } = settings
@@ -14,8 +15,8 @@ export const handler = settings => async ({ files, errors, options }) => {
 
         const baseUrl = [
             serverUrl,
-            file.space,
-            file.uuid,
+            urlencode(file.space),
+            urlencode(file.uuid),
         ].join('/')
 
         files[field] = {
@@ -27,7 +28,7 @@ export const handler = settings => async ({ files, errors, options }) => {
             bytes: file.bytesWritten,
             url: {
                 base: baseUrl,
-                original: [ baseUrl, file.name ].join('/'),
+                original: [ baseUrl, urlencode(file.name) ].join('/'),
             },
             meta: file.meta.data,
         }

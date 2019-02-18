@@ -8,6 +8,7 @@ import uploadSizeLimit from './middlewares/upload.size-limit.middleware'
 import uploadTempFolder from './middlewares/upload.temp-folder.middleware'
 import uploadStream from './middlewares/upload.stream.middleware'
 import uploadCustomUUID from './middlewares/upload.custom-uuid.middleware'
+import uploadCustomName from './middlewares/upload.custom-name.middleware'
 import uploadMeta from './middlewares/upload.meta.middleware'
 import uploadCleanup from './middlewares/upload.cleanup.middleware'
 
@@ -19,6 +20,7 @@ export const handler = settings => ({ app }) => {
         uploadTempFolder(settings),
         uploadStream(settings),
         uploadCustomUUID(settings),
+        uploadCustomName(settings),
         uploadMeta(settings),
         uploadCleanup(settings),
     ]

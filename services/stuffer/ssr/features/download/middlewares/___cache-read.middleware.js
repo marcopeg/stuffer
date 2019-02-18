@@ -3,7 +3,7 @@
  * If it fails the request proceeds to the normal file manipulation.
  */
 
-import path from 'path'
+// import path from 'path'
 
 export default (settings, modifiers) => ({
     name: 'cache-read',

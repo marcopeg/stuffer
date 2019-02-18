@@ -14,10 +14,10 @@ const services = [
 ]
 
 const features = [
-    require('./features/mod-jimp'),
     require('./features/upload'),
     require('./features/store'),
     require('./features/download'),
+    require('./features/mod-jimp'),
 ]
 
 registerAction({

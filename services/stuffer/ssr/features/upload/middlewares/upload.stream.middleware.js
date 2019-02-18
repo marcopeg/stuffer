@@ -51,7 +51,7 @@ export default options => ({
             }
 
             // handle checksum fields
-            if (name.includes('_checksum') || name.includes('_uuid')) {
+            if (name.includes('_checksum') || name.includes('_uuid') || name.includes('_name')) {
                 form.fields[name] = value
             }
         })
