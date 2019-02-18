@@ -1,0 +1,346 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Upload to Stuffer · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="../" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2" data-path="upload.html">
+            
+                <a href="upload.html">
+            
+                    
+                    Upload to Stuffer
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Upload to Stuffer</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="upload-into-stuffer">Upload into Stuffer</h1>
+<p>Uploads are handled by sending a <code>multipart/form-data</code> <em>POST</em> request to the <code>/upload</code> endpoint. You can send multiple files at the time.</p>
+<p>The minimum requisite is a field file:</p>
+<pre><code>fieldName: f1
+fieldType: file
+</code></pre><p><strong>NOTE:</strong> try this with postman!</p>
+<h2 id="expected-output">Expected Output</h2>
+<p>The <code>/upload</code> endpoint returns a list of <code>files</code> that have been succesfully uploaded
+and a list of <code>errors</code> that might have happened along the way.</p>
+<p>Here is an example of a standard response body:</p>
+<pre><code>{
+    &quot;files&quot;: [
+        {
+            &quot;field&quot;: &quot;f2&quot;,
+            &quot;name&quot;: &quot;abs-guide.pdf&quot;,
+            &quot;checksum&quot;: &quot;6708c6acfe5323a14123aff0b128abcb&quot;,
+            &quot;type&quot;: &quot;application/pdf&quot;,
+            &quot;encoding&quot;: &quot;7bit&quot;,
+            &quot;size&quot;: &quot;2.74 MB&quot;,
+            &quot;bytes&quot;: 2741648,
+            &quot;url&quot;: {
+                &quot;base&quot;: &quot;http://localhost:8080/public/f2&quot;,
+                &quot;original&quot;: &quot;http://localhost:8080/public/f2/abs-guide.pdf&quot;
+            },
+            &quot;meta&quot;: {}
+        }
+    ],
+    &quot;errors&quot;: [
+        {
+            &quot;type&quot;: &quot;file&quot;,
+            &quot;success&quot;: false,
+            &quot;field&quot;: &quot;f1&quot;,
+            &quot;name&quot;: &quot;elisa.txt&quot;,
+            &quot;uuid&quot;: &quot;f1&quot;,
+            &quot;space&quot;: &quot;public&quot;,
+            &quot;encoding&quot;: &quot;7bit&quot;,
+            &quot;mimeType&quot;: &quot;text/plain&quot;,
+            &quot;bytesReceived&quot;: 1340,
+            &quot;bytesWritten&quot;: 1340,
+            &quot;tempPath&quot;: &quot;/Users/marcopeg/dev/marcopeg/stuffer/data/stuffer/uploads/2019-02-17/public__f1__elisa.txt&quot;,
+            &quot;metaPath&quot;: null,
+            &quot;errors&quot;: [
+                {
+                    &quot;type&quot;: &quot;checksum&quot;,
+                    &quot;message&quot;: &quot;checksum validation failed&quot;,
+                    &quot;details&quot;: null
+                }
+            ],
+            &quot;deleted&quot;: true
+        }
+    ]
+}
+</code></pre><h2 id="handling-errors">Handling Errors</h2>
+<p>As you can see the <code>errors</code> list refers to the files tha failed to upload.</p>
+<p>Inside each file data there is the <code>errors</code> list that contains informations about what
+went wrong with that specific file.</p>
+<h2 id="file-url">File Url</h2>
+<p>The resulting URL of the file is a combination of:</p>
+<pre><code>{baseUrl}/{space}/{uuid}/{fileName}
+</code></pre><h2 id="upload-space">Upload Space</h2>
+<p>The <strong>file space</strong> depends on the <strong>upload token</strong> that authenticates your request.
+You can control this information with the header <code>Authorization</code> with content <code>Bearer xxx</code>
+where the <code>xxx</code> is your account&apos;s secret token.</p>
+<p>If no authorization is provided and the anonymous upload feature is active, the
+uploads end up in a <code>public</code> space.</p>
+<h2 id="upload-uuid">Upload UUID</h2>
+<p>Each file that you upload is provided with a randomly generated universal unique id. 
+If you try to upload the same file twice, you will generate multiple copies of it.</p>
+<p>If you explicitly want to override a previously uploaded file you can provide a
+<strong>custom UUID</strong> using a form field named: <code>{uploadField}_uuid</code>.</p>
+<pre><code>fileField: f1           bynary...
+uuidField: f1_uuid      my-custom-id
+</code></pre><p>You may need this feature in 2 scenarios:</p>
+<ul>
+<li>you need to calculate the file url before the upload happens, hence you can not
+rely on automatically generated ids</li>
+<li>you explicitly want to override a previously uploaded file. In this case be careful
+to send the very same file name or orphan files may generates in your storage</li>
+</ul>
+<p><strong>NOTE:</strong> During development the automatically generated uuid equals to the file name.
+This is intended to generate fewer upload folders and make your life easier :-)</p>
+<h2 id="upload-name">Upload Name</h2>
+<p>You can rename a file while uploading it by passing a <code>{uploadField}_name</code> field
+containing the desired name.</p>
+<h2 id="upload-checksum">Upload Checksum</h2>
+<p>In order to verify a correct upload you can provide an optional <code>md5</code> checksum of the
+file as custom field name <code>{uploadField}_checksum</code>.</p>
+<p>When this information is provided, it will be checked as post-upload validation step.
+In case the validation fails, the file will be marked ad error and deleted from the
+storage layer.</p>
+<h2 id="upload-meta-data">Upload Meta Data</h2>
+<p>You can provide a JSON meta data object as custom field <code>{uploadField}_meta</code>. Consider
+this some kind of &quot;cookie for uploads&quot;.</p>
+<p>In this file you can provide informations that can be useful at download time.</p>
+<p>As example you could provide a list of accepted resize requests, so that when somebody
+tries to download you resized image, a validation can take place.</p>
+<p>Anyway the informations that you provide in this field depends a lot on the 
+<strong>upload and download modifiers</strong> that you setup in your stuffer instance.</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Introduction">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Upload to Stuffer","level":"1.2","depth":1,"previous":{"title":"Introduction","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/upload.md","mtime":"2019-02-18T17:29:38.805Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-18T17:30:04.293Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-collapsible-menu/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

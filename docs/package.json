@@ -1,0 +1,31 @@
+{
+    "name": "stuffer",
+    "version": "0.0.0",
+    "description": "Docker based file storage service",
+    "scripts": {
+      "book:serve": "node_modules/.bin/gitbook serve",
+      "book:build": "node_modules/.bin/gitbook build . docs",
+      "book:install": "node_modules/.bin/gitbook install"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/marcopeg/stuffer.git"
+    },
+    "author": "Marco Pegoraro",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/marcopeg/stuffer/issues"
+    },
+    "homepage": "https://marcopeg.github.io/react-ssr/",
+    "keywords": [
+      "docker",
+      "nodejs",
+      "files",
+      "upload",
+      "storage"
+    ],
+    "devDependencies": {
+      "gitbook-cli": "^2.3.2"
+    }
+  }
+  

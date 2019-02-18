@@ -1,0 +1,22 @@
+/**
+ * Generic App Styles
+ */
+
+html, body {
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    color: #444;
+    background-color: #fff;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+#root {
+    height: 100%;
+    width: 100%;
+}
+  

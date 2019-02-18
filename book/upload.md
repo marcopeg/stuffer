@@ -102,6 +102,11 @@ You may need this feature in 2 scenarios:
 **NOTE:** During development the automatically generated uuid equals to the file name.
 This is intended to generate fewer upload folders and make your life easier :-)
 
+## Upload Name
+
+You can rename a file while uploading it by passing a `{uploadField}_name` field
+containing the desired name.
+
 ## Upload Checksum
 
 In order to verify a correct upload you can provide an optional `md5` checksum of the
