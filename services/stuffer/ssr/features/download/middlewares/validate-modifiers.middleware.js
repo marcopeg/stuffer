@@ -43,6 +43,8 @@ export default (settings, modifiers) => ({
                 ...getParamsModifiers(req),
             ]
 
+            req.data.modifiers = {}
+
             req.data.download.modifiers = items
                 .map(({ name, rawValue }) => {
                     const modifier = modifiers[name]
@@ -50,16 +52,21 @@ export default (settings, modifiers) => ({
                         throw new Error(`unknown download modifier - ${name}`)
                     }
 
+                    // merge the modifier's settings with global / token / file
+                    req.data.modifiers[name] = {
+                        ...(settings.modifiers[name] || {}),
+                        // @TODO: add token based modifiers settings
+                        ...(req.data.download.meta.data[name] || {}),
+                    }
+
                     let value
                     try {
-                        value = modifier.parse(rawValue)
+                        value = modifier.parse(rawValue, req.data.modifiers[name])
                     } catch (err) {
                         throw new Error(`failed to parse modifier - ${name}`)
                     }
 
-                    // validators can access download informations and trigger
-                    // exceptions to block the download, or return falsy value
-                    if (!modifier.validate(value, req.data.download, req, res)) {
+                    if (!modifier.validate(value, req.data.modifiers[name], req, res)) {
                         throw new Error(`failed to validate - ${name}`)
                     }
 

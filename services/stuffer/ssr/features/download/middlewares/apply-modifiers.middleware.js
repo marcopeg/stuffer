@@ -20,9 +20,12 @@ export default (options, modifiers) => ({
 
         // create a buffer and process it through all the listed modifiers
         req.data.buffer = await fs.readFile(req.data.download.filePath)
+
+        // run through all the modifiers
         for (const modifier of req.data.download.modifiers) {
             const handler = modifiers[modifier.name].handler
-            req.data.buffer = await handler(req.data.buffer, modifier.value, req.data.download)
+            const options = req.data.modifiers[modifier.name]
+            req.data.buffer = await handler(req.data.buffer, modifier.value, options, req, res)
         }
 
         next()

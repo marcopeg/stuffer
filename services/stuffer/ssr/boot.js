@@ -42,7 +42,13 @@ registerAction({
         settings.download = {
             baseUrl: config.get('DOWNLOAD_BASE_URL'),
             mountPoint: config.get('DOWNLOAD_MOUNT_POINT', '/'),
-            cacheBase: config.get('DOWNLOAD_CACHE_BASE'),
+            modifiers: {},
+        }
+
+        try {
+            settings.download.modifiers = JSON.parse(config.get('DOWNLOAD_MODIFIERS', '{}'))
+        } catch (err) {
+            throw new Error('env variable "DOWNLOAD_MODIFIERS" contains invalid JSON')
         }
 
         settings.express = {
