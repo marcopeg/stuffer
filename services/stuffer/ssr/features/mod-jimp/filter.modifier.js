@@ -1,6 +1,6 @@
 import Jimp from 'jimp'
 
-const policies = [ 'bw', 'fancy' ]
+const policies = [ 'bw', 'fancy', 'mysocial' ]
 
 export default (settings) => ({
     // receives the upload field value and should be able to parse it
@@ -29,7 +29,12 @@ export default (settings) => ({
                     case 'fancy': return tpl.color([
                         { apply: 'hue', params: [-90] },
                         { apply: 'lighten', params: [50] },
-                        { apply: 'xor', params: ['#06D'] },
+                        // { apply: 'xor', params: ['#06D'] },
+                    ])
+                    case 'mysocial': return tpl.color([
+                        { apply: 'lighten', params: [10] },
+                        { apply: 'blue', params: [150] },
+                        // { apply: 'xor', params: ['#06D'] },
                     ])
                 }
             })
