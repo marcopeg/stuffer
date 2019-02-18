@@ -1,6 +1,6 @@
 import { createHook } from '@marcopeg/hooks'
 import { logVerbose } from 'ssr/services/logger'
-import { UPLOAD_CONFIG, UPLOAD_MIDDLEWARES } from './hooks'
+import { UPLOAD_MIDDLEWARES } from './hooks'
 import { uploadRoute } from './upload.route'
 
 import uploadContext from './middlewares/upload.context.middleware'
@@ -11,23 +11,16 @@ import uploadCustomUUID from './middlewares/upload.custom-uuid.middleware'
 import uploadMeta from './middlewares/upload.meta.middleware'
 import uploadCleanup from './middlewares/upload.cleanup.middleware'
 
-export const handler = ({ app }) => {
-    // Let options be driven by extensions
-    const options = {}
-    createHook(UPLOAD_CONFIG, { args: { options } })
-
-    // @TODO: validate options
-    // it should fail hard in case some mandatory options are not provided
-
+export const handler = settings => ({ app }) => {
     // Build an expandable list of middlewares
     const middlewares = [
-        uploadContext(options),
-        uploadSizeLimit(options),
-        uploadTempFolder(options),
-        uploadStream(options),
-        uploadCustomUUID(options),
-        uploadMeta(options),
-        uploadCleanup(options),
+        uploadContext(settings),
+        uploadSizeLimit(settings),
+        uploadTempFolder(settings),
+        uploadStream(settings),
+        uploadCustomUUID(settings),
+        uploadMeta(settings),
+        uploadCleanup(settings),
     ]
     createHook(UPLOAD_MIDDLEWARES, { args: { middlewares } })
 
@@ -39,8 +32,8 @@ export const handler = ({ app }) => {
 
     // apply sorted middlewares
     app.post(
-        options.mountPoint,
+        settings.mountPoint,
         sortedMiddlewares.map(m => m.handler),
-        uploadRoute(options)
+        uploadRoute(settings)
     )
 }

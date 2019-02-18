@@ -21,24 +21,20 @@ const features = [
 ]
 
 registerAction({
-    hook: require('./features/upload/hooks').UPLOAD_CONFIG,
-    name: '♦ boot',
-    handler: ({ options }) => {
-        options.mountPoint = config.get('UPLOAD_MOUNT_POINT')
-        options.tempFolder = config.get('UPLOAD_TEMP_FOLDER')
-        options.bufferSize = Number(config.get('UPLOAD_BUFFER_SIZE', 2 * 1048576)) // Set 2MiB buffer
-        options.maxSize = Number(config.get('UPLOAD_MAX_SIZE', 100 * 1048576)) // 100Mb
-        options.maxFiles = Number(config.get('UPLOAD_MAX_FILES', 10))
-        options.maxFileSize = Number(config.get('UPLOAD_MAX_FILE_SIZE', 100 * 1048576)) // 100Mb
-        options.maxFields = Number(config.get('UPLOAD_MAX_FIELDS', options.maxFiles * 2))
-        options.maxFieldSize = Number(config.get('UPLOAD_MAX_FIELD_SIZE', 5 * 1024)) // 5Kb - cookie style
-    },
-})
-
-registerAction({
     hook: SETTINGS,
     name: '♦ boot',
     handler: async ({ settings }) => {
+        settings.upload = {
+            mountPoint: config.get('UPLOAD_MOUNT_POINT'),
+            tempFolder: config.get('UPLOAD_TEMP_FOLDER'),
+            bufferSize: Number(config.get('UPLOAD_BUFFER_SIZE', 2 * 1048576)), // Set 2MiB buffer
+            maxSize: Number(config.get('UPLOAD_MAX_SIZE', 100 * 1048576)), // 100Mb
+            maxFiles: Number(config.get('UPLOAD_MAX_FILES', 10)),
+            maxFields: Number(config.get('UPLOAD_MAX_FIELDS', 30)),
+            maxFileSize: Number(config.get('UPLOAD_MAX_FILE_SIZE', 100 * 1048576)), // 100Mb
+            maxFieldSize: Number(config.get('UPLOAD_MAX_FIELD_SIZE', 5 * 1024)), // 5Kb - cookie style
+        }
+
         settings.store = {
             base: config.get('STORE_BASE'),
         }

@@ -17,13 +17,15 @@ export default (settings, modifiers) => ({
             )),
         ].join('__')
 
-        req.data.cachePath = path.join(settings.cacheBase, req.data.cacheName)
+        // req.data.cachePath = path.join(settings.cacheBase, req.data.cacheName)
 
-        res.sendFile(req.data.cachePath, {}, (err) => {
-            if (err) {
-                next()
-            }
-        })
+        // res.sendFile(req.data.cachePath, {}, (err) => {
+        //     if (err) {
+        //         next()
+        //     }
+        // })
+
+        next()
     },
 })
 

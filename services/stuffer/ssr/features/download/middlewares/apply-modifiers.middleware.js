@@ -1,22 +1,29 @@
+/**
+ * Here the big question is whether to accept the buffer solution or
+ * to try to force ourselves into a stream solution.
+ *
+ * I believe streams would work better.
+ * But let's see what happens
+ */
+
 import fs from 'fs-extra'
-import path from 'path'
 
 export default (options, modifiers) => ({
     name: 'apply-modifiers',
     priority: 500,
     handler: async (req, res, next) => {
-        // create a buffer and process it through all the listed modifiers
-        let buff = await fs.readFile(req.data.download.filePath)
-        for (const modifier of req.data.download.modifiers) {
-            const handler = modifiers[modifier.name].handler
-            buff = await handler(buff, modifier.value, req.data.download)
+        // Skip in case no modifier was applied
+        if (!req.data.download.modifiers.length) {
+            next()
+            return
         }
 
-        // writes out the buffer to the cache file and sets it as origin
-        // for the streamer
-        const fout = path.join(path.dirname(req.data.download.filePath), `mod_${req.data.download.name}`)
-        await fs.writeFile(fout, buff)
-        req.data.download.filePath = fout
+        // create a buffer and process it through all the listed modifiers
+        req.data.buffer = await fs.readFile(req.data.download.filePath)
+        for (const modifier of req.data.download.modifiers) {
+            const handler = modifiers[modifier.name].handler
+            req.data.buffer = await handler(req.data.buffer, modifier.value, req.data.download)
+        }
 
         next()
     },

@@ -2,20 +2,7 @@
  * Removes partial uploads
  */
 
-import fs from 'fs'
-
-const deletePartialFile = file => new Promise((resolve, reject) => {
-    fs.unlink(file.tempPath, (err) => {
-        if (err) {
-            file.deleted = true
-            file.deleteError = err
-            reject(err)
-        } else {
-            file.deleted = true
-            resolve()
-        }
-    })
-})
+import fs from 'fs-extra'
 
 export default options => ({
     name: 'cleanup',
@@ -23,7 +10,7 @@ export default options => ({
     handler: (req, res, next) => {
         const promises = req.data.upload.form.errors
             .filter(err => err.type === 'file')
-            .map(file => deletePartialFile(file))
+            .map(file => fs.unlink(file.tempPath))
 
         Promise.all(promises)
             .then(() => next())
