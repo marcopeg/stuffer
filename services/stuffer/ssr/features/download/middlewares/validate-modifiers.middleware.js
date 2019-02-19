@@ -61,7 +61,7 @@ export default (settings, modifiers) => ({
 
                     let value
                     try {
-                        value = modifier.parse(rawValue, req.data.modifiers[name])
+                        value = modifier.parse(rawValue, req.data.modifiers[name], req, res)
                     } catch (err) {
                         throw new Error(`failed to parse modifier - ${name}`)
                     }

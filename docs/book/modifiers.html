@@ -1,0 +1,341 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Modifiers · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="download.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="upload.html">
+            
+                <a href="upload.html">
+            
+                    
+                    Upload to Stuffer
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="download.html">
+            
+                <a href="download.html">
+            
+                    
+                    Download from Stuffer
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.4" data-path="modifiers.html">
+            
+                <a href="modifiers.html">
+            
+                    
+                    Modifiers
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Modifiers</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="modifiers">Modifiers</h1>
+<p>A <em>Modifier</em> can handle a <a href="https://nodejs.org/api/buffer.html" target="_blank">buffer</a> and alter it
+to produce a change in the original file.</p>
+<blockquote>
+<p>Common modifiers can resize an image or compress a file</p>
+</blockquote>
+<h2 id="api">API</h2>
+<p>A modifier should expose the following methods:</p>
+<pre><code>export defaul {
+    parse: (value, options, req, res) =&gt; value,
+    validate: (value, options, req, res) =&gt; true,
+    cacheName: (value, options, req, res) =&gt; &apos;foo&apos;,
+    handler: async (buffer, value, options, req, res) =&gt; buffer
+}
+</code></pre><h3 id="arguments">Arguments</h3>
+<h4 id="value">value</h4>
+<p>It is the value assigned to the modifier in the url:</p>
+<pre><code>...image.jpg?resize=small&amp;filter=bw
+</code></pre><p>In the above example &quot;small&quot; and &quot;bw&quot; are the values.</p>
+<p>After the <code>parse()</code> method is applied the value may be transformed into something
+more refined. The idea with <code>parse()</code> is that a modifier parameter may contain
+<em>json</em>  or <em>base64 encoded</em>  data that need to be transformed (parsed) before use.</p>
+<h4 id="options">options</h4>
+<p>It is an object <code>{}</code> that contains the server-side settings for the modifier.
+It is usually used by <code>validate()</code> to verify that the request matches the capabilities
+of a modifier, and by <code>handler()</code> to fetch data that may affect the resulting buffer.</p>
+<p>In my way of thinking when you use a modifier in a url, you pass a value that is simply
+a keyword reference to a piece of information that is available in the options. I call
+this a <em>policy</em> and I believe is a good way to limit the side effects of modifiers.</p>
+<p>As example the &quot;resize&quot; modifier accepts only a small string as value:</p>
+<pre><code>...?image.jpg?resize=thumb
+</code></pre><p>That <code>thumb</code> keyword need to be available into the modifier options for the modifier
+to validate, and need to have a specific set of data for the modifier to work properly:</p>
+<pre><code>{
+    &quot;resize&quot;: {
+        &quot;small&quot;: [ 50, &apos;auto&apos;, 60 ],
+        &quot;thumb&quot;: [ 90, 90, 60 ]
+    }
+}
+</code></pre><p>This way you can only ask for a &quot;small&quot; or &quot;thumb&quot; version of a specific image, any other
+modifier values will end up in a request error.</p>
+<p>The idea is to protect the image service from an indiscriminate amount of requests that may
+fill up the disk space or kill the process due to RAM problems.</p>
+<p>The options may be defined by:</p>
+<ol>
+<li>the system</li>
+<li>the space (to be done)</li>
+<li>the file</li>
+</ol>
+<p>Each level extends the previous one and overrides seamless keywords.</p>
+<h4 id="buffer">buffer</h4>
+<h4 id="req-res">req, res</h4>
+<p>You can access <code>req.data.download</code> to see all the available informations regarding the current
+download request.</p>
+<h3 id="methods">Methods</h3>
+<h4 id="anyparserawvalue-options-req-res">any:parse(rawValue, options, req, res)</h4>
+<p><em>SYNC</em> - takes in the raw value as passed in the <em>URL</em> and should return the internal
+value as it may be used by the other methods.</p>
+<h4 id="boolvalidateparsedvalue-options-req-res">bool:validate(parsedValue, options, req, res)</h4>
+<p><em>SYNC</em> - uses the parsed value and the available options to stop unrightful requests.</p>
+<p>You must return <code>true</code> for the validation to pass.</p>
+<p>Else you can either return <code>false</code> or <code>throw new Error()</code>.</p>
+<h4 id="stringcachenameparsedvalue-options-req-res">string:cacheName(parsedValue, options, req, res)</h4>
+<p><em>SYNC</em> - returns a string that will contribute in composing the cache file name</p>
+<h4 id="promisehandlerbuffer-parsedvalue-req-res">Promise:handler(buffer, parsedValue, req, res)</h4>
+<p><em>ASYNC</em> - uses the buffer to apply a transormation. </p>
+<p>It must return or resolve with the new buffer.</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="download.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Download from Stuffer">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Modifiers","level":"1.4","depth":1,"previous":{"title":"Download from Stuffer","level":"1.3","depth":1,"path":"book/download.md","ref":"./book/download.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/modifiers.md","mtime":"2019-02-19T07:59:56.422Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-19T08:00:05.166Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-collapsible-menu/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

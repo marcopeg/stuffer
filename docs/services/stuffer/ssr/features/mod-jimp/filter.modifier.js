@@ -21,20 +21,18 @@ export default (settings) => ({
     // for a list of modifierss
     cacheName: v => `jimp-filter-${v}`,
 
-    handler: (buff, policy) =>
+    handler: (buff, value) =>
         Jimp.read(buff)
             .then(tpl => {
-                switch (policy) {
+                switch (value) {
                     case 'bw': return tpl.grayscale()
                     case 'fancy': return tpl.color([
                         { apply: 'hue', params: [-90] },
                         { apply: 'lighten', params: [50] },
-                        // { apply: 'xor', params: ['#06D'] },
                     ])
                     case 'mysocial': return tpl.color([
                         { apply: 'lighten', params: [10] },
                         { apply: 'blue', params: [150] },
-                        // { apply: 'xor', params: ['#06D'] },
                     ])
                 }
             })

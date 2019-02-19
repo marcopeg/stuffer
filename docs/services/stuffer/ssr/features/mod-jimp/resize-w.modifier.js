@@ -7,11 +7,11 @@ export default (settings) => ({
 
     // value, file, req, res
     // checks that the file meta informations are valid
-    validate: (value, file) => {
+    validate: (value, options) => {
         // there should be informations about allowed resize policies
         let sizes
         try {
-            sizes = Object.keys(file.meta.data.resizeW)
+            sizes = Object.keys(options)
         } catch (err) {
             throw new Error('resizeW modifier: no policy was found')
         }
@@ -28,8 +28,8 @@ export default (settings) => ({
     // for a list of modifierss
     cacheName: v => `jimp-resize-w-${v}`,
 
-    handler: (buff, value, file) => {
-        const size = Number(file.meta.data.resizeW[value])
+    handler: (buff, value, options) => {
+        const size = Number(options[value])
         return Jimp.read(buff)
             .then(tpl => tpl.resize(size, Jimp.AUTO))
             .then(tpl => tpl.getBufferAsync(Jimp.AUTO))
