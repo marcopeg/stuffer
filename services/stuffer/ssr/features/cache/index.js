@@ -1,11 +1,20 @@
 import fs from 'fs-extra'
-import { START_FEATURE } from '@marcopeg/hooks'
+import { INIT_FEATURE, START_FEATURE } from '@marcopeg/hooks'
 import { DOWNLOAD_MIDDLEWARES } from 'ssr/features/download/hooks'
 import { FEATURE_NAME } from './hooks'
+
+import * as lru from './lru'
 import downloadCacheCheckMiddleware from './download-cache-check.middleware'
 import downloadCacheWriteMiddleware from './download-cache-write.middleware'
 
 export const register = ({ registerAction, settings }) => {
+    registerAction({
+        hook: INIT_FEATURE,
+        name: FEATURE_NAME,
+        trace: __filename,
+        handler: () => lru.init(settings.cache),
+    })
+
     registerAction({
         hook: START_FEATURE,
         name: FEATURE_NAME,

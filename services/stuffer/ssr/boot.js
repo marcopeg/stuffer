@@ -48,6 +48,9 @@ registerAction({
 
         settings.cache = {
             base: config.get('CACHE_BASE'),
+            maxAge: Number(config.get('CACHE_MAX_AGE', '31536000')) * 1000, // in seconds
+            maxSize: Number(config.get('CACHE_MAX_SIZE', '1')) * 1000000, // in Mb
+            pruneInterval: Number(config.get('CACHE_PRUNE_INTERVAL', '60')) * 1000, // in second
         }
 
         try {

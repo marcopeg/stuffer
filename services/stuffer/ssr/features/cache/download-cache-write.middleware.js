@@ -1,4 +1,5 @@
 import fs from 'fs-extra'
+import { setCache } from './lru'
 
 export default (settings) => ({
     name: 'download-cache-write',
@@ -14,6 +15,7 @@ export default (settings) => ({
                 throw new Error('could not write cache')
             }
 
+            setCache(req.data.cache.path, req.data.buffer.byteLength)
             console.log('cache written', req.data.buffer.byteLength)
             next()
         })
