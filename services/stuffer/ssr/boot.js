@@ -17,6 +17,7 @@ const features = [
     require('./features/upload'),
     require('./features/store'),
     require('./features/download'),
+    require('./features/cache'),
     require('./features/mod-jimp'),
 ]
 
@@ -43,6 +44,10 @@ registerAction({
             baseUrl: config.get('DOWNLOAD_BASE_URL'),
             mountPoint: config.get('DOWNLOAD_MOUNT_POINT', '/'),
             modifiers: {},
+        }
+
+        settings.cache = {
+            base: config.get('CACHE_BASE'),
         }
 
         try {

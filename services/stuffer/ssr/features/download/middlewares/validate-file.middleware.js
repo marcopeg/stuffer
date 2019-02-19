@@ -3,7 +3,7 @@ import { DOWNLOAD_VALIDATE_FILE } from '../hooks'
 
 export default options => ({
     name: 'validate-file',
-    priority: 400,
+    priority: 500,
     handler: async (req, res, next) => {
         await createHook(DOWNLOAD_VALIDATE_FILE, {
             async: 'serie',
