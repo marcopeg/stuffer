@@ -13,6 +13,8 @@ export default (settings) => ({
             if (err) {
                 throw new Error('could not write cache')
             }
+
+            console.log('cache written', req.data.buffer.byteLength)
             next()
         })
     },
