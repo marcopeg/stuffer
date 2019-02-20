@@ -13,10 +13,11 @@ export default (settings) => ({
     handler: async (req, res) => {
         const file = req.data.download
 
+        res.set('Content-Type', `${file.meta.type}; charset=utf-8`)
+        res.set('Content-Disposition', `inline; filename="${file.name}"`)
+
         if (req.data.buffer) {
             logVerbose(`>> BUFFER >> ${file.space}/${file.uuid}/${file.name}`)
-            res.set('Content-Type', `${file.meta.type}; charset=utf-8`)
-            res.set('Content-Disposition', `inline; filename="${file.name}"`)
             res.send(req.data.buffer)
             return
         }

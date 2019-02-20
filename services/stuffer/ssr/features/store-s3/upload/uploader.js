@@ -3,6 +3,11 @@ import path from 'path'
 import AWS from 'aws-sdk'
 import { logVerbose } from 'ssr/services/logger'
 
+const makeKey = filePath => {
+    const tokens = filePath.split('/')
+    const buffer = Buffer.from(filePath)
+    return `${tokens[0]}/${buffer.toString('base64')}`
+}
 
 export default class Uploader {
     constructor (settings, file) {
@@ -13,12 +18,13 @@ export default class Uploader {
     upload () {
         return new Promise((resolve, reject) => {
             const start = new Date()
+            const cacheKey = makeKey(this.file)
             const filePath = path.join(this.settings.filesPath, this.file)
-            const cachePath = path.join(this.settings.cachePath, this.file)
+            const cachePath = path.join(this.settings.cachePath, cacheKey)
 
             new AWS.S3(this.settings.aws).upload({
                 Bucket: this.settings.aws.Bucket,
-                Key: this.file,
+                Key: cacheKey,
                 Body: fs.createReadStream(filePath),
             }, (err) => {
                 if (err) {

@@ -1,4 +1,5 @@
 import { INIT_FEATURE, START_FEATURE } from '@marcopeg/hooks'
+import { STORE_CHANGE_RESOLVER } from 'ssr/features/store/hooks'
 import { FEATURE_NAME } from './hooks'
 
 // import * as lru from './lru-cache'
@@ -6,6 +7,7 @@ import { FEATURE_NAME } from './hooks'
 // import downloadCacheWriteMiddleware from './download-cache-write.middleware'
 import initHandler from './init/init.handler'
 import { start as startUploadPool } from './upload/pool'
+import cacheResolver from './cache-resolver'
 
 export const register = ({ registerAction, settings }) => {
     registerAction({
@@ -20,6 +22,13 @@ export const register = ({ registerAction, settings }) => {
         name: FEATURE_NAME,
         trace: __filename,
         handler: startUploadPool,
+    })
+
+    registerAction({
+        hook: STORE_CHANGE_RESOLVER,
+        name: FEATURE_NAME,
+        trace: __filename,
+        handler: cacheResolver(settings),
     })
 
     // registerAction({
