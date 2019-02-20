@@ -3,7 +3,7 @@ import { INIT_FEATURE, START_FEATURE } from '@marcopeg/hooks'
 import { DOWNLOAD_MIDDLEWARES } from 'ssr/features/download/hooks'
 import { FEATURE_NAME } from './hooks'
 
-import * as lru from './lru'
+import * as lru from './lru-cache'
 import downloadCacheCheckMiddleware from './download-cache-check.middleware'
 import downloadCacheWriteMiddleware from './download-cache-write.middleware'
 

@@ -43,6 +43,7 @@
     "@marcopeg/hooks": "^0.2.2",
     "@marcopeg/react-ssr": "0.0.20",
     "@marcopeg/utils": "^1.12.0",
+    "async": "^2.6.2",
     "aws-sdk": "^2.401.0",
     "compression": "^1.7.3",
     "connect-busboy": "^0.0.2",

@@ -1,6 +1,6 @@
 import path from 'path'
 import fs from 'fs-extra'
-import { getCache } from './lru'
+import { getCache } from './lru-cache'
 
 export default (settings) => ({
     name: 'download-cache-check',
@@ -34,7 +34,7 @@ export default (settings) => ({
 
         // checks the in-memory cache informations.
         // if there is no cache info, we are going to skip the attempt to stream
-        const cache = getCache(req.data.cache.path)
+        const cache = getCache(req.data.cache.name)
         if (!cache) {
             next()
             return
