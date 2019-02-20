@@ -17,6 +17,7 @@ const features = [
     require('./features/upload'),
     require('./features/store'),
     require('./features/download'),
+    require('./features/cache'),
     require('./features/mod-jimp'),
 ]
 
@@ -43,6 +44,14 @@ registerAction({
             baseUrl: config.get('DOWNLOAD_BASE_URL'),
             mountPoint: config.get('DOWNLOAD_MOUNT_POINT', '/'),
             modifiers: {},
+        }
+
+        settings.cache = {
+            base: config.get('CACHE_BASE'),
+            // maxAge: Number(config.get('CACHE_MAX_AGE', '31536000')) * 1000, // in seconds
+            maxAge: Number(config.get('CACHE_MAX_AGE', '3600')) * 1000, // in seconds
+            maxSize: Number(config.get('CACHE_MAX_SIZE', '1')) * 1000000, // in Mb
+            pruneInterval: Number(config.get('CACHE_PRUNE_INTERVAL', '60')) * 1000, // in second
         }
 
         try {
