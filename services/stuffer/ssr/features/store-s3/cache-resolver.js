@@ -45,7 +45,7 @@ const fromRemoteCache = (settings, file) => new Promise(async (resolve) => {
     const s3Stream = new AWS.S3(settings.storeS3)
         .getObject({
             Bucket: settings.storeS3.Bucket,
-            Key: filePath,
+            Key: `files/${filePath}`,
         })
         .createReadStream()
 

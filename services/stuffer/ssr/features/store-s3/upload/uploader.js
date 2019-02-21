@@ -17,7 +17,7 @@ export default class Uploader {
 
             new AWS.S3(this.settings.aws).putObject({
                 Bucket: this.settings.aws.Bucket,
-                Key: this.file,
+                Key: `files/${this.file}`,
                 Body: fs.createReadStream(filePath),
             }, (err) => {
                 if (err) {
@@ -47,7 +47,7 @@ export default class Uploader {
 
             new AWS.S3(this.settings.aws).upload({
                 Bucket: this.settings.aws.Bucket,
-                Key: `${tokens[0]}/${tokens[1]}/__meta.json`,
+                Key: `meta/${tokens[0]}/${tokens[1]}.json`,
                 Body: fs.createReadStream(metaPath),
             }, (err) => {
                 if (err) {
