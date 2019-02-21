@@ -8,6 +8,7 @@ export default async (settings) => {
 
     await uploader.init({
         filesPath,
+        metaPath: path.join(settings.store.base, 'meta'),
         cachePath: settings.storeS3.base,
         aws: settings.storeS3,
     })

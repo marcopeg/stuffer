@@ -19,7 +19,7 @@ const features = [
     require('./features/download'),
     require('./features/mod-jimp'),
     require('./features/cache'),
-    // require('./features/store-s3'),
+    require('./features/store-s3'),
 ]
 
 registerAction({
@@ -47,6 +47,7 @@ registerAction({
             secretAccessKey: config.get('STORE_S3_SECRET'),
             Bucket: config.get('STORE_S3_BUCKET'),
             region: config.get('STORE_S3_REGION'),
+            apiVersion: '2006-03-01',
         }
 
         settings.download = {

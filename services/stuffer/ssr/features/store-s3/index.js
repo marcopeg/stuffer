@@ -1,5 +1,5 @@
 import { INIT_FEATURE, START_FEATURE } from '@marcopeg/hooks'
-import { STORE_CHANGE_RESOLVER } from 'ssr/features/store/hooks'
+import { STORE_CHANGE_RESOLVER, STORE_FILE_MOVED } from 'ssr/features/store/hooks'
 import { FEATURE_NAME } from './hooks'
 
 // import * as lru from './lru-cache'
@@ -8,6 +8,7 @@ import { FEATURE_NAME } from './hooks'
 import initHandler from './init/init.handler'
 import { start as startUploadPool } from './upload/pool'
 import cacheResolver from './cache-resolver'
+import uploadFile from './upload/file'
 
 export const register = ({ registerAction, settings }) => {
     registerAction({
@@ -25,19 +26,16 @@ export const register = ({ registerAction, settings }) => {
     })
 
     registerAction({
+        hook: STORE_FILE_MOVED,
+        name: FEATURE_NAME,
+        trace: __filename,
+        handler: uploadFile,
+    })
+
+    registerAction({
         hook: STORE_CHANGE_RESOLVER,
         name: FEATURE_NAME,
         trace: __filename,
         handler: cacheResolver(settings),
     })
-
-    // registerAction({
-    //     hook: DOWNLOAD_MIDDLEWARES,
-    //     name: FEATURE_NAME,
-    //     trace: __filename,
-    //     handler: async ({ addDownloadMiddleware }) => {
-    //         addDownloadMiddleware(downloadCacheCheckMiddleware(settings.cache))
-    //         addDownloadMiddleware(downloadCacheWriteMiddleware(settings.cache))
-    //     },
-    // })
 }

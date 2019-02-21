@@ -44,8 +44,9 @@ const loop = async () => {
     }
 }
 
-export const init = ({ filesPath, cachePath, aws }) => {
+export const init = ({ filesPath, metaPath, cachePath, aws }) => {
     settings.filesPath = filesPath
+    settings.metaPath = metaPath
     settings.cachePath = cachePath
     settings.aws = aws
 }

@@ -5,6 +5,8 @@
 
 import fs from 'fs-extra'
 import path from 'path'
+import { createHook } from '@marcopeg/hooks'
+import { STORE_FILE_MOVED } from './hooks'
 
 export const handler = ({ base }) => async ({ files, errors, options }) => {
     for (const field in files) {
@@ -24,6 +26,12 @@ export const handler = ({ base }) => async ({ files, errors, options }) => {
             delete file['tempPath']
             file.fullPath = filePath
             file.metaPath = metaPath
+
+            // let remote storage plugins hook in to upload and move the stuff
+            await createHook(STORE_FILE_MOVED, {
+                async: 'serie',
+                args: { file },
+            })
         } catch (err) {
             file.errors.push({
                 type: 'fmove',
