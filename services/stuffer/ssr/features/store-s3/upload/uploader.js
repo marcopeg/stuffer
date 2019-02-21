@@ -1,7 +1,7 @@
 import fs from 'fs-extra'
 import path from 'path'
 import AWS from 'aws-sdk'
-import { logVerbose } from 'ssr/services/logger'
+import { logError, logVerbose } from 'ssr/services/logger'
 
 export default class Uploader {
     constructor (settings, file) {
@@ -31,7 +31,13 @@ export default class Uploader {
                         reject(err)
                     } else {
                         logVerbose(`[store-s3] moved "${this.file}" to "${cachePath}"`)
-                        resolve()
+
+                        fs.remove(path.dirname(filePath), (err) => {
+                            if (err) {
+                                logError(`[store-s3] could not remove uuid folder: ${err.message}`)
+                            }
+                            resolve()
+                        })
                     }
                 })
             })
