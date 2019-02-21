@@ -12,11 +12,14 @@ export default options => ({
     handler: (req, res, next) => {
         const makeMetaFile = fieldName => new Promise((resolve, reject) => {
             const fileInfo = req.data.upload.form.files[fieldName]
-            const fileName = fileInfo.name
             const fileChecksum = req.data.upload.form.fields[`${fieldName}_checksum`]
 
             const fileMeta = {
                 name: fileInfo.name,
+                originalName: fileInfo.originalName === fileInfo.name
+                    ? null
+                    : fileInfo.originalName,
+                nameB64: fileInfo.nameB64,
                 type: fileInfo.mimeType,
                 encoding: fileInfo.encoding,
                 bytes: fileInfo.bytesWritten,
@@ -57,7 +60,7 @@ export default options => ({
                 ? { spaces: 4 }
                 : {}
 
-            const metaFileName = `${fileInfo.space}__${fileInfo.uuid}__${fileName}__meta.json`
+            const metaFileName = `${fileInfo.space}__${fileInfo.uuid}__${fileInfo.nameB64}.json`
             const metaFilePath = path.join(req.data.upload.tempPath, metaFileName)
             fs.writeJson(metaFilePath, fileMeta, jsonSerializeOptions, (err) => {
                 if (err) {

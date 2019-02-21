@@ -5,16 +5,17 @@
  * req.data.download.filePath -> send out the actual file
  */
 
+import urlencode from 'urlencode'
 import { logVerbose } from 'ssr/services/logger'
 
-export default (settings) => ({
+export default () => ({
     name: 'streamer',
     priority: 9999,
     handler: async (req, res) => {
         const file = req.data.download
 
         res.set('Content-Type', `${file.meta.type}; charset=utf-8`)
-        res.set('Content-Disposition', `inline; filename="${file.name}"`)
+        res.set('Content-Disposition', `inline; filename="${urlencode(file.name)}"`)
 
         if (req.data.buffer) {
             logVerbose(`>> BUFFER >> ${file.space}/${file.uuid}/${file.name}`)

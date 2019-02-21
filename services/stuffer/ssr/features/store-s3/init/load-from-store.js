@@ -22,7 +22,7 @@ const globp = (path, options) => new Promise((resolve, reject) => {
 
 export default (sourcePath, onFile) => new Promise(async (resolve, reject) => {
     logInfo(`[store-s3] start import uploads from store: ${sourcePath}`)
-    const files = await globp(path.join(sourcePath, '**/*.*'))
+    const files = await globp(path.join(sourcePath, '**/*.stuff'))
 
     const iteratee = (file, next) => {
         onFile(path.relative(sourcePath, file))

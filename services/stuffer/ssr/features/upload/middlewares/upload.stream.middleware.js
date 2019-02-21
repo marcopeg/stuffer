@@ -6,10 +6,17 @@ import fs from 'fs'
 import path from 'path'
 import Busboy from 'busboy'
 import uuid from 'uuid/v4'
+import hash from 'short-hash'
+
+const encodeFileName = (fileName) =>
+    Buffer
+        .from(fileName)
+        .toString('base64')
+        .replace(/\//g, '@')
 
 const generateUploadId = (fileName) =>
     process.env.NODE_ENV === 'development'
-        ? `dev-${fileName}`
+        ? `dev-${hash(fileName)}`
         : uuid()
 
 export default options => ({
@@ -50,20 +57,22 @@ export default options => ({
                 }
             }
 
-            // handle checksum fields
+            // handle custom fields
             if (name.includes('_checksum') || name.includes('_uuid') || name.includes('_name')) {
                 form.fields[name] = value
             }
         })
 
         busboy.on('file', (fieldName, file, fileName, encoding, mimeType) => {
+            const nameB64 = encodeFileName(fileName)
             const uuid = generateUploadId(fileName)
-            const tempFileName = `${req.data.upload.space}__${uuid}__${fileName}`
+            const tempFileName = `${req.data.upload.space}__${uuid}__${nameB64}.stuff`
             const tempPath = path.join(req.data.upload.tempPath, tempFileName)
             const info = {
                 success: null,
                 field: fieldName,
                 name: fileName,
+                nameB64,
                 uuid,
                 space: req.data.upload.space,
                 encoding,

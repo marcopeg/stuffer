@@ -42,21 +42,23 @@ export default options => ({
             }
 
             // Try to rename the file according to the new file name
-            try {
-                const newTempFileName = `${req.data.upload.space}__${file.uuid}__${customName}`
-                const newTempPath = path.join(req.data.upload.tempPath, newTempFileName)
-                await fs.move(file.tempPath, newTempPath, { overwrite: true })
-                file.name = customName
-                file.tempPath = newTempPath
+            file.originalName = file.name
+            file.name = customName
+            // try {
+            //     const newTempFileName = `${req.data.upload.space}__${file.uuid}__${customName}`
+            //     const newTempPath = path.join(req.data.upload.tempPath, newTempFileName)
+            //     await fs.move(file.tempPath, newTempPath, { overwrite: true })
+            //     file.name = customName
+            //     file.tempPath = newTempPath
 
-            // Move the file to the error bucket
-            } catch (err) {
-                return markAsError({
-                    type: 'custom-uuid',
-                    message: `failed while trying to apply custom name - ${file.field}/${file.uuid}`,
-                    details: { originalError: err },
-                })
-            }
+            // // Move the file to the error bucket
+            // } catch (err) {
+            //     return markAsError({
+            //         type: 'custom-uuid',
+            //         message: `failed while trying to apply custom name - ${file.field}/${file.uuid}`,
+            //         details: { originalError: err },
+            //     })
+            // }
 
             resolve()
         })
