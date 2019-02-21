@@ -2,6 +2,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import loadFromStore from './load-from-store'
 import * as uploader from '../upload/pool'
+import { init as initLRU } from '../lru-cache'
 
 export default async (settings) => {
     const filesPath = path.join(settings.store.base, 'files')
@@ -14,5 +15,7 @@ export default async (settings) => {
     })
 
     await fs.ensureDir(settings.storeS3.base)
+
+    await initLRU(settings.storeS3)
     await loadFromStore(filesPath, uploader.push)
 }

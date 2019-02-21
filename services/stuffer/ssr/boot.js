@@ -43,11 +43,16 @@ registerAction({
 
         settings.storeS3 = {
             base: config.get('STORE_S3_BASE'),
+            // aws
             accessKeyId: config.get('STORE_S3_KEY'),
             secretAccessKey: config.get('STORE_S3_SECRET'),
             Bucket: config.get('STORE_S3_BUCKET'),
             region: config.get('STORE_S3_REGION'),
             apiVersion: '2006-03-01',
+            // cache
+            maxAge: Number(config.get('STORE_S3_MAX_AGE', '31536000')) * 1000, // in seconds, 1 year
+            maxSize: Number(config.get('STORE_S3_MAX_SIZE', '100')) * 1000000, // in Mb
+            pruneInterval: Number(config.get('STORE_S3_PRUNE_INTERVAL', '1')) * 1000, // in seconds
         }
 
         settings.download = {
@@ -58,10 +63,9 @@ registerAction({
 
         settings.cache = {
             base: config.get('CACHE_BASE'),
-            // maxAge: Number(config.get('CACHE_MAX_AGE', '31536000')) * 1000, // in seconds
-            maxAge: Number(config.get('CACHE_MAX_AGE', '3600')) * 1000, // in seconds
-            maxSize: Number(config.get('CACHE_MAX_SIZE', '1')) * 1000000, // in Mb
-            pruneInterval: Number(config.get('CACHE_PRUNE_INTERVAL', '60')) * 1000, // in second
+            maxAge: Number(config.get('CACHE_MAX_AGE', '31536000')) * 1000, // in seconds, 1 year
+            maxSize: Number(config.get('CACHE_MAX_SIZE', '100')) * 1000000, // in Mb
+            pruneInterval: Number(config.get('CACHE_PRUNE_INTERVAL', '60')) * 1000, // in seconds
         }
 
         try {

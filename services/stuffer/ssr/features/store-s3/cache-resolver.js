@@ -2,6 +2,7 @@ import path from 'path'
 import fs from 'fs-extra'
 import AWS from 'aws-sdk'
 import { logError, logDebug } from 'ssr/services/logger'
+import { setCache, getCache } from './lru-cache'
 
 const fileExists = s => new Promise(r => fs.access(s, fs.F_OK, e => r(!e)))
 
@@ -13,6 +14,10 @@ const fromLocalCache = async (settings, file) => {
     ].join('/')
 
     const cachePath = path.join(settings.storeS3.base, filePath)
+
+    // hit LRU to renew the file cache lifespan
+    getCache(cachePath)
+
     const exists = await fileExists(cachePath)
     if (exists) {
         return cachePath
@@ -53,7 +58,8 @@ const fromRemoteCache = (settings, file) => new Promise(async (resolve) => {
 
     const fileStream = fs.createWriteStream(cachePath)
 
-    s3Stream.pipe(fileStream)
+    // LRU cache for auto cleaning
+    fileStream.on('finish', () => setCache(cachePath, fileStream.bytesWritten))
 
     s3Stream.on('error', (err) => {
         fs.unlink(cachePath, (err) => {
@@ -65,9 +71,8 @@ const fromRemoteCache = (settings, file) => new Promise(async (resolve) => {
         })
     })
 
-    s3Stream.on('end', () => {
-        resolve(cachePath)
-    })
+    s3Stream.pipe(fileStream)
+    s3Stream.on('end', () => resolve(cachePath))
 })
 
 export default settings => ({ setResolver }) =>

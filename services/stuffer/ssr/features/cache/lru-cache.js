@@ -15,6 +15,7 @@
 
 import Lru from 'lru-cache'
 import fs from 'fs-extra'
+import path from 'path'
 import { logError, logDebug } from 'ssr/services/logger'
 import { importCache } from './lru-cache-import'
 
@@ -26,7 +27,7 @@ export const init = (settings) => {
         maxAge: settings.maxAge,
         length: (val) => val,
         dispose: (key) => {
-            fs.unlink(key, (err) => {
+            fs.remove(path.join(settings.base, key), (err) => {
                 if (err) {
                     logError(`[cache] could not delete - ${key} - ${err.message}`)
                     logDebug(err)
