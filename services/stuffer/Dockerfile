@@ -36,30 +36,30 @@ ADD .babelrc /usr/src/app-build
 ADD .env /usr/src/app-build/.env
 ADD .eslintrc /usr/src/app-build/.eslintrc
 ADD .eslintignore /usr/src/app-build/.eslintignore
-ADD webpack.config.extend.js /usr/src/app-build
-ADD webpackDevServer.config.extend.js /usr/src/app-build
-ADD react-intl-pack.js /usr/src/app-build
+#ADD webpack.config.extend.js /usr/src/app-build
+#ADD webpackDevServer.config.extend.js /usr/src/app-build
+#ADD react-intl-pack.js /usr/src/app-build
 
 # Fix weird stuff with dependencies, can't explain why this is needed now
-WORKDIR /usr/src/app-build
-RUN yarn add react-loadable
+#WORKDIR /usr/src/app-build
+#RUN yarn add react-loadable
 
 # Fix a weird building problem related to CRA
 # https://github.com/facebook/create-react-app/issues/6336
-WORKDIR /usr/src/app-build
-RUN yarn add terser@3.14.1
+#WORKDIR /usr/src/app-build
+#RUN yarn add terser@3.14.1
 
 # Build backend
 WORKDIR /usr/src/app-build
 ADD ssr /usr/src/app-build/ssr
-RUN npm run build:ssr
+RUN npm run build
 
 # Build frontend
-WORKDIR /usr/src/app-build
-ADD src /usr/src/app-build/src
-RUN npm run build:src
-ADD public /usr/src/app-build/public
-RUN npm run build
+#WORKDIR /usr/src/app-build
+#ADD src /usr/src/app-build/src
+#RUN npm run build:src
+#ADD public /usr/src/app-build/public
+#RUN npm run build
 
 
 #
@@ -78,7 +78,7 @@ FROM node:10.14-alpine AS runner
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app-run/node_modules ./node_modules
 COPY --from=builder /usr/src/app-build/build ./build
-COPY --from=builder /usr/src/app-build/build-src ./build-src
+#COPY --from=builder /usr/src/app-build/build-src ./build-src
 COPY --from=builder /usr/src/app-build/build-ssr ./build-ssr
 ADD package.json /usr/src/app
 ADD index.js /usr/src/app
@@ -95,13 +95,13 @@ ADD index.js /usr/src/app
 # Default environment configuration:
 ENV NODE_ENV production
 ENV LOG_LEVEL error
-ENV GRAPHQL_MOUNT_POINT /api
-ENV REACT_SSR no
-ENV REACT_SSR_ENABLED no
-ENV REACT_SSR_USE_CACHE no
-ENV PG_PORT 5432
-ENV PG_DATABASE pigtail
-ENV PG_MAX_CONN_ATTEMPTS 10
-ENV PG_CONN_ATTEMPTS_DELAY 2500
+ENV UPLOAD_MOUNT_POINT=/upload
+#ENV REACT_SSR no
+#ENV REACT_SSR_ENABLED no
+#ENV REACT_SSR_USE_CACHE no
+#ENV PG_PORT 5432
+#ENV PG_DATABASE pigtail
+#ENV PG_MAX_CONN_ATTEMPTS 10
+#ENV PG_CONN_ATTEMPTS_DELAY 2500
 
 ENTRYPOINT [ "node", "index.js" ]

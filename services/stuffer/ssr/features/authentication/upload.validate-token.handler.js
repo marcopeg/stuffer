@@ -9,7 +9,7 @@
  * target the public fol
  */
 
-import { verify as verifyJwt } from 'ssr/services/jwt'
+import { verify as verifyJwt } from 'services/jwt'
 
 export default (settings) => ({ addUploadMiddleware }) => {
     const { isAnonymousUploadEnabled } = settings.auth

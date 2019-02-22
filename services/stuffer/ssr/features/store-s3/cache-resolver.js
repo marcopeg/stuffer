@@ -1,7 +1,7 @@
 import path from 'path'
 import fs from 'fs-extra'
 import AWS from 'aws-sdk'
-import { logError, logDebug } from 'ssr/services/logger'
+import { logError, logDebug } from 'services/logger'
 import { setCache, getCache } from './lru-cache'
 
 const fileExists = s => new Promise(r => fs.access(s, fs.F_OK, e => r(!e)))

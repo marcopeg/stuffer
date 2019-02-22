@@ -1,5 +1,5 @@
 
-import { DOWNLOAD_MODIFIERS } from 'ssr/features/download/hooks'
+import { DOWNLOAD_MODIFIERS } from 'features/download/hooks'
 import { FEATURE_NAME } from './hooks'
 
 import resizeModifier from './resize.modifier'

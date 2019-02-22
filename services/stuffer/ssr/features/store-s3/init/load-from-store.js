@@ -8,7 +8,7 @@ import path from 'path'
 import glob from 'glob'
 import async from 'async'
 
-import { logInfo, logError, logDebug } from 'ssr/services/logger'
+import { logInfo, logError, logDebug } from 'services/logger'
 
 const globp = (path, options) => new Promise((resolve, reject) => {
     glob(path, options, (err, files) => {

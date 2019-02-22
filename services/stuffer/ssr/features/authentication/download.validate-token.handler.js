@@ -1,4 +1,4 @@
-import { verify as verifyJwt } from 'ssr/services/jwt'
+import { verify as verifyJwt } from 'services/jwt'
 
 export default (settings) => ({ addDownloadMiddleware }) => {
     const { isAnonymousDownloadEnabled, isCrossSpaceDownloadEnabled } = settings.auth

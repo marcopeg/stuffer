@@ -1,5 +1,5 @@
-import { UPLOAD_COMPLETED } from 'ssr/features/upload/hooks'
-import { EXPRESS_ROUTE } from 'ssr/services/express/hooks'
+import { UPLOAD_COMPLETED } from 'features/upload/hooks'
+import { EXPRESS_ROUTE } from 'services/express/hooks'
 import { FEATURE_NAME } from './hooks'
 
 import { handler as downloadHandler } from './download.handler'

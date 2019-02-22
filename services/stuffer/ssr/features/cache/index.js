@@ -1,6 +1,6 @@
 import fs from 'fs-extra'
 import { INIT_FEATURE, START_FEATURE } from '@marcopeg/hooks'
-import { DOWNLOAD_MIDDLEWARES } from 'ssr/features/download/hooks'
+import { DOWNLOAD_MIDDLEWARES } from 'features/download/hooks'
 import { FEATURE_NAME } from './hooks'
 
 import * as lru from './lru-cache'

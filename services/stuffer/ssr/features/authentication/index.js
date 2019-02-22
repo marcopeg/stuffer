@@ -1,6 +1,6 @@
 import { INIT_FEATURE } from '@marcopeg/hooks'
-import { UPLOAD_MIDDLEWARES } from 'ssr/features/upload/hooks'
-import { DOWNLOAD_MIDDLEWARES } from 'ssr/features/download/hooks'
+import { UPLOAD_MIDDLEWARES } from 'features/upload/hooks'
+import { DOWNLOAD_MIDDLEWARES } from 'features/download/hooks'
 import { FEATURE_NAME } from './hooks'
 
 import uploadValidateTokenHandler from './upload.validate-token.handler'

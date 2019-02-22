@@ -16,7 +16,7 @@
 import Lru from 'lru-cache'
 import fs from 'fs-extra'
 import path from 'path'
-import { logError, logDebug } from 'ssr/services/logger'
+import { logError, logDebug } from 'services/logger'
 import { importCache } from './lru-cache-import'
 
 let store = null
