@@ -13,6 +13,15 @@ The JWT payload identifies a **space**:
         "iat": 1516239022
     }
 
+## JWT Expiry Setting
+
+It is quite important that you always generate JWTs with the shortest possible lifespan,
+so even if they are shared in the Internet, nobody will actually be able to access
+Stuffer's files.
+
+Long term read-only JWTs may be produced for sharing a specific resource. This is a feature
+that is not yet available.
+
 ## Download
 
 By default anonymous downloads are enabled globally.
@@ -28,16 +37,25 @@ space that is defined in the payload:
 
 **NOTE:** fine grained permissions may be implemented by an __Authorization__ feature.
 
+When the anonymous download is disable the download is automatically scoped to the
+space defined in the JWT. If you want to enable cross-space downloads you can set:
+
+    AUTH_ENABLE_CROSS_SPACE_DOWNLOAD=true
+
+This way you can generate a generic (and short living) JWT that grants download access
+to the whole Stuffer instance.
+
 ## Upload
 
-By default you must provide an **Authentication header** with a valid JWT that targets
-a specific space for the upload.
+By defaul anyone can upload stuff in Stuffer. The resource end up in a default space
+that you can customize in the [upload feature](./upload.md).
+
+You can restrict uploads to authenticated requests by setting the evironment variable:
+
+    AUTH_ENABLE_ANONYMOUS_UPLOAD=false
+
+With that configuration active, a user must provide an **Authentication header** with a
+valid JWT that targets a specific space for the upload.
 
     Authentication: Bearer xxx
 
-You can enable anonymous uploads by providing the environment variable:
-
-    AUTH_ENABLE_ANONYMOUS_UPLOAD=true
-
-At that point the resource will be saved into the default space as defined
-in the upload feature.

@@ -224,7 +224,13 @@ capabilities.</p>
     &quot;exp&quot;: 1516239022,
     &quot;iat&quot;: 1516239022
 }
-</code></pre><h2 id="download">Download</h2>
+</code></pre><h2 id="jwt-expiry-setting">JWT Expiry Setting</h2>
+<p>It is quite important that you always generate JWTs with the shortest possible lifespan,
+so even if they are shared in the Internet, nobody will actually be able to access
+Stuffer&apos;s files.</p>
+<p>Long term read-only JWTs may be produced for sharing a specific resource. This is a feature
+that is not yet available.</p>
+<h2 id="download">Download</h2>
 <p>By default anonymous downloads are enabled globally.</p>
 <p>If you want to disable this feature you can provide an environment variable:</p>
 <pre><code>AUTH_ENABLE_ANONYMOUS_DOWNLOAD=false
@@ -232,15 +238,20 @@ capabilities.</p>
 space that is defined in the payload:</p>
 <pre><code>http://stuffer.com/space/uuid/file.jpg?__auth=xxx
 </code></pre><p><strong>NOTE:</strong> fine grained permissions may be implemented by an <strong>Authorization</strong> feature.</p>
+<p>When the anonymous download is disable the download is automatically scoped to the
+space defined in the JWT. If you want to enable cross-space downloads you can set:</p>
+<pre><code>AUTH_ENABLE_CROSS_SPACE_DOWNLOAD=true
+</code></pre><p>This way you can generate a generic (and short living) JWT that grants download access
+to the whole Stuffer instance.</p>
 <h2 id="upload">Upload</h2>
-<p>By default you must provide an <strong>Authentication header</strong> with a valid JWT that targets
-a specific space for the upload.</p>
+<p>By defaul anyone can upload stuff in Stuffer. The resource end up in a default space
+that you can customize in the <a href="upload.html">upload feature</a>.</p>
+<p>You can restrict uploads to authenticated requests by setting the evironment variable:</p>
+<pre><code>AUTH_ENABLE_ANONYMOUS_UPLOAD=false
+</code></pre><p>With that configuration active, a user must provide an <strong>Authentication header</strong> with a
+valid JWT that targets a specific space for the upload.</p>
 <pre><code>Authentication: Bearer xxx
-</code></pre><p>You can enable anonymous uploads by providing the environment variable:</p>
-<pre><code>AUTH_ENABLE_ANONYMOUS_UPLOAD=true
-</code></pre><p>At that point the resource will be saved into the default space as defined
-in the upload feature.</p>
-
+</code></pre>
                                 
                                 </section>
                             
@@ -279,7 +290,7 @@ in the upload feature.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Authentication","level":"1.6","depth":1,"previous":{"title":"Cache","level":"1.5","depth":1,"path":"book/cache.md","ref":"./book/cache.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/authentication.md","mtime":"2019-02-22T13:42:44.685Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-22T13:52:51.374Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Authentication","level":"1.6","depth":1,"previous":{"title":"Cache","level":"1.5","depth":1,"path":"book/cache.md","ref":"./book/cache.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/authentication.md","mtime":"2019-02-22T15:07:43.956Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-22T15:07:56.763Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

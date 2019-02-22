@@ -1,7 +1,7 @@
 import { verify as verifyJwt } from 'ssr/services/jwt'
 
 export default (settings) => ({ addDownloadMiddleware }) => {
-    const { isAnonymousDownloadEnabled } = settings.auth
+    const { isAnonymousDownloadEnabled, isCrossSpaceDownloadEnabled } = settings.auth
     addDownloadMiddleware({
         name: 'validate-auth',
         priority: 150,
@@ -17,7 +17,6 @@ export default (settings) => ({ addDownloadMiddleware }) => {
                 if (jwt) {
                     auth.token = jwt.split(' ').pop()
                     auth.space = (await verifyJwt(auth.token)).space
-                    console.log(auth.space)
                 }
             } catch (err) {
                 res.status(403).send('Access denied for Bearer')
@@ -25,7 +24,13 @@ export default (settings) => ({ addDownloadMiddleware }) => {
             }
 
             // Block anonymous download
-            if (!isAnonymousDownloadEnabled && auth.space !== req.data.download.space ) {
+            if (!isAnonymousDownloadEnabled && !auth.space) {
+                res.status(403).send('Access denied for @anonymous')
+                return
+            }
+
+            // Block cross space download
+            if (!isAnonymousDownloadEnabled && !isCrossSpaceDownloadEnabled && auth.space !== req.data.download.space) {
                 res.status(403).send('Access denied')
                 return
             }
