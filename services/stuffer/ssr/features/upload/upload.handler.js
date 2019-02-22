@@ -24,7 +24,10 @@ export const handler = (settings) => ({ app }) => {
         uploadMeta(settings),
         uploadCleanup(settings),
     ]
-    createHook(UPLOAD_MIDDLEWARES, { args: { middlewares } })
+    createHook(UPLOAD_MIDDLEWARES, { args: {
+        middlewares, // @TODO: remove this in favour of the api method
+        addUploadMiddleware: mid => middlewares.push(mid),
+    } })
 
     const sortedMiddlewares = middlewares
         .slice(0)

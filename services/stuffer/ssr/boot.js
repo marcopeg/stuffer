@@ -10,10 +10,12 @@ import {
 const services = [
     require('./services/env'),
     require('./services/logger'),
+    require('./services/jwt'),
     require('./services/express'),
 ]
 
 const features = [
+    require('./features/authentication'),
     require('./features/upload'),
     require('./features/store'),
     require('./features/download'),
@@ -26,9 +28,20 @@ registerAction({
     hook: SETTINGS,
     name: '♦ boot',
     handler: async ({ settings }) => {
+        settings.jwt = {
+            secret: config.get('JWT_SECRET'),
+            duration: config.get('JWT_DURATION'),
+        }
+
+        settings.express = {
+            nodeEnv: config.get('NODE_ENV'),
+            port: '8080',
+        }
+
         settings.upload = {
             mountPoint: config.get('UPLOAD_MOUNT_POINT'),
             tempFolder: config.get('UPLOAD_TEMP_FOLDER'),
+            publicSpace: config.get('UPLOAD_PUBLIC_SPACE', 'public'),
             bufferSize: Number(config.get('UPLOAD_BUFFER_SIZE', 2 * 1048576)), // Set 2MiB buffer
             maxSize: Number(config.get('UPLOAD_MAX_SIZE', 100 * 1048576)), // 100Mb
             maxFiles: Number(config.get('UPLOAD_MAX_FILES', 10)),
@@ -68,15 +81,15 @@ registerAction({
             pruneInterval: Number(config.get('CACHE_PRUNE_INTERVAL', '60')) * 1000, // in seconds
         }
 
+        settings.auth = {
+            isAnonymousUploadEnabled: config.get('AUTH_ENABLE_ANONYMOUS_UPLOAD', 'false') === 'true',
+            isAnonymousDownloadEnabled: config.get('AUTH_ENABLE_ANONYMOUS_DOWNLOAD', 'true') === 'true',
+        }
+
         try {
             settings.download.modifiers = JSON.parse(config.get('DOWNLOAD_MODIFIERS', '{}'))
         } catch (err) {
             throw new Error('env variable "DOWNLOAD_MODIFIERS" contains invalid JSON')
-        }
-
-        settings.express = {
-            nodeEnv: config.get('NODE_ENV'),
-            port: '8080',
         }
     },
 })

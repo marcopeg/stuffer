@@ -74,12 +74,18 @@ The resulting URL of the file is a combination of:
 
 ## Upload Space
 
-The **file space** depends on the **upload token** that authenticates your request.
+The **file space** depends on the authenticated user.
+
 You can control this information with the header `Authorization` with content `Bearer xxx`
 where the `xxx` is your account's secret token.
 
+[Read more about authorization](./authorization.md)
+
 If no authorization is provided and the anonymous upload feature is active, the
-uploads end up in a `public` space.
+uploads end up in a `public` space. You can control the actual name by setting an
+environment variable:
+
+    UPLOAD_PUBLIC_SPACE=custom-value
 
 ## Upload UUID
 
@@ -90,7 +96,9 @@ If you explicitly want to override a previously uploaded file you can provide a
 **custom UUID** using a form field named: `{uploadField}_uuid`.
 
     fileField: f1           bynary...
-    uuidField: f1_uuid      my-custom-id
+    uuidField: f1_uuid      myCustomId
+
+**NOTE:** a custom id is strictly alphanumeric and can not contain spaces.
 
 You may need this feature in 2 scenarios:
 
@@ -106,6 +114,9 @@ This is intended to generate fewer upload folders and make your life easier :-)
 
 You can rename a file while uploading it by passing a `{uploadField}_name` field
 containing the desired name.
+
+A custom name should only contain `a-zA-Z-_`. No spaces or non standard characters are
+allowed for compatibility reasons.
 
 ## Upload Checksum
 

@@ -6,7 +6,7 @@
 import { createHook } from '@marcopeg/hooks'
 import { DOWNLOAD_VALIDATE_META } from '../hooks'
 
-export default options => ({
+export default () => ({
     name: 'validate-meta',
     priority: 200,
     handler: async (req, res, next) => {
