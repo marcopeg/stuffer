@@ -1,4 +1,7 @@
+import path from 'path'
+import uuid from 'uuid/v1'
 import * as config from '@marcopeg/utils/lib/config'
+import { logInfo } from 'services/logger'
 import {
     registerAction,
     createHookApp,
@@ -24,13 +27,31 @@ const features = [
     require('./features/store-s3'),
 ]
 
+const getJwtSecret = () => {
+    const secret = config.get('JWT_SECRET', '---')
+    if (secret !== '---') {
+        return secret
+    }
+
+    const generatedSecret = uuid()
+    logInfo('')
+    logInfo('WARNING:')
+    logInfo('Stuffer was started without a JWT_SECRET env var.')
+    logInfo('The following value is being generated for this run:')
+    logInfo(generatedSecret)
+    logInfo('')
+    return generatedSecret
+}
+
 registerAction({
     hook: SETTINGS,
     name: '♦ boot',
     handler: async ({ settings }) => {
+        const stufferData = config.get('STUFFER_DATA', '/var/lib/stuffer')
+
         settings.jwt = {
-            secret: config.get('JWT_SECRET'),
-            duration: config.get('JWT_DURATION'),
+            secret: getJwtSecret(),
+            duration: config.get('JWT_DURATION', '0s'),
         }
 
         settings.express = {
@@ -39,8 +60,8 @@ registerAction({
         }
 
         settings.upload = {
-            mountPoint: config.get('UPLOAD_MOUNT_POINT'),
-            tempFolder: config.get('UPLOAD_TEMP_FOLDER'),
+            tempFolder: config.get('UPLOAD_DATA_PATH', path.join(stufferData, 'uploads')),
+            mountPoint: config.get('UPLOAD_MOUNT_POINT', '/upload'),
             publicSpace: config.get('UPLOAD_PUBLIC_SPACE', 'public'),
             bufferSize: Number(config.get('UPLOAD_BUFFER_SIZE', 2 * 1048576)), // Set 2MiB buffer
             maxSize: Number(config.get('UPLOAD_MAX_SIZE', 100 * 1048576)), // 100Mb
@@ -51,16 +72,17 @@ registerAction({
         }
 
         settings.store = {
-            base: config.get('STORE_BASE'),
+            base: config.get('STORE_DATA_PATH', path.join(stufferData, 'store')),
         }
 
         settings.storeS3 = {
-            base: config.get('STORE_S3_BASE'),
+            enabled: config.get('STORE_S3_ENABLED', 'false') === 'true',
+            base: config.get('STORE_S3_DATA_PATH', path.join(stufferData, 'store-s3')),
             // aws
-            accessKeyId: config.get('STORE_S3_KEY'),
-            secretAccessKey: config.get('STORE_S3_SECRET'),
-            Bucket: config.get('STORE_S3_BUCKET'),
-            region: config.get('STORE_S3_REGION'),
+            accessKeyId: config.get('STORE_S3_KEY', 'xxx'),
+            secretAccessKey: config.get('STORE_S3_SECRET', 'xxx'),
+            Bucket: config.get('STORE_S3_BUCKET', 'xxx'),
+            region: config.get('STORE_S3_REGION', 'xxx'),
             apiVersion: '2006-03-01',
             // cache
             maxAge: Number(config.get('STORE_S3_MAX_AGE', '31536000')) * 1000, // in seconds, 1 year
@@ -69,13 +91,13 @@ registerAction({
         }
 
         settings.download = {
-            baseUrl: config.get('DOWNLOAD_BASE_URL'),
+            baseUrl: config.get('DOWNLOAD_BASE_URL', 'http://localhost:8080'),
             mountPoint: config.get('DOWNLOAD_MOUNT_POINT', '/'),
             modifiers: {},
         }
 
         settings.cache = {
-            base: config.get('CACHE_BASE'),
+            base: config.get('CACHE_DATA_PATH', path.join(stufferData, 'cache')),
             maxAge: Number(config.get('CACHE_MAX_AGE', '31536000')) * 1000, // in seconds, 1 year
             maxSize: Number(config.get('CACHE_MAX_SIZE', '100')) * 1000000, // in Mb
             pruneInterval: Number(config.get('CACHE_PRUNE_INTERVAL', '60')) * 1000, // in seconds
