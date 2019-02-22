@@ -5,6 +5,9 @@
  * Query string modifiers:
  * ?foo=123&faa=hey&withJson=%7B%22a%22%3A123%2C%22b%22%3A%22foo%22%7D
  *
+ * NOTE: any query parameter that starts with "_" will be ignored
+ *       (this is used for GET authentication, by instance)
+ *
  * Encode json as:
  * encodeURIComponent(JSON.stringify({ data: "foo", hey: 123 }))
  *
@@ -13,10 +16,12 @@
  */
 
 const getQueryModifiers = req =>
-    Object.keys(req.query).map(name => ({
-        name,
-        rawValue: req.query[name],
-    }))
+    Object.keys(req.query)
+        .filter(name => name.substring(0, 1) !== '_')
+        .map(name => ({
+            name,
+            rawValue: req.query[name],
+        }))
 
 const getParamsModifiers = (req) => {
     if (!req.params[0]) {

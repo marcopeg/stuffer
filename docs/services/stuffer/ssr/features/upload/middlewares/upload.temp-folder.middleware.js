@@ -6,7 +6,7 @@
  */
 
 import path from 'path'
-import mkdirp from 'mkdirp'
+import fs from 'fs-extra'
 
 const getTodayTokens = () => {
     const date = new Date()
@@ -33,6 +33,6 @@ export default options => ({
         const tempIndex = `${tokens.Y}-${tokens.M}-${tokens.D}`
 
         req.data.upload.tempPath = path.join(options.tempFolder, tempIndex)
-        mkdirp(req.data.upload.tempPath, next)
+        fs.ensureDir(req.data.upload.tempPath, next)
     },
 })

@@ -5,6 +5,7 @@
 
 import fs from 'fs-extra'
 import path from 'path'
+import validator from 'validator'
 
 export default options => ({
     name: 'custom-uuid',
@@ -27,6 +28,14 @@ export default options => ({
                 reject()
             }
 
+            // #14 Formal validation of UUID
+            if (!validator.isAlphanumeric(customUUID, 'en-US')) {
+                return markAsError({
+                    type: 'custom-uuid',
+                    message: 'the value must be alphanumeric',
+                })
+            }
+
             // @TODO: should we check if the file exists and fail the upload?
             // this involves both:
             // - temp upload file
@@ -34,7 +43,7 @@ export default options => ({
 
             // Try to rename the file according to the new file name
             try {
-                const newTempFileName = `${req.data.upload.space}__${customUUID}__${file.name}`
+                const newTempFileName = `${req.data.upload.space}__${customUUID}__${file.nameB64}.stuff`
                 const newTempPath = path.join(req.data.upload.tempPath, newTempFileName)
                 await fs.move(file.tempPath, newTempPath, { overwrite: true })
                 file.uuid = customUUID

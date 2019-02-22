@@ -12,7 +12,7 @@ import uploadCustomName from './middlewares/upload.custom-name.middleware'
 import uploadMeta from './middlewares/upload.meta.middleware'
 import uploadCleanup from './middlewares/upload.cleanup.middleware'
 
-export const handler = settings => ({ app }) => {
+export const handler = (settings) => ({ app }) => {
     // Build an expandable list of middlewares
     const middlewares = [
         uploadContext(settings),
@@ -24,7 +24,10 @@ export const handler = settings => ({ app }) => {
         uploadMeta(settings),
         uploadCleanup(settings),
     ]
-    createHook(UPLOAD_MIDDLEWARES, { args: { middlewares } })
+    createHook(UPLOAD_MIDDLEWARES, { args: {
+        middlewares, // @TODO: remove this in favour of the api method
+        addUploadMiddleware: mid => middlewares.push(mid),
+    } })
 
     const sortedMiddlewares = middlewares
         .slice(0)

@@ -14,6 +14,6 @@ export default ({ file, base }) => {
         'files',
         file.space,
         file.uuid,
-        file.name,
+        `${file.meta.nameB64}.stuff`,
     ].join('/')
 }

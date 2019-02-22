@@ -6,7 +6,7 @@
 import { createHook } from '@marcopeg/hooks'
 import { DOWNLOAD_VALIDATE_META } from '../hooks'
 
-export default options => ({
+export default () => ({
     name: 'validate-meta',
     priority: 200,
     handler: async (req, res, next) => {
@@ -18,6 +18,12 @@ export default options => ({
         })
 
         if (req.data.download.exists === false) {
+            res.status(404).send('file not found')
+            return
+        }
+
+        // #15 Enforce that the requested file name is coherent with the download
+        if (req.params.name !== req.data.download.meta.name) {
             res.status(404).send('file not found')
             return
         }
