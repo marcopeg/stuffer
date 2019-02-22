@@ -5,6 +5,7 @@
 
 import fs from 'fs-extra'
 import path from 'path'
+import validator from 'validator'
 
 export default options => ({
     name: 'custom-uuid',
@@ -25,6 +26,14 @@ export default options => ({
                 req.data.upload.form.errors.push({ type: 'file', ...file })
                 delete req.data.upload.form.files[fieldName]
                 reject()
+            }
+
+            // #14 Formal validation of UUID
+            if (!validator.isAlphanumeric(customUUID, 'en-US')) {
+                return markAsError({
+                    type: 'custom-uuid',
+                    message: 'the value must be alphanumeric',
+                })
             }
 
             // @TODO: should we check if the file exists and fail the upload?
