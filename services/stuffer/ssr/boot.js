@@ -1,5 +1,7 @@
 import path from 'path'
+import uuid from 'uuid/v1'
 import * as config from '@marcopeg/utils/lib/config'
+import { logInfo } from 'services/logger'
 import {
     registerAction,
     createHookApp,
@@ -25,6 +27,22 @@ const features = [
     require('./features/store-s3'),
 ]
 
+const getJwtSecret = () => {
+    const secret = config.get('JWT_SECRET', '---')
+    if (secret !== '---') {
+        return secret
+    }
+
+    const generatedSecret = uuid()
+    logInfo('')
+    logInfo('WARNING:')
+    logInfo('Stuffer was started without a JWT_SECRET env var.')
+    logInfo('The following value is being generated for this run:')
+    logInfo(generatedSecret)
+    logInfo('')
+    return generatedSecret
+}
+
 registerAction({
     hook: SETTINGS,
     name: '♦ boot',
@@ -32,8 +50,8 @@ registerAction({
         const stufferData = config.get('STUFFER_DATA', '/var/lib/stuffer')
 
         settings.jwt = {
-            secret: config.get('JWT_SECRET'),
-            duration: config.get('JWT_DURATION'),
+            secret: getJwtSecret(),
+            duration: config.get('JWT_DURATION', '0s'),
         }
 
         settings.express = {
@@ -58,12 +76,13 @@ registerAction({
         }
 
         settings.storeS3 = {
+            enabled: config.get('STORE_S3_ENABLED', 'false') === 'true',
             base: config.get('STORE_S3_DATA_PATH', path.join(stufferData, 'store-s3')),
             // aws
-            accessKeyId: config.get('STORE_S3_KEY'),
-            secretAccessKey: config.get('STORE_S3_SECRET'),
-            Bucket: config.get('STORE_S3_BUCKET'),
-            region: config.get('STORE_S3_REGION'),
+            accessKeyId: config.get('STORE_S3_KEY', 'xxx'),
+            secretAccessKey: config.get('STORE_S3_SECRET', 'xxx'),
+            Bucket: config.get('STORE_S3_BUCKET', 'xxx'),
+            region: config.get('STORE_S3_REGION', 'xxx'),
             apiVersion: '2006-03-01',
             // cache
             maxAge: Number(config.get('STORE_S3_MAX_AGE', '31536000')) * 1000, // in seconds, 1 year
@@ -72,7 +91,7 @@ registerAction({
         }
 
         settings.download = {
-            baseUrl: config.get('DOWNLOAD_BASE_URL'),
+            baseUrl: config.get('DOWNLOAD_BASE_URL', 'http://localhost:8080'),
             mountPoint: config.get('DOWNLOAD_MOUNT_POINT', '/'),
             modifiers: {},
         }
