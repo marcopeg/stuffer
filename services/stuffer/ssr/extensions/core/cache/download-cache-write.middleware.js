@@ -16,7 +16,6 @@ export default (settings) => ({
             }
 
             setCache(req.data.cache.name, req.data.buffer.byteLength)
-            console.log('cache written', req.data.buffer.byteLength)
             next()
         })
     },

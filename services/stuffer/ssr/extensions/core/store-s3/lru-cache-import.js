@@ -18,7 +18,6 @@ export const importCache = (store, settings) => new Promise(async (resolve, reje
     logInfo('[store-s3] start importing LRU cache from local disk...')
     const now = new Date()
     const files = await globp(path.join(settings.base, '**/*.stuff'))
-    console.log(files)
 
     const iteratee = async (file, next) => {
         try {

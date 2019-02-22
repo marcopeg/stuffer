@@ -6,6 +6,7 @@ import resizeModifier from './resize.modifier'
 import filterModifier from './filter.modifier'
 import reizeWModifier from './resize-w.modifier'
 
+export const name = 'ModJimp'
 export const register = ({ settings, registerAction }) => {
     registerAction({
         hook: DOWNLOAD_MODIFIERS,
