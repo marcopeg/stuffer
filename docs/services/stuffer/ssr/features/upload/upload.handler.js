@@ -1,5 +1,5 @@
 import { createHook } from '@marcopeg/hooks'
-import { logVerbose } from 'ssr/services/logger'
+import { logVerbose } from 'services/logger'
 import { UPLOAD_MIDDLEWARES } from './hooks'
 import { uploadRoute } from './upload.route'
 

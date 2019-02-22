@@ -1,5 +1,5 @@
 import { INIT_FEATURE } from '@marcopeg/hooks'
-import { EXPRESS_ROUTE } from 'ssr/services/express/hooks'
+import { EXPRESS_ROUTE } from 'services/express/hooks'
 import { FEATURE_NAME } from './hooks'
 
 import { handler as initHandler } from './init.handler'

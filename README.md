@@ -4,7 +4,11 @@ No questions asked.
 
 * [Upload to Stuffer](./book/upload.md)
 * [Download from Stuffer](./book/download.md)
-* [Modifiers](./book/modifiers.md)
-* [Cache](./book/cache.md)
 * [Authentication](./book/authentication.md)
+* [Modifiers](./book/modifiers.md)
+
+# Core Extensions
+
+* [Cache](./book/cache.md)
+* [StoreS3](./book/store-s3.md)
 

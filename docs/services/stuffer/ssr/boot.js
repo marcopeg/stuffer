@@ -1,5 +1,10 @@
+import path from 'path'
+import glob from 'glob'
+import uuid from 'uuid/v1'
 import * as config from '@marcopeg/utils/lib/config'
+import { logInfo } from 'services/logger'
 import {
+    createHook,
     registerAction,
     createHookApp,
     logBoot,
@@ -19,18 +24,33 @@ const features = [
     require('./features/upload'),
     require('./features/store'),
     require('./features/download'),
-    require('./features/mod-jimp'),
-    require('./features/cache'),
-    require('./features/store-s3'),
 ]
+
+const getJwtSecret = () => {
+    const secret = config.get('JWT_SECRET', '---')
+    if (secret !== '---') {
+        return secret
+    }
+
+    const generatedSecret = uuid()
+    logInfo('')
+    logInfo('WARNING:')
+    logInfo('Stuffer was started without a JWT_SECRET env var.')
+    logInfo('The following value is being generated for this run:')
+    logInfo(generatedSecret)
+    logInfo('')
+    return generatedSecret
+}
 
 registerAction({
     hook: SETTINGS,
     name: '♦ boot',
     handler: async ({ settings }) => {
+        settings.stufferData = config.get('STUFFER_DATA', '/var/lib/stuffer')
+
         settings.jwt = {
-            secret: config.get('JWT_SECRET'),
-            duration: config.get('JWT_DURATION'),
+            secret: getJwtSecret(),
+            duration: config.get('JWT_DURATION', '0s'),
         }
 
         settings.express = {
@@ -39,8 +59,8 @@ registerAction({
         }
 
         settings.upload = {
-            mountPoint: config.get('UPLOAD_MOUNT_POINT'),
-            tempFolder: config.get('UPLOAD_TEMP_FOLDER'),
+            tempFolder: config.get('UPLOAD_DATA_PATH', path.join(settings.stufferData, 'uploads')),
+            mountPoint: config.get('UPLOAD_MOUNT_POINT', '/upload'),
             publicSpace: config.get('UPLOAD_PUBLIC_SPACE', 'public'),
             bufferSize: Number(config.get('UPLOAD_BUFFER_SIZE', 2 * 1048576)), // Set 2MiB buffer
             maxSize: Number(config.get('UPLOAD_MAX_SIZE', 100 * 1048576)), // 100Mb
@@ -49,36 +69,15 @@ registerAction({
             maxFileSize: Number(config.get('UPLOAD_MAX_FILE_SIZE', 100 * 1048576)), // 100Mb
             maxFieldSize: Number(config.get('UPLOAD_MAX_FIELD_SIZE', 5 * 1024)), // 5Kb - cookie style
         }
-
-        settings.store = {
-            base: config.get('STORE_BASE'),
-        }
-
-        settings.storeS3 = {
-            base: config.get('STORE_S3_BASE'),
-            // aws
-            accessKeyId: config.get('STORE_S3_KEY'),
-            secretAccessKey: config.get('STORE_S3_SECRET'),
-            Bucket: config.get('STORE_S3_BUCKET'),
-            region: config.get('STORE_S3_REGION'),
-            apiVersion: '2006-03-01',
-            // cache
-            maxAge: Number(config.get('STORE_S3_MAX_AGE', '31536000')) * 1000, // in seconds, 1 year
-            maxSize: Number(config.get('STORE_S3_MAX_SIZE', '100')) * 1000000, // in Mb
-            pruneInterval: Number(config.get('STORE_S3_PRUNE_INTERVAL', '1')) * 1000, // in seconds
-        }
-
+        
         settings.download = {
-            baseUrl: config.get('DOWNLOAD_BASE_URL'),
+            baseUrl: config.get('DOWNLOAD_BASE_URL', 'http://localhost:8080'),
             mountPoint: config.get('DOWNLOAD_MOUNT_POINT', '/'),
             modifiers: {},
         }
-
-        settings.cache = {
-            base: config.get('CACHE_BASE'),
-            maxAge: Number(config.get('CACHE_MAX_AGE', '31536000')) * 1000, // in seconds, 1 year
-            maxSize: Number(config.get('CACHE_MAX_SIZE', '100')) * 1000000, // in Mb
-            pruneInterval: Number(config.get('CACHE_PRUNE_INTERVAL', '60')) * 1000, // in seconds
+        
+        settings.store = {
+            base: config.get('STORE_DATA_PATH', path.join(settings.stufferData, 'store')),
         }
 
         settings.auth = {
@@ -91,6 +90,42 @@ registerAction({
             settings.download.modifiers = JSON.parse(config.get('DOWNLOAD_MODIFIERS', '{}'))
         } catch (err) {
             throw new Error('env variable "DOWNLOAD_MODIFIERS" contains invalid JSON')
+        }
+
+        // ---- EXTENSIONS
+
+        // development extensions from a local folder
+        // @NOTE: extensions should be plain NodeJS compatible, if you want to use
+        // weird ES6 syntax you have to transpile your extension yourself
+        const devExtensions = process.env.NODE_ENV === 'development'
+            ? glob
+                .sync(path.resolve(__dirname, 'extensions', 'dev', '[!_]*', 'index.js'))
+            : []
+
+        // community extensions from a mounted volume
+        // @NOTE: extensions should be plain NodeJS compatible, if you want to use
+        // weird ES6 syntax you have to transpile your extension yourself
+        const communityExtensionsPath = config.get('STUFFER_CUSTOM_EXTENSIONS', '/var/lib/stuffer/extensions')
+        const communityExtensions = glob
+            .sync(path.resolve(communityExtensionsPath, '[!_]*', 'index.js'))
+
+        // core extensions, will be filtered by environment variable
+        const enabledExtensions = config.get('STUFFER_CORE_EXTENSIONS', '---')
+        const coreExtensions = glob
+            .sync(path.resolve(__dirname, 'extensions', 'core', `@(${enabledExtensions})`, 'index.js'))
+
+        // register extensions
+        const extensions = [ ...devExtensions, ...coreExtensions, ...communityExtensions ]
+        for (const extensionPath of extensions) {
+            const extension = require(extensionPath)
+            if (extension.register) {
+                logInfo(`activate extension: ${extensionPath}`)
+                await extension.register({
+                    registerAction,
+                    createHook,
+                    settings: { ...settings },
+                })
+            }
         }
     },
 })

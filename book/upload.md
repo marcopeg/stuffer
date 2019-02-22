@@ -11,7 +11,7 @@ The minimum requisite is a field file:
 
 ## Expected Output
 
-The `/upload` endpoint returns a list of `files` that have been succesfully uploaded
+The `/upload` endpoint returns a list of `files` that have been succesfully uploaded,
 and a list of `errors` that might have happened along the way.
 
 Here is an example of a standard response body:
@@ -76,12 +76,10 @@ The resulting URL of the file is a combination of:
 
 The **file space** depends on the authenticated user.
 
-You can control this information with the header `Authorization` with content `Bearer xxx`
-where the `xxx` is your account's secret token.
+You can control this information with the header `Authentication` with content `Bearer xxx`
+where the `xxx` is your account's secret token. [Read more about authentication](./authentication.md)
 
-[Read more about authorization](./authorization.md)
-
-If no authorization is provided and the anonymous upload feature is active, the
+If no authentication is provided and the anonymous upload feature is active, the
 uploads end up in a `public` space. You can control the actual name by setting an
 environment variable:
 
@@ -91,6 +89,10 @@ environment variable:
 
 Each file that you upload is provided with a randomly generated universal unique id. 
 If you try to upload the same file twice, you will generate multiple copies of it.
+
+> If you run Stuffer with `NODE_ENV=development` the _uuid_ will be generated out of
+> the file name so to avoid to create thousands of files. It's an intended development
+> behaviour and you should familiarize with the differences in production.
 
 If you explicitly want to override a previously uploaded file you can provide a
 **custom UUID** using a form field named: `{uploadField}_uuid`.
