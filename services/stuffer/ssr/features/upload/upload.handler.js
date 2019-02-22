@@ -25,7 +25,6 @@ export const handler = (settings) => ({ app }) => {
         uploadCleanup(settings),
     ]
     createHook(UPLOAD_MIDDLEWARES, { args: {
-        middlewares, // @TODO: remove this in favour of the api method
         addUploadMiddleware: mid => middlewares.push(mid),
     } })
 
