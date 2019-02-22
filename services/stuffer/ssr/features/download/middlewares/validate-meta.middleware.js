@@ -22,6 +22,12 @@ export default options => ({
             return
         }
 
+        // #15 Enforce that the requested file name is coherent with the download
+        if (req.params.name !== req.data.download.meta.name) {
+            res.status(404).send('file not found')
+            return
+        }
+
         next()
     },
 })
