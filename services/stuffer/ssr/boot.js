@@ -1,3 +1,4 @@
+import path from 'path'
 import * as config from '@marcopeg/utils/lib/config'
 import {
     registerAction,
@@ -28,6 +29,8 @@ registerAction({
     hook: SETTINGS,
     name: '♦ boot',
     handler: async ({ settings }) => {
+        const stufferData = config.get('STUFFER_DATA', '/var/lib/stuffer')
+
         settings.jwt = {
             secret: config.get('JWT_SECRET'),
             duration: config.get('JWT_DURATION'),
@@ -39,8 +42,8 @@ registerAction({
         }
 
         settings.upload = {
-            mountPoint: config.get('UPLOAD_MOUNT_POINT'),
-            tempFolder: config.get('UPLOAD_TEMP_FOLDER'),
+            tempFolder: config.get('UPLOAD_DATA_PATH', path.join(stufferData, 'uploads')),
+            mountPoint: config.get('UPLOAD_MOUNT_POINT', '/upload'),
             publicSpace: config.get('UPLOAD_PUBLIC_SPACE', 'public'),
             bufferSize: Number(config.get('UPLOAD_BUFFER_SIZE', 2 * 1048576)), // Set 2MiB buffer
             maxSize: Number(config.get('UPLOAD_MAX_SIZE', 100 * 1048576)), // 100Mb
@@ -51,11 +54,11 @@ registerAction({
         }
 
         settings.store = {
-            base: config.get('STORE_BASE'),
+            base: config.get('STORE_DATA_PATH', path.join(stufferData, 'store')),
         }
 
         settings.storeS3 = {
-            base: config.get('STORE_S3_BASE'),
+            base: config.get('STORE_S3_DATA_PATH', path.join(stufferData, 'store-s3')),
             // aws
             accessKeyId: config.get('STORE_S3_KEY'),
             secretAccessKey: config.get('STORE_S3_SECRET'),
@@ -75,7 +78,7 @@ registerAction({
         }
 
         settings.cache = {
-            base: config.get('CACHE_BASE'),
+            base: config.get('CACHE_DATA_PATH', path.join(stufferData, 'cache')),
             maxAge: Number(config.get('CACHE_MAX_AGE', '31536000')) * 1000, // in seconds, 1 year
             maxSize: Number(config.get('CACHE_MAX_SIZE', '100')) * 1000000, // in Mb
             pruneInterval: Number(config.get('CACHE_PRUNE_INTERVAL', '60')) * 1000, // in seconds
