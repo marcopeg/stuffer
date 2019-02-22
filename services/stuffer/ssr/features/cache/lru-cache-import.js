@@ -6,7 +6,7 @@
 import path from 'path'
 import fs from 'fs-extra'
 import async from 'async'
-import { logInfo, logError, logVerbose, logDebug } from 'ssr/services/logger'
+import { logInfo, logError, logVerbose, logDebug } from 'services/logger'
 
 export const importCache = (store, settings) => new Promise(async (resolve, reject) => {
     logInfo('[cache] start importing cache from local disk...')

@@ -2,7 +2,7 @@ import glob from 'glob'
 import path from 'path'
 import fs from 'fs-extra'
 import async from 'async'
-import { logInfo, logError, logVerbose, logDebug } from 'ssr/services/logger'
+import { logInfo, logError, logVerbose, logDebug } from 'services/logger'
 
 const globp = (path, options) => new Promise((resolve, reject) => {
     glob(path, options, (err, files) => {

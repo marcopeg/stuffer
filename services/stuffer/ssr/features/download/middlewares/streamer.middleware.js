@@ -6,7 +6,7 @@
  */
 
 import urlencode from 'urlencode'
-import { logVerbose } from 'ssr/services/logger'
+import { logVerbose } from 'services/logger'
 
 export default () => ({
     name: 'streamer',

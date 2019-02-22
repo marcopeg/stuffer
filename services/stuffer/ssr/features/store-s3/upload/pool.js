@@ -1,4 +1,4 @@
-import { logInfo, logError, logDebug, logVerbose } from 'ssr/services/logger'
+import { logInfo, logError, logDebug, logVerbose } from 'services/logger'
 import Uploader from './uploader'
 
 const settings = {

@@ -1,6 +1,6 @@
 import { INIT_FEATURE } from '@marcopeg/hooks'
-import { UPLOAD_COMPLETED } from 'ssr/features/upload/hooks'
-import { DOWNLOAD_VALIDATE_META, DOWNLOAD_VALIDATE_FILE } from 'ssr/features/download/hooks'
+import { UPLOAD_COMPLETED } from 'features/upload/hooks'
+import { DOWNLOAD_VALIDATE_META, DOWNLOAD_VALIDATE_FILE } from 'features/download/hooks'
 import { FEATURE_NAME } from './hooks'
 
 import { handler as initStoreHandler } from './init-store.handler'

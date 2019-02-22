@@ -1,5 +1,5 @@
 import { INIT_FEATURE, START_FEATURE } from '@marcopeg/hooks'
-import { STORE_CHANGE_RESOLVER, STORE_FILE_MOVED } from 'ssr/features/store/hooks'
+import { STORE_CHANGE_RESOLVER, STORE_FILE_MOVED } from 'features/store/hooks'
 import { FEATURE_NAME } from './hooks'
 
 // import * as lru from './lru-cache'

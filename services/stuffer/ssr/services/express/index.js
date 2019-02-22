@@ -4,7 +4,7 @@ import compression from 'compression'
 import helmet from 'helmet'
 import { createHook, createHookContext } from '@marcopeg/hooks'
 import { INIT_SERVICE, START_SERVICE } from '@marcopeg/hooks'
-import { logInfo } from 'ssr/services/logger'
+import { logInfo } from 'services/logger'
 import { EXPRESS_INIT, EXPRESS_MIDDLEWARE, EXPRESS_ROUTE, EXPRESS_HANDLER } from './hooks'
 
 const app = express()

@@ -1,7 +1,7 @@
 import fs from 'fs-extra'
 import path from 'path'
 import AWS from 'aws-sdk'
-import { logError, logVerbose } from 'ssr/services/logger'
+import { logError, logVerbose } from 'services/logger'
 
 export default class Uploader {
     constructor (settings, file) {

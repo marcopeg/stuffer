@@ -1,5 +1,5 @@
 import { createHook } from '@marcopeg/hooks'
-import { logVerbose } from 'ssr/services/logger'
+import { logVerbose } from 'services/logger'
 import { DOWNLOAD_MIDDLEWARES, DOWNLOAD_MODIFIERS } from './hooks'
 
 import contextMiddleware from './middlewares/context.middleware'
