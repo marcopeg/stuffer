@@ -63,10 +63,10 @@ registerAction({
             mountPoint: config.get('UPLOAD_MOUNT_POINT', '/upload'),
             publicSpace: config.get('UPLOAD_PUBLIC_SPACE', 'public'),
             bufferSize: Number(config.get('UPLOAD_BUFFER_SIZE', 2 * 1048576)), // Set 2MiB buffer
-            maxSize: Number(config.get('UPLOAD_MAX_SIZE', 100 * 1048576)), // 100Mb
+            maxSize: Number(config.get('UPLOAD_MAX_SIZE', 1000 * 1048576)), // 100Mb
             maxFiles: Number(config.get('UPLOAD_MAX_FILES', 10)),
             maxFields: Number(config.get('UPLOAD_MAX_FIELDS', 30)),
-            maxFileSize: Number(config.get('UPLOAD_MAX_FILE_SIZE', 100 * 1048576)), // 100Mb
+            maxFileSize: Number(config.get('UPLOAD_MAX_FILE_SIZE', 1000 * 1048576)), // 100Mb
             maxFieldSize: Number(config.get('UPLOAD_MAX_FIELD_SIZE', 5 * 1024)), // 5Kb - cookie style
         }
         
@@ -105,7 +105,7 @@ registerAction({
         // community extensions from a mounted volume
         // @NOTE: extensions should be plain NodeJS compatible, if you want to use
         // weird ES6 syntax you have to transpile your extension yourself
-        const communityExtensionsPath = config.get('STUFFER_CUSTOM_EXTENSIONS', '/var/lib/stuffer/extensions')
+        const communityExtensionsPath = config.get('STUFFER_COMMUNITY_EXTENSIONS', '/var/lib/stuffer/extensions')
         const communityExtensions = glob
             .sync(path.resolve(communityExtensionsPath, '[!_]*', 'index.js'))
 

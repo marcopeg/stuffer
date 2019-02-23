@@ -6,10 +6,10 @@
 
 * [Upload to Stuffer](./book/upload.md)
 * [Download from Stuffer](./book/download.md)
-* [Authentication](./book/authentication.md)
 * [Modifiers](./book/modifiers.md)
-* [Extensions](./book/extensions.md)
+* [Authentication](./book/authentication.md)
 * [Configuration](./book/configuration.md)
+* [Extensions](./book/extensions.md)
 
 ## Core Extensions
 

@@ -1,6 +1,7 @@
 # Upload into Stuffer
 
-Uploads are handled by sending a `multipart/form-data` _POST_ request to the `/upload` endpoint. You can send multiple files at the time.
+Uploads are handled by sending a `multipart/form-data` _POST_ request to the 
+`/upload` endpoint. You can send multiple files at the time.
 
 The minimum requisite is a field file:
 
@@ -132,13 +133,13 @@ storage layer.
 ## Upload Meta Data
 
 You can provide a JSON meta data object as custom field `{uploadField}_meta`. Consider
-this some kind of "cookie for uploads".
+this some kind of "cookies for uploads".
 
-In this file you can provide informations that can be useful at download time.
+In this file you can provide informations that can be used at download time.
 
 As example you could provide a list of accepted resize requests, so that when somebody
 tries to download you resized image, a validation can take place.
 
-Anyway the informations that you provide in this field depends a lot on the 
-**upload and download modifiers** that you setup in your stuffer instance.
+Anyway, the informations that you provide in this field depends a lot on the 
+[**upload and download modifiers**](./modifiers.md) that you setup in your stuffer instance.
 

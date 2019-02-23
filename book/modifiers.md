@@ -1,22 +1,74 @@
 # Modifiers
 
-A _Modifier_ can handle a [buffer](https://nodejs.org/api/buffer.html) and alter it
-to produce a change in the original file.
+Stuffer let you apply a list of _modifiers_ that will affect the fetched resource. 
+Those modifiers can be applied as _url tokens_ or _query parameters_:
 
-> Common modifiers can resize an image or compress a file
+    http://localhost:8080/public/f2/size:small/filter:bw/image.jpg
+
+    or
+
+    http://localhost:8080/public/f2/image.jpg?size=small&filter=bw
+
+> **Modifiers are applied in the order they appear in the url**, so it is always better to apply
+> a resize that makes the resulting image smaller before to do any other manipulation so to
+> achieve a better memory and CPU managemement.
+
+Modifiers do not only apply to images, in fact you could write a modifier that compress a file
+to a ZIP archive before sending it out.
+
+#### Core Modifiers
+
+Stuffer ships with some basic modifiers that can handle image resize or filtering
+requests. They are packaged as [extensions](./extensions.md) and you can read about
+them in the Core Extensions section.
+
+---
+
+# Create Your Modifier
+
+A _Modifier_ is basically a function that receives a [buffer](https://nodejs.org/api/buffer.html)
+and alter it to produce a change in the original file.
+
+We package this function within a Node module so that you can implement some other
+methods and produce a high quality piece of logic that is both perfromant and safe.
 
 ## API
 
 A modifier should expose the following methods:
 
-    export defaul {
+    export default {
         parse: (value, options, req, res) => value,
         validate: (value, options, req, res) => true,
         cacheName: (value, options, req, res) => 'foo',
         handler: async (buffer, value, options, req, res) => buffer
     }
 
-### Arguments
+## Methods
+
+#### `any:parse(rawValue, options, req, res)`
+
+_SYNC_ - takes in the raw value as passed in the _URL_ and should return the internal
+value as it may be used by the other methods.
+
+#### `bool:validate(parsedValue, options, req, res)`
+
+_SYNC_ - uses the parsed value and the available options to stop unrightful requests.
+
+You must return `true` for the validation to pass.
+
+Else you can either return `false` or `throw new Error()`.
+
+#### `string:cacheName(parsedValue, options, req, res)`
+
+_SYNC_ - returns a string that will contribute in composing the cache file name
+
+#### `async handler(buffer, parsedValue, req, res)`
+
+_ASYNC_ - uses the buffer to apply a transormation. 
+
+It must return or resolve with the new buffer.
+
+## Arguments
 
 #### value
 
@@ -70,34 +122,10 @@ Each level extends the previous one and overrides seamless keywords.
 
 #### buffer
 
+A [NodeJS buffer](https://nodejs.org/api/buffer.html)
+
 #### req, res
 
 You can access `req.data.download` to see all the available informations regarding the current
 download request.
-
-### Methods
-
-#### any:parse(rawValue, options, req, res)
-
-_SYNC_ - takes in the raw value as passed in the _URL_ and should return the internal
-value as it may be used by the other methods.
-
-#### bool:validate(parsedValue, options, req, res)
-
-_SYNC_ - uses the parsed value and the available options to stop unrightful requests.
-
-You must return `true` for the validation to pass.
-
-Else you can either return `false` or `throw new Error()`.
-
-#### string:cacheName(parsedValue, options, req, res)
-
-_SYNC_ - returns a string that will contribute in composing the cache file name
-
-#### Promise:handler(buffer, parsedValue, req, res)
-
-_ASYNC_ - uses the buffer to apply a transormation. 
-
-It must return or resolve with the new buffer.
-
 
