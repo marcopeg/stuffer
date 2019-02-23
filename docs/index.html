@@ -267,8 +267,57 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="stuffer">Stuffer</h1>
-<p>Dump assets into stuffer and get them back from a CDN, image resized or files transcoded.<br>No questions asked.</p>
+                                <h1 id="what-is-stuffer">What is Stuffer?</h1>
+<p><strong>Stuffer allows you to upload / download resources.</strong><br>A resource can be any type of file, of any size, up to your limits.</p>
+<p>When you access a resource for download, you can apply <a href="book/modifiers.html">modifiers</a>.
+Say you want an image, you can resize it on the fly. Or make it b/w. Or more.</p>
+<p>Modifiers are just extensions that you can add to your Stuffer instance. We ship some
+<a href="book/core-extensions">core extensions</a> that you can quickly enable, but the sky
+is the limit when it comes to write your own! In NodeJS.</p>
+<p>Stuffer is a file storage framework: <strong>you can extend it with custom features</strong> to make
+it do what you need. If you are a good guy, you will share your extensions on NPM or GitHub.</p>
+<blockquote>
+<p>So far we cover <strong>local cache</strong> for modified resources and <strong>cloud storage with S3</strong>.</p>
+</blockquote>
+<p>You can put a CDN (es. CloudFront) on top of your Stuffer instance/cluster so to optimize
+the delivery of the final resources.</p>
+<p><strong>Any resource can be public or protected.</strong><br>We handle basic protection with JWT. It&apos;s simple and reliable, but you can override this
+with your own implementation. Again, Stuffer is just a framework!</p>
+<hr>
+<h2 id="quick-start">Quick Start</h2>
+<pre><code>docker run -p 8080:8080 marcopeg/stuffer
+</code></pre><p>Try to post a file to <code>http://localhost:8080/upload</code>:</p>
+<pre><code>curl -X POST http://localhost:8080/upload \
+    -F f1_uuid=f1 \
+    -F f1_name=image.jpg \
+    -F f1=@/Users/marcopeg/Downloads/file.jpg
+</code></pre><p>And then try to retrieve it by surfing to:</p>
+<pre><code>http://localhost:8080/public/f1/image.jpg
+</code></pre><hr>
+<h2 id="safe-start">Safe Start</h2>
+<p>This will create a secured instance that persists data in your local folder</p>
+<pre><code>docker run \
+  -p 8080:8080 \
+  -v ${PWD}/stuffer-data:/var/lib/stuffer \
+  -e JWT_SECRET=12345 \
+  -e AUTH_ENABLE_ANONYMOUS_UPLOAD=false \
+  -e AUTH_ENABLE_ANONYMOUS_DOWNLOAD=false \
+  marcopeg/stuffer
+</code></pre><p>Your data will be persisted to a local folder name <code>stuffer-data</code>. You should be
+able to locate it in the path from where you launched the Stuffer container.</p>
+<p>In order to make requests to this instance you will need to authenticate yourself
+using a <a href="book/authentication.html">JWT</a>. I made one that will last for a couple of
+decades...</p>
+<pre><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzcGFjZSI6InRlc3QiLCJleHAiOjk2MTYyMzkwMjIsImlhdCI6MTUxNjIzOTAyMn0.-x6wWxlq4eK6-My_UvIp-1G2njUeEFw5kaH0fBegXO8
+</code></pre><p>Try to post a file to <code>http://localhost:8080/upload</code>:</p>
+<pre><code>curl -X POST http://localhost:8080/upload \
+    -H &apos;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzcGFjZSI6InRlc3QiLCJleHAiOjk2MTYyMzkwMjIsImlhdCI6MTUxNjIzOTAyMn0.-x6wWxlq4eK6-My_UvIp-1G2njUeEFw5kaH0fBegXO8&apos; \
+    -F f1_uuid=f1 \
+    -F f1_name=image.jpg \
+    -F f1=@/Users/marcopeg/Downloads/file.jpg
+</code></pre><p>And then try to retrieve it by surfing to:</p>
+<pre><code>http://localhost:8080/test/f1/image.jpg?__auth=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzcGFjZSI6InRlc3QiLCJleHAiOjk2MTYyMzkwMjIsImlhdCI6MTUxNjIzOTAyMn0.-x6wWxlq4eK6-My_UvIp-1G2njUeEFw5kaH0fBegXO8
+</code></pre><hr>
 <h2 id="core-functionalities">Core Functionalities</h2>
 <ul>
 <li><a href="book/upload.html">Upload to Stuffer</a></li>
@@ -280,8 +329,8 @@
 </ul>
 <h2 id="core-extensions">Core Extensions</h2>
 <ul>
-<li><a href="book/cache.md">Cache</a></li>
-<li><a href="book/store-s3.md">StoreS3</a></li>
+<li><a href="book/core-extensions/cache.html">Cache</a></li>
+<li><a href="book/core-extensions/store-s3.html">StoreS3</a></li>
 </ul>
 
                                 
@@ -322,7 +371,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"... I'm glad you asked ...","level":"1.1","depth":1,"next":{"title":"Upload to Stuffer","level":"2.1","depth":1,"path":"book/upload.md","ref":"./book/upload.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2019-02-23T07:12:40.161Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-23T08:59:35.507Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"... I'm glad you asked ...","level":"1.1","depth":1,"next":{"title":"Upload to Stuffer","level":"2.1","depth":1,"path":"book/upload.md","ref":"./book/upload.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2019-02-23T09:50:52.954Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-23T10:14:48.648Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
