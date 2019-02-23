@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Download from Stuffer · GitBook</title>
+        <title>Configuration · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -61,10 +61,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="modifiers.html" />
+    <link rel="next" href="extensions.html" />
     
     
-    <link rel="prev" href="upload.html" />
+    <link rel="prev" href="authentication.html" />
     
 
     </head>
@@ -126,7 +126,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.2" data-path="download.html">
+        <li class="chapter " data-level="2.2" data-path="download.html">
             
                 <a href="download.html">
             
@@ -165,7 +165,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.5" data-path="configuration.html">
+        <li class="chapter active" data-level="2.5" data-path="configuration.html">
             
                 <a href="configuration.html">
             
@@ -254,7 +254,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Download from Stuffer</a>
+        <a href=".." >Configuration</a>
     </h1>
 </div>
 
@@ -269,24 +269,57 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="download-from-stuffer">Download from Stuffer</h1>
-<p>When you <a href="upload.html">upload a file to Stuffer</a>, you will receive the public url
-to the newly created resource:</p>
-<pre><code>{
-    &quot;files&quot;: [
-        {
-            ...
-            &quot;url&quot;: {
-                &quot;base&quot;: &quot;http://localhost:8080/public/f2&quot;,
-                &quot;original&quot;: &quot;http://localhost:8080/public/f2/image.jpg&quot;
-            },
-            ...
-        }
-    ],
-    &quot;errors&quot;: [...]
-}
-</code></pre><p>You can simply copy/paste this url to a browser to get a copy of your resource.</p>
-
+                                <h1 id="configuration">Configuration</h1>
+<p>Most of the Stuffer&apos;s features can be fine tuned via environment variables.
+Here is a comprehensive list of what you can define.</p>
+<h3 id="loglevel">LOG_LEVEL</h3>
+<p>Regulates the amount of logging that Stuffer generates: </p>
+<pre><code>LOG_LEVEL=error
+</code></pre><p>Possible values: error|info|verbose|debug</p>
+<h3 id="stufferdata">STUFFER_DATA</h3>
+<p>Defines a writeable disk location where Stuffer will store its data.</p>
+<pre><code>STUFFER_DATA=/var/lib/stuffer
+</code></pre><h3 id="stuffercoreextensions">STUFFER_CORE_EXTENSIONS</h3>
+<pre><code>STUFFER_CORE_EXTENSIONS=---
+</code></pre><h3 id="jwtsecret">JWT_SECRET</h3>
+<p>Secret used to validate JWTs</p>
+<pre><code>JWT_SECRET=stuffer
+</code></pre><h3 id="uploadmountpoint">UPLOAD_MOUNT_POINT</h3>
+<pre><code>UPLOAD_MOUNT_POINT=/upload
+</code></pre><h3 id="uploadpublicspace">UPLOAD_PUBLIC_SPACE</h3>
+<pre><code>UPLOAD_PUBLIC_SPACE=public
+</code></pre><h3 id="uploadbuffersize">UPLOAD_BUFFER_SIZE</h3>
+<p>In bits</p>
+<pre><code>UPLOAD_BUFFER_SIZE=2097152
+(2Mbit)
+</code></pre><h3 id="uploadmaxsize">UPLOAD_MAX_SIZE</h3>
+<p>In bytes</p>
+<pre><code>UPLOAD_MAX_SIZE=1048576000
+(1Gb)
+</code></pre><h3 id="uploadmaxfilesize">UPLOAD_MAX_FILE_SIZE</h3>
+<p>In bytes</p>
+<pre><code>UPLOAD_MAX_FILE_SIZE=1048576000
+(1Gb)
+</code></pre><h3 id="uploadmaxfieldsize">UPLOAD_MAX_FIELD_SIZE</h3>
+<p>In bytes</p>
+<pre><code>UPLOAD_MAX_FIELD_SIZE=5120
+</code></pre><h3 id="uploadmaxfiles">UPLOAD_MAX_FILES</h3>
+<pre><code>UPLOAD_MAX_FILES=10
+</code></pre><h3 id="uploadmaxfields">UPLOAD_MAX_FIELDS</h3>
+<pre><code>UPLOAD_MAX_FIELDS=30
+</code></pre><h3 id="downloadbaseurl">DOWNLOAD_BASE_URL</h3>
+<pre><code>DOWNLOAD_BASE_URL=http://localhost:8080
+</code></pre><h3 id="downloadmountpoint">DOWNLOAD_MOUNT_POINT</h3>
+<pre><code>DOWNLOAD_MOUNT_POINT=/
+</code></pre><h3 id="authenableanonymousupload">AUTH_ENABLE_ANONYMOUS_UPLOAD</h3>
+<pre><code>AUTH_ENABLE_ANONYMOUS_UPLOAD=true
+</code></pre><h3 id="authenableanonymousdownload">AUTH_ENABLE_ANONYMOUS_DOWNLOAD</h3>
+<pre><code>AUTH_ENABLE_ANONYMOUS_DOWNLOAD=true
+</code></pre><h3 id="authenablecrossspacedownload">AUTH_ENABLE_CROSS_SPACE_DOWNLOAD</h3>
+<pre><code>AUTH_ENABLE_CROSS_SPACE_DOWNLOAD=false
+</code></pre><h3 id="stuffercommunityextensions">STUFFER_COMMUNITY_EXTENSIONS</h3>
+<pre><code>STUFFER_COMMUNITY_EXTENSIONS=/var/lib/stuffer/extensions
+</code></pre>
                                 
                                 </section>
                             
@@ -313,12 +346,12 @@ to the newly created resource:</p>
 
             
                 
-                <a href="upload.html" class="navigation navigation-prev " aria-label="Previous page: Upload to Stuffer">
+                <a href="authentication.html" class="navigation navigation-prev " aria-label="Previous page: Authentication">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="modifiers.html" class="navigation navigation-next " aria-label="Next page: Modifiers">
+                <a href="extensions.html" class="navigation navigation-next " aria-label="Next page: Extensions">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -329,7 +362,7 @@ to the newly created resource:</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Download from Stuffer","level":"2.2","depth":1,"next":{"title":"Modifiers","level":"2.3","depth":1,"path":"book/modifiers.md","ref":"./book/modifiers.md","articles":[]},"previous":{"title":"Upload to Stuffer","level":"2.1","depth":1,"path":"book/upload.md","ref":"./book/upload.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/download.md","mtime":"2019-02-23T06:40:15.395Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-23T08:59:35.507Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Configuration","level":"2.5","depth":1,"next":{"title":"Extensions","level":"2.6","depth":1,"path":"book/extensions.md","ref":"./book/extensions.md","articles":[]},"previous":{"title":"Authentication","level":"2.4","depth":1,"path":"book/authentication.md","ref":"./book/authentication.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/configuration.md","mtime":"2019-02-23T08:50:32.229Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-23T08:59:35.507Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

@@ -61,10 +61,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="extensions.md" />
+    <link rel="next" href="authentication.html" />
     
     
-    <link rel="prev" href="authentication.html" />
+    <link rel="prev" href="download.html" />
     
 
     </head>
@@ -139,20 +139,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="authentication.html">
-            
-                <a href="authentication.html">
-            
-                    
-                    Authentication
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter active" data-level="2.4" data-path="modifiers.html">
+        <li class="chapter active" data-level="2.3" data-path="modifiers.html">
             
                 <a href="modifiers.html">
             
@@ -165,12 +152,12 @@
             
         </li>
     
-        <li class="chapter " data-level="2.5" data-path="extensions.md">
+        <li class="chapter " data-level="2.4" data-path="authentication.html">
             
-                <span>
+                <a href="authentication.html">
             
                     
-                    Extensions
+                    Authentication
             
                 </a>
             
@@ -178,12 +165,25 @@
             
         </li>
     
-        <li class="chapter " data-level="2.6" data-path="configuration.md">
+        <li class="chapter " data-level="2.5" data-path="configuration.html">
             
-                <span>
+                <a href="configuration.html">
             
                     
                     Configuration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="extensions.html">
+            
+                <a href="extensions.html">
+            
+                    
+                    Extensions
             
                 </a>
             
@@ -198,9 +198,9 @@
         
         
     
-        <li class="chapter " data-level="3.1" data-path="cache.html">
+        <li class="chapter " data-level="3.1" data-path="core-extensions/cache.html">
             
-                <a href="cache.html">
+                <a href="core-extensions/cache.html">
             
                     
                     Cache
@@ -211,9 +211,9 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2" data-path="store-s3.md">
+        <li class="chapter " data-level="3.2" data-path="core-extensions/store-s3.html">
             
-                <span>
+                <a href="core-extensions/store-s3.html">
             
                     
                     StoreS3
@@ -270,20 +270,52 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="modifiers">Modifiers</h1>
-<p>A <em>Modifier</em> can handle a <a href="https://nodejs.org/api/buffer.html" target="_blank">buffer</a> and alter it
-to produce a change in the original file.</p>
-<blockquote>
-<p>Common modifiers can resize an image or compress a file</p>
+<p>Stuffer let you apply a list of <em>modifiers</em> that will affect the fetched resource. 
+Those modifiers can be applied as <em>url tokens</em> or <em>query parameters</em>:</p>
+<pre><code>http://localhost:8080/public/f2/size:small/filter:bw/image.jpg
+
+or
+
+http://localhost:8080/public/f2/image.jpg?size=small&amp;filter=bw
+</code></pre><blockquote>
+<p><strong>Modifiers are applied in the order they appear in the url</strong>, so it is always better to apply
+a resize that makes the resulting image smaller before to do any other manipulation so to
+achieve a better memory and CPU managemement.</p>
 </blockquote>
+<p>Modifiers do not only apply to images, in fact you could write a modifier that compress a file
+to a ZIP archive before sending it out.</p>
+<h4 id="core-modifiers">Core Modifiers</h4>
+<p>Stuffer ships with some basic modifiers that can handle image resize or filtering
+requests. They are packaged as <a href="extensions.html">extensions</a> and you can read about
+them in the Core Extensions section.</p>
+<hr>
+<h1 id="create-your-modifier">Create Your Modifier</h1>
+<p>A <em>Modifier</em> is basically a function that receives a <a href="https://nodejs.org/api/buffer.html" target="_blank">buffer</a>
+and alter it to produce a change in the original file.</p>
+<p>We package this function within a Node module so that you can implement some other
+methods and produce a high quality piece of logic that is both perfromant and safe.</p>
 <h2 id="api">API</h2>
 <p>A modifier should expose the following methods:</p>
-<pre><code>export defaul {
+<pre><code>export default {
     parse: (value, options, req, res) =&gt; value,
     validate: (value, options, req, res) =&gt; true,
     cacheName: (value, options, req, res) =&gt; &apos;foo&apos;,
     handler: async (buffer, value, options, req, res) =&gt; buffer
 }
-</code></pre><h3 id="arguments">Arguments</h3>
+</code></pre><h2 id="methods">Methods</h2>
+<h4 id="anyparserawvalue-options-req-res"><code>any:parse(rawValue, options, req, res)</code></h4>
+<p><em>SYNC</em> - takes in the raw value as passed in the <em>URL</em> and should return the internal
+value as it may be used by the other methods.</p>
+<h4 id="boolvalidateparsedvalue-options-req-res"><code>bool:validate(parsedValue, options, req, res)</code></h4>
+<p><em>SYNC</em> - uses the parsed value and the available options to stop unrightful requests.</p>
+<p>You must return <code>true</code> for the validation to pass.</p>
+<p>Else you can either return <code>false</code> or <code>throw new Error()</code>.</p>
+<h4 id="stringcachenameparsedvalue-options-req-res"><code>string:cacheName(parsedValue, options, req, res)</code></h4>
+<p><em>SYNC</em> - returns a string that will contribute in composing the cache file name</p>
+<h4 id="async-handlerbuffer-parsedvalue-req-res"><code>async handler(buffer, parsedValue, req, res)</code></h4>
+<p><em>ASYNC</em> - uses the buffer to apply a transormation. </p>
+<p>It must return or resolve with the new buffer.</p>
+<h2 id="arguments">Arguments</h2>
 <h4 id="value">value</h4>
 <p>It is the value assigned to the modifier in the url:</p>
 <pre><code>...image.jpg?resize=small&amp;filter=bw
@@ -320,22 +352,10 @@ fill up the disk space or kill the process due to RAM problems.</p>
 </ol>
 <p>Each level extends the previous one and overrides seamless keywords.</p>
 <h4 id="buffer">buffer</h4>
+<p>A <a href="https://nodejs.org/api/buffer.html" target="_blank">NodeJS buffer</a></p>
 <h4 id="req-res">req, res</h4>
 <p>You can access <code>req.data.download</code> to see all the available informations regarding the current
 download request.</p>
-<h3 id="methods">Methods</h3>
-<h4 id="anyparserawvalue-options-req-res">any:parse(rawValue, options, req, res)</h4>
-<p><em>SYNC</em> - takes in the raw value as passed in the <em>URL</em> and should return the internal
-value as it may be used by the other methods.</p>
-<h4 id="boolvalidateparsedvalue-options-req-res">bool:validate(parsedValue, options, req, res)</h4>
-<p><em>SYNC</em> - uses the parsed value and the available options to stop unrightful requests.</p>
-<p>You must return <code>true</code> for the validation to pass.</p>
-<p>Else you can either return <code>false</code> or <code>throw new Error()</code>.</p>
-<h4 id="stringcachenameparsedvalue-options-req-res">string:cacheName(parsedValue, options, req, res)</h4>
-<p><em>SYNC</em> - returns a string that will contribute in composing the cache file name</p>
-<h4 id="promisehandlerbuffer-parsedvalue-req-res">Promise:handler(buffer, parsedValue, req, res)</h4>
-<p><em>ASYNC</em> - uses the buffer to apply a transormation. </p>
-<p>It must return or resolve with the new buffer.</p>
 
                                 
                                 </section>
@@ -363,12 +383,12 @@ value as it may be used by the other methods.</p>
 
             
                 
-                <a href="authentication.html" class="navigation navigation-prev " aria-label="Previous page: Authentication">
+                <a href="download.html" class="navigation navigation-prev " aria-label="Previous page: Download from Stuffer">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="extensions.md" class="navigation navigation-next " aria-label="Next page: Extensions">
+                <a href="authentication.html" class="navigation navigation-next " aria-label="Next page: Authentication">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -379,7 +399,7 @@ value as it may be used by the other methods.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Modifiers","level":"2.4","depth":1,"next":{"title":"Extensions","level":"2.5","depth":1,"path":"book/extensions.md","ref":"./book/extensions.md","articles":[]},"previous":{"title":"Authentication","level":"2.3","depth":1,"path":"book/authentication.md","ref":"./book/authentication.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/modifiers.md","mtime":"2019-02-19T07:59:56.422Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-22T16:53:26.462Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Modifiers","level":"2.3","depth":1,"next":{"title":"Authentication","level":"2.4","depth":1,"path":"book/authentication.md","ref":"./book/authentication.md","articles":[]},"previous":{"title":"Download from Stuffer","level":"2.2","depth":1,"path":"book/download.md","ref":"./book/download.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/modifiers.md","mtime":"2019-02-23T06:58:16.316Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-23T08:59:35.507Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

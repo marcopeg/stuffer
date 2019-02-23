@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Download from Stuffer · GitBook</title>
+        <title>Extensions · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -61,10 +61,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="modifiers.html" />
+    <link rel="next" href="core-extensions/cache.html" />
     
     
-    <link rel="prev" href="upload.html" />
+    <link rel="prev" href="configuration.html" />
     
 
     </head>
@@ -126,7 +126,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.2" data-path="download.html">
+        <li class="chapter " data-level="2.2" data-path="download.html">
             
                 <a href="download.html">
             
@@ -178,7 +178,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.6" data-path="extensions.html">
+        <li class="chapter active" data-level="2.6" data-path="extensions.html">
             
                 <a href="extensions.html">
             
@@ -254,7 +254,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Download from Stuffer</a>
+        <a href=".." >Extensions</a>
     </h1>
 </div>
 
@@ -269,23 +269,19 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="download-from-stuffer">Download from Stuffer</h1>
-<p>When you <a href="upload.html">upload a file to Stuffer</a>, you will receive the public url
-to the newly created resource:</p>
-<pre><code>{
-    &quot;files&quot;: [
-        {
-            ...
-            &quot;url&quot;: {
-                &quot;base&quot;: &quot;http://localhost:8080/public/f2&quot;,
-                &quot;original&quot;: &quot;http://localhost:8080/public/f2/image.jpg&quot;
-            },
-            ...
-        }
-    ],
-    &quot;errors&quot;: [...]
-}
-</code></pre><p>You can simply copy/paste this url to a browser to get a copy of your resource.</p>
+                                <h1 id="extensions">Extensions</h1>
+<p>Stuffer is a framework that handles uploads and downloads,
+the point is that you can, and should, extend it to suit your needs.</p>
+<h2 id="core-extensions">Core Extensions</h2>
+<p>Stuffer comes with some extensions already. They are basically features that you can
+opt-in with an enviroment variable:</p>
+<pre><code>STUFFER_CORE_EXTENSIONS=ext1|ext2|...
+</code></pre><p>Then you need to refer to each extension&apos;s documentation page to learn how to use it
+and how to configure it.</p>
+<h2 id="community-extensions">Community Extensions</h2>
+<p>[[ TBD ]]</p>
+<h2 id="create-your-extension">Create Your Extension</h2>
+<p>[[ TBD ]]</p>
 
                                 
                                 </section>
@@ -313,12 +309,12 @@ to the newly created resource:</p>
 
             
                 
-                <a href="upload.html" class="navigation navigation-prev " aria-label="Previous page: Upload to Stuffer">
+                <a href="configuration.html" class="navigation navigation-prev " aria-label="Previous page: Configuration">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="modifiers.html" class="navigation navigation-next " aria-label="Next page: Modifiers">
+                <a href="core-extensions/cache.html" class="navigation navigation-next " aria-label="Next page: Cache">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -329,7 +325,7 @@ to the newly created resource:</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Download from Stuffer","level":"2.2","depth":1,"next":{"title":"Modifiers","level":"2.3","depth":1,"path":"book/modifiers.md","ref":"./book/modifiers.md","articles":[]},"previous":{"title":"Upload to Stuffer","level":"2.1","depth":1,"path":"book/upload.md","ref":"./book/upload.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/download.md","mtime":"2019-02-23T06:40:15.395Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-23T08:59:35.507Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Extensions","level":"2.6","depth":1,"next":{"title":"Cache","level":"3.1","depth":1,"path":"book/core-extensions/cache.md","ref":"./book/core-extensions/cache.md","articles":[]},"previous":{"title":"Configuration","level":"2.5","depth":1,"path":"book/configuration.md","ref":"./book/configuration.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/extensions.md","mtime":"2019-02-23T07:10:49.558Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-23T08:59:35.507Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

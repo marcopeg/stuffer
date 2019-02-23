@@ -13,6 +13,5 @@
 
 ## Core Extensions
 
-* [Cache](./book/cache.md)
-* [StoreS3](./book/store-s3.md)
-
+* [Cache](./book/core-extensions/cache.md)
+* [StoreS3](./book/core-extensions/store-s3.md)

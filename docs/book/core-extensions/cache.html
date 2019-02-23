@@ -12,24 +12,24 @@
         
         
     
-    <link rel="stylesheet" href="../gitbook/style.css">
+    <link rel="stylesheet" href="../../gitbook/style.css">
 
     
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-code/plugin.css">
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
                 
             
         
@@ -57,14 +57,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
-    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="store-s3.md" />
+    <link rel="next" href="store-s3.html" />
     
     
-    <link rel="prev" href="configuration.md" />
+    <link rel="prev" href="../extensions.html" />
     
 
     </head>
@@ -93,9 +93,9 @@
         
         
     
-        <li class="chapter " data-level="1.1" data-path="../">
+        <li class="chapter " data-level="1.1" data-path="../../">
             
-                <a href="../">
+                <a href="../../">
             
                     
                     ... I'm glad you asked ...
@@ -113,9 +113,9 @@
         
         
     
-        <li class="chapter " data-level="2.1" data-path="upload.html">
+        <li class="chapter " data-level="2.1" data-path="../upload.html">
             
-                <a href="upload.html">
+                <a href="../upload.html">
             
                     
                     Upload to Stuffer
@@ -126,9 +126,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.2" data-path="download.html">
+        <li class="chapter " data-level="2.2" data-path="../download.html">
             
-                <a href="download.html">
+                <a href="../download.html">
             
                     
                     Download from Stuffer
@@ -139,22 +139,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="authentication.html">
+        <li class="chapter " data-level="2.3" data-path="../modifiers.html">
             
-                <a href="authentication.html">
-            
-                    
-                    Authentication
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="2.4" data-path="modifiers.html">
-            
-                <a href="modifiers.html">
+                <a href="../modifiers.html">
             
                     
                     Modifiers
@@ -165,12 +152,12 @@
             
         </li>
     
-        <li class="chapter " data-level="2.5" data-path="extensions.md">
+        <li class="chapter " data-level="2.4" data-path="../authentication.html">
             
-                <span>
+                <a href="../authentication.html">
             
                     
-                    Extensions
+                    Authentication
             
                 </a>
             
@@ -178,12 +165,25 @@
             
         </li>
     
-        <li class="chapter " data-level="2.6" data-path="configuration.md">
+        <li class="chapter " data-level="2.5" data-path="../configuration.html">
             
-                <span>
+                <a href="../configuration.html">
             
                     
                     Configuration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="../extensions.html">
+            
+                <a href="../extensions.html">
+            
+                    
+                    Extensions
             
                 </a>
             
@@ -211,9 +211,9 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2" data-path="store-s3.md">
+        <li class="chapter " data-level="3.2" data-path="store-s3.html">
             
-                <span>
+                <a href="store-s3.html">
             
                     
                     StoreS3
@@ -254,7 +254,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Cache</a>
+        <a href="../.." >Cache</a>
     </h1>
 </div>
 
@@ -269,7 +269,7 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="local-cache">Local Cache</h1>
+                                <h1 id="cache-extensions">Cache Extensions</h1>
 <p>After a file gets through a list of modifiers, the result is persisted to the local
 disk with the purpose to speed up the next request to the same resource.</p>
 <p>If the service reboots, a new in-memory cache is rebuilt from the informations of
@@ -277,16 +277,14 @@ the existing cache files. Files that became to old according to <code>CACHE_MAX_
 be deleted during this operation.</p>
 <h2 id="configuration">Configuration</h2>
 <p>It is possible to customize the cache by setting some environmental variables:</p>
-<h3 id="cachebase">CACHE_BASE</h3>
-<p>Provide a physical writeable path where to store the cached files.</p>
-<h3 id="cachemaxsize">CACHE_MAX_SIZE</h3>
+<h4 id="cachemaxsize">CACHE_MAX_SIZE</h4>
 <p>Provide a limit for the amount (in Megabytes) of data that gets stored into the disk.</p>
 <p>When the limit is reached, the files that got accessed the least will be removed,
 starting from the oldest one. </p>
-<h3 id="cachemaxage">CACHE_MAX_AGE</h3>
+<h4 id="cachemaxage">CACHE_MAX_AGE</h4>
 <p>Provide a max duration (in Seconds) of a cache file.</p>
 <p>If the file gets older, it will be deleted.</p>
-<h3 id="cachepruneinterval">CACHE_PRUNE_INTERVAL</h3>
+<h4 id="cachepruneinterval">CACHE_PRUNE_INTERVAL</h4>
 <p>Set the interval (in Seconds) for the cache to walk through the oldest files and delete them
 as regulated by <code>CACHE_MAX_AGE</code>.</p>
 
@@ -316,12 +314,12 @@ as regulated by <code>CACHE_MAX_AGE</code>.</p>
 
             
                 
-                <a href="configuration.md" class="navigation navigation-prev " aria-label="Previous page: Configuration">
+                <a href="../extensions.html" class="navigation navigation-prev " aria-label="Previous page: Extensions">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="store-s3.md" class="navigation navigation-next " aria-label="Next page: StoreS3">
+                <a href="store-s3.html" class="navigation navigation-next " aria-label="Next page: StoreS3">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -332,45 +330,45 @@ as regulated by <code>CACHE_MAX_AGE</code>.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Cache","level":"3.1","depth":1,"next":{"title":"StoreS3","level":"3.2","depth":1,"path":"book/store-s3.md","ref":"./book/store-s3.md","articles":[]},"previous":{"title":"Configuration","level":"2.6","depth":1,"path":"book/configuration.md","ref":"./book/configuration.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/cache.md","mtime":"2019-02-20T08:17:48.551Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-22T16:53:26.462Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Cache","level":"3.1","depth":1,"next":{"title":"StoreS3","level":"3.2","depth":1,"path":"book/core-extensions/store-s3.md","ref":"./book/core-extensions/store-s3.md","articles":[]},"previous":{"title":"Extensions","level":"2.6","depth":1,"path":"book/extensions.md","ref":"./book/extensions.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/core-extensions/cache.md","mtime":"2019-02-23T08:54:25.624Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-23T08:59:35.507Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
 
         
-    <script src="../gitbook/gitbook.js"></script>
-    <script src="../gitbook/theme.js"></script>
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
     
         
-        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
-        
-    
-        
-        <script src="../gitbook/gitbook-plugin-collapsible-menu/plugin.js"></script>
+        <script src="../../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         
-        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        <script src="../../gitbook/gitbook-plugin-collapsible-menu/plugin.js"></script>
         
     
         
-        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
         
     
         
-        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
         
     
         
-        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
         
     
         
-        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
         
     
         
-        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
         
     
 

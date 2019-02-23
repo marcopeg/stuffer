@@ -139,20 +139,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="authentication.html">
-            
-                <a href="authentication.html">
-            
-                    
-                    Authentication
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="2.4" data-path="modifiers.html">
+        <li class="chapter " data-level="2.3" data-path="modifiers.html">
             
                 <a href="modifiers.html">
             
@@ -165,12 +152,12 @@
             
         </li>
     
-        <li class="chapter " data-level="2.5" data-path="extensions.md">
+        <li class="chapter " data-level="2.4" data-path="authentication.html">
             
-                <span>
+                <a href="authentication.html">
             
                     
-                    Extensions
+                    Authentication
             
                 </a>
             
@@ -178,12 +165,25 @@
             
         </li>
     
-        <li class="chapter " data-level="2.6" data-path="configuration.md">
+        <li class="chapter " data-level="2.5" data-path="configuration.html">
             
-                <span>
+                <a href="configuration.html">
             
                     
                     Configuration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="extensions.html">
+            
+                <a href="extensions.html">
+            
+                    
+                    Extensions
             
                 </a>
             
@@ -198,9 +198,9 @@
         
         
     
-        <li class="chapter " data-level="3.1" data-path="cache.html">
+        <li class="chapter " data-level="3.1" data-path="core-extensions/cache.html">
             
-                <a href="cache.html">
+                <a href="core-extensions/cache.html">
             
                     
                     Cache
@@ -211,9 +211,9 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2" data-path="store-s3.md">
+        <li class="chapter " data-level="3.2" data-path="core-extensions/store-s3.html">
             
-                <span>
+                <a href="core-extensions/store-s3.html">
             
                     
                     StoreS3
@@ -270,7 +270,8 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="upload-into-stuffer">Upload into Stuffer</h1>
-<p>Uploads are handled by sending a <code>multipart/form-data</code> <em>POST</em> request to the <code>/upload</code> endpoint. You can send multiple files at the time.</p>
+<p>Uploads are handled by sending a <code>multipart/form-data</code> <em>POST</em> request to the 
+<code>/upload</code> endpoint. You can send multiple files at the time.</p>
 <p>The minimum requisite is a field file:</p>
 <pre><code>fieldName: f1
 fieldType: file
@@ -371,12 +372,12 @@ In case the validation fails, the file will be marked ad error and deleted from 
 storage layer.</p>
 <h2 id="upload-meta-data">Upload Meta Data</h2>
 <p>You can provide a JSON meta data object as custom field <code>{uploadField}_meta</code>. Consider
-this some kind of &quot;cookie for uploads&quot;.</p>
-<p>In this file you can provide informations that can be useful at download time.</p>
+this some kind of &quot;cookies for uploads&quot;.</p>
+<p>In this file you can provide informations that can be used at download time.</p>
 <p>As example you could provide a list of accepted resize requests, so that when somebody
 tries to download you resized image, a validation can take place.</p>
-<p>Anyway the informations that you provide in this field depends a lot on the 
-<strong>upload and download modifiers</strong> that you setup in your stuffer instance.</p>
+<p>Anyway, the informations that you provide in this field depends a lot on the 
+<a href="modifiers.html"><strong>upload and download modifiers</strong></a> that you setup in your stuffer instance.</p>
 
                                 
                                 </section>
@@ -420,7 +421,7 @@ tries to download you resized image, a validation can take place.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Upload to Stuffer","level":"2.1","depth":1,"next":{"title":"Download from Stuffer","level":"2.2","depth":1,"path":"book/download.md","ref":"./book/download.md","articles":[]},"previous":{"title":"... I'm glad you asked ...","level":"1.1","depth":1,"path":"README.md","ref":"./README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/upload.md","mtime":"2019-02-22T16:52:40.280Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-22T16:53:26.462Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Upload to Stuffer","level":"2.1","depth":1,"next":{"title":"Download from Stuffer","level":"2.2","depth":1,"path":"book/download.md","ref":"./book/download.md","articles":[]},"previous":{"title":"... I'm glad you asked ...","level":"1.1","depth":1,"path":"README.md","ref":"./README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/upload.md","mtime":"2019-02-23T07:18:14.277Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-23T08:59:35.507Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

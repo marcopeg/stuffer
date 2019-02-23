@@ -61,10 +61,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="modifiers.html" />
+    <link rel="next" href="configuration.html" />
     
     
-    <link rel="prev" href="download.html" />
+    <link rel="prev" href="modifiers.html" />
     
 
     </head>
@@ -139,20 +139,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.3" data-path="authentication.html">
-            
-                <a href="authentication.html">
-            
-                    
-                    Authentication
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="2.4" data-path="modifiers.html">
+        <li class="chapter " data-level="2.3" data-path="modifiers.html">
             
                 <a href="modifiers.html">
             
@@ -165,12 +152,12 @@
             
         </li>
     
-        <li class="chapter " data-level="2.5" data-path="extensions.md">
+        <li class="chapter active" data-level="2.4" data-path="authentication.html">
             
-                <span>
+                <a href="authentication.html">
             
                     
-                    Extensions
+                    Authentication
             
                 </a>
             
@@ -178,12 +165,25 @@
             
         </li>
     
-        <li class="chapter " data-level="2.6" data-path="configuration.md">
+        <li class="chapter " data-level="2.5" data-path="configuration.html">
             
-                <span>
+                <a href="configuration.html">
             
                     
                     Configuration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="extensions.html">
+            
+                <a href="extensions.html">
+            
+                    
+                    Extensions
             
                 </a>
             
@@ -198,9 +198,9 @@
         
         
     
-        <li class="chapter " data-level="3.1" data-path="cache.html">
+        <li class="chapter " data-level="3.1" data-path="core-extensions/cache.html">
             
-                <a href="cache.html">
+                <a href="core-extensions/cache.html">
             
                     
                     Cache
@@ -211,9 +211,9 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2" data-path="store-s3.md">
+        <li class="chapter " data-level="3.2" data-path="core-extensions/store-s3.html">
             
-                <span>
+                <a href="core-extensions/store-s3.html">
             
                     
                     StoreS3
@@ -272,19 +272,36 @@
                                 <h1 id="authentication">Authentication</h1>
 <p>The authentication feature uses <a href="https://jwt.io" target="_blank">JWT</a> to regulate upload and download
 capabilities.</p>
-<h2 id="jwt-payload">JWT Payload</h2>
+<h2 id="generate-a-jwt">Generate a JWT</h2>
+<p>Use <a href="https://jwt.io" target="_blank">JWT.io</a> to generate a valid token that you can use to validate
+your requests.</p>
 <p>The JWT payload identifies a <strong>space</strong>:</p>
 <pre><code>{
     &quot;space&quot;: &quot;mpeg&quot;,
     &quot;exp&quot;: 1516239022,
     &quot;iat&quot;: 1516239022
 }
-</code></pre><h2 id="jwt-expiry-setting">JWT Expiry Setting</h2>
+</code></pre><h4 id="jwt-secret">JWT Secret</h4>
+<p>You can customize the JWT secret by setting the environment variable:</p>
+<pre><code>JWT_SECRET=stuffer
+</code></pre><p>If you don&apos;t do it, a random secret will be generated for you and prompted as
+console log information. We recommend you set your own secret.</p>
+<h4 id="jwt-expiry-setting">JWT Expiry Setting</h4>
 <p>It is quite important that you always generate JWTs with the shortest possible lifespan,
 so even if they are shared in the Internet, nobody will actually be able to access
 Stuffer&apos;s files.</p>
 <p>Long term read-only JWTs may be produced for sharing a specific resource. This is a feature
 that is not yet available.</p>
+<hr>
+<h2 id="secure-the-upload">Secure the Upload</h2>
+<p>By defaul anyone can upload stuff in Stuffer. The uploaded resource ends up in a default
+space that you can customize in the <a href="upload.html">upload feature</a>.</p>
+<p>You can restrict uploads to authenticated requests by setting the evironment variable:</p>
+<pre><code>AUTH_ENABLE_ANONYMOUS_UPLOAD=false
+</code></pre><p>With that configuration active, a user must provide an <strong>Authentication header</strong> with a
+valid JWT that targets a specific space for the upload.</p>
+<pre><code>Authentication: Bearer xxx
+</code></pre><hr>
 <h2 id="download">Download</h2>
 <p>By default anonymous downloads are enabled globally.</p>
 <p>If you want to disable this feature you can provide an environment variable:</p>
@@ -292,21 +309,13 @@ that is not yet available.</p>
 </code></pre><p>Now you must provide a valid JWT that will allow you to download resources from the
 space that is defined in the payload:</p>
 <pre><code>http://stuffer.com/space/uuid/file.jpg?__auth=xxx
-</code></pre><p><strong>NOTE:</strong> fine grained permissions may be implemented by an <strong>Authorization</strong> feature.</p>
-<p>When the anonymous download is disable the download is automatically scoped to the
+</code></pre><p><strong>NOTE:</strong> fine grained permissions may be implemented by an <strong>Authorization</strong> extension.</p>
+<p>When the anonymous download is disabled, the download is automatically scoped to the
 space defined in the JWT. If you want to enable cross-space downloads you can set:</p>
 <pre><code>AUTH_ENABLE_CROSS_SPACE_DOWNLOAD=true
 </code></pre><p>This way you can generate a generic (and short living) JWT that grants download access
 to the whole Stuffer instance.</p>
-<h2 id="upload">Upload</h2>
-<p>By defaul anyone can upload stuff in Stuffer. The resource end up in a default space
-that you can customize in the <a href="upload.html">upload feature</a>.</p>
-<p>You can restrict uploads to authenticated requests by setting the evironment variable:</p>
-<pre><code>AUTH_ENABLE_ANONYMOUS_UPLOAD=false
-</code></pre><p>With that configuration active, a user must provide an <strong>Authentication header</strong> with a
-valid JWT that targets a specific space for the upload.</p>
-<pre><code>Authentication: Bearer xxx
-</code></pre>
+
                                 
                                 </section>
                             
@@ -333,12 +342,12 @@ valid JWT that targets a specific space for the upload.</p>
 
             
                 
-                <a href="download.html" class="navigation navigation-prev " aria-label="Previous page: Download from Stuffer">
+                <a href="modifiers.html" class="navigation navigation-prev " aria-label="Previous page: Modifiers">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="modifiers.html" class="navigation navigation-next " aria-label="Next page: Modifiers">
+                <a href="configuration.html" class="navigation navigation-next " aria-label="Next page: Configuration">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -349,7 +358,7 @@ valid JWT that targets a specific space for the upload.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Authentication","level":"2.3","depth":1,"next":{"title":"Modifiers","level":"2.4","depth":1,"path":"book/modifiers.md","ref":"./book/modifiers.md","articles":[]},"previous":{"title":"Download from Stuffer","level":"2.2","depth":1,"path":"book/download.md","ref":"./book/download.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/authentication.md","mtime":"2019-02-22T15:07:43.956Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-22T16:53:26.462Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Authentication","level":"2.4","depth":1,"next":{"title":"Configuration","level":"2.5","depth":1,"path":"book/configuration.md","ref":"./book/configuration.md","articles":[]},"previous":{"title":"Modifiers","level":"2.3","depth":1,"path":"book/modifiers.md","ref":"./book/modifiers.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/authentication.md","mtime":"2019-02-23T07:05:59.455Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-23T08:59:35.507Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
