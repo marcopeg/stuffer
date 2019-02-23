@@ -12,11 +12,11 @@ version:= $(shell node -p "require('../../package.json').version")
 tag?=${organization}/${name}
 
 # Mish
+port?=8080
 loglevel?=info
-host?=172.16.135.157
-port?=5050
-pgport?=5053
-token?=xxx
+jwts?=stuffer
+ext?=cache
+url?=https://marcopeg.ngrok.io
 
 # Build the project using cache
 image:
@@ -29,14 +29,11 @@ run:
 		--rm \
 		--name ${name} \
 		-p ${port}:8080 \
-		-e PG_HOST=${host} \
-		-e PG_PORT=${pgport} \
-		-e PG_DATABASE=postgres \
-		-e PG_USERNAME=postgres \
-		-e PG_PASSWORD=postgres \
 		-e LOG_LEVEL=${loglevel} \
-		-e API_DEFAULT_TOKEN=${token} \
-		${name}
+		-e JWT_SECRET=${jwts} \
+		-e STUFFER_CORE_EXTENSIONS=${ext} \
+		-e DOWNLOAD_BASE_URL=${url} \
+		${tag}
 
 stop:
 	docker stop ${name}
