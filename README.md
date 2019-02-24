@@ -26,7 +26,7 @@ with your own implementation. Again, Stuffer is just a framework!
 
 ## Quick Start
 
-    docker run -p 8080:8080 marcopeg/stuffer
+    docker run --rm -p 8080:8080 marcopeg/stuffer
 
 Try to post a file to `http://localhost:8080/upload`:
 
@@ -45,7 +45,7 @@ And then try to retrieve it by surfing to:
 
 This will create a secured instance that persists data in your local folder
 
-    docker run \
+    docker run --rm \
       -p 8080:8080 \
       -v ${PWD}/stuffer-data:/var/lib/stuffer \
       -e JWT_SECRET=12345 \
