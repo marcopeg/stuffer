@@ -11,33 +11,34 @@ export default options => ({
     priority: 600,
     handler: (req, res, next) => {
         const makeMetaFile = fieldName => new Promise((resolve, reject) => {
-            const fileInfo = req.data.upload.form.files[fieldName]
+            const file = req.data.upload.form.files[fieldName]
             const fileChecksum = req.data.upload.form.fields[`${fieldName}_checksum`]
 
             const fileMeta = {
-                name: fileInfo.name,
-                originalName: fileInfo.originalName === fileInfo.name
+                createdAt: (new Date()).toISOString(),
+                fileName: file.fileName,
+                fileNameOriginal: file.fileNameOriginal === file.fileName
                     ? null
-                    : fileInfo.originalName,
-                nameB64: fileInfo.nameB64,
-                type: fileInfo.mimeType,
-                encoding: fileInfo.encoding,
-                bytes: fileInfo.bytesWritten,
+                    : file.fileNameOriginal,
+                fileNameHashed: file.fileNameHashed,
+                type: file.mimeType,
+                encoding: file.encoding,
+                bytes: file.bytesWritten,
                 checksum: null,
                 data: (req.data.upload.form.fields[`${fieldName}_meta`] || {}),
             }
 
             const markAsError = (error) => {
-                fileInfo.success = false
-                fileInfo.errors.push(error)
-                req.data.upload.form.errors.push({ type: 'file', ...fileInfo })
+                file.success = false
+                file.errors.push(error)
+                req.data.upload.form.errors.push({ type: 'file', ...file })
                 delete req.data.upload.form.files[fieldName]
                 reject()
             }
 
             // generate server checksum
             try {
-                fileMeta.checksum = md5File.sync(fileInfo.tempPath)
+                fileMeta.checksum = md5File.sync(file.tempPath)
             } catch (err) {
                 return markAsError({
                     type: 'checksum',
@@ -60,7 +61,7 @@ export default options => ({
                 ? { spaces: 4 }
                 : {}
 
-            const metaFileName = `${fileInfo.space}__${fileInfo.uuid}__${fileInfo.nameB64}.json`
+            const metaFileName = `${file.space}__${file.uuid}.json`
             const metaFilePath = path.join(req.data.upload.tempPath, metaFileName)
             fs.writeJson(metaFilePath, fileMeta, jsonSerializeOptions, (err) => {
                 if (err) {
@@ -74,8 +75,8 @@ export default options => ({
                         },
                     })
                 } else {
-                    fileInfo.metaPath = metaFilePath
-                    fileInfo.meta = fileMeta
+                    file.metaPath = metaFilePath
+                    file.meta = fileMeta
                     resolve()
                 }
             })

@@ -41,6 +41,7 @@
     "node-env-file": "^0.1.8",
     "pretty-bytes": "^5.1.0",
     "short-hash": "^1.0.0",
+    "ulid": "^2.3.0",
     "urlencode": "^1.1.0",
     "uuid": "^3.3.2",
     "validator": "^10.11.0",

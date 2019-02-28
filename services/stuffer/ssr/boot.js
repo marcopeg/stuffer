@@ -20,10 +20,10 @@ const services = [
 ]
 
 const features = [
-    require('./features/authentication'),
+    // require('./features/authentication'),
     require('./features/upload'),
-    require('./features/store'),
-    require('./features/download'),
+    // require('./features/store'),
+    // require('./features/download'),
 ]
 
 const getJwtSecret = () => {
