@@ -38,8 +38,8 @@ export const handler = ({ mountPoint, ...settings }) => ({ app }) => {
     sortedMiddlewares.forEach(mid => logVerbose(`[download/middleware] ${mid.priority} - ${mid.name}`))
 
     const mountPoints = [
-        `${mountPoint === '/' ? '' : mountPoint}/:space/:uuid/*/:name`,
-        `${mountPoint === '/' ? '' : mountPoint}/:space/:uuid/:name`,
+        `${mountPoint === '/' ? '' : mountPoint}/:space/:uuid/*/:fileName`,
+        `${mountPoint === '/' ? '' : mountPoint}/:space/:uuid/:fileName`,
     ]
 
     app.get(mountPoints, sortedMiddlewares.map(m => m.handler))

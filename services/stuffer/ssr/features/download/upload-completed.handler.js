@@ -20,15 +20,15 @@ export const handler = settings => async ({ files, errors, options }) => {
         ].join('/')
 
         files[field] = {
-            name: file.name,
+            fileName: file.fileName,
             checksum: file.meta.checksum,
-            type: file.mimeType,
+            mimeType: file.mimeType,
             encoding: file.encoding,
             size: prettyBytes(file.bytesWritten),
             bytes: file.bytesWritten,
             url: {
                 base: baseUrl,
-                original: [ baseUrl, urlencode(file.name) ].join('/'),
+                original: [ baseUrl, urlencode(file.fileName) ].join('/'),
             },
             meta: file.meta.data,
         }

@@ -10,7 +10,7 @@ const fromLocalCache = async (settings, file) => {
     const filePath = [
         file.space,
         file.uuid,
-        `${file.meta.nameB64}.stuff`,
+        `${file.meta.fileNameHashed}.stuff`,
     ].join('/')
 
     const cachePath = path.join(settings.storeS3.base, filePath)
@@ -28,7 +28,7 @@ const fromLocalStore = async (settings, file) => {
     const filePath = [
         file.space,
         file.uuid,
-        `${file.meta.nameB64}.stuff`,
+        `${file.meta.fileNameHashed}.stuff`,
     ].join('/')
 
     const cachePath = path.join(settings.store.base, 'files', filePath)
@@ -42,7 +42,7 @@ const fromRemoteCache = (settings, file) => new Promise(async (resolve) => {
     const filePath = [
         file.space,
         file.uuid,
-        `${file.meta.nameB64}.stuff`,
+        `${file.meta.fileNameHashed}.stuff`,
     ].join('/')
 
     const cachePath = path.join(settings.storeS3.base, filePath)

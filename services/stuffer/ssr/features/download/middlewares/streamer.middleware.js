@@ -15,16 +15,16 @@ export default () => ({
         const file = req.data.download
 
         res.set('Content-Type', `${file.meta.type}; charset=utf-8`)
-        res.set('Content-Disposition', `inline; filename="${urlencode(file.name)}"`)
+        res.set('Content-Disposition', `inline; filename="${urlencode(file.fileName)}"`)
 
         if (req.data.buffer) {
-            logVerbose(`>> BUFFER >> ${file.space}/${file.uuid}/${file.name}`)
+            logVerbose(`>> BUFFER >> ${file.space}/${file.uuid}/${file.fileName}`)
             res.send(req.data.buffer)
             return
         }
 
         if (file.filePath) {
-            logVerbose(`>> FILE >> ${file.space}/${file.uuid}/${file.name} - ${file.filePath}`)
+            logVerbose(`>> FILE >> ${file.space}/${file.uuid}/${file.fileName} - ${file.filePath}`)
             res.sendFile(file.filePath)
             return
         }

@@ -12,7 +12,7 @@ export default options => ({
         const file = {
             space: req.params.space,
             uuid: req.params.uuid,
-            name: req.params.name,
+            fileName: req.params.fileName,
             exists: null,
             meta: null,
             metaPath: null,

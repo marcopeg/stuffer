@@ -61,7 +61,7 @@ export default options => ({
                 ? { spaces: 4 }
                 : {}
 
-            const metaFileName = `${file.space}__${file.uuid}.json`
+            const metaFileName = `${file.space}__${file.uuid}__${file.fileNameHashed}.json`
             const metaFilePath = path.join(req.data.upload.tempPath, metaFileName)
             fs.writeJson(metaFilePath, fileMeta, jsonSerializeOptions, (err) => {
                 if (err) {
