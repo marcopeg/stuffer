@@ -2,6 +2,7 @@ import path from 'path'
 import fs from 'fs-extra'
 import AWS from 'aws-sdk'
 import { logError, logDebug } from 'services/logger'
+import { hashFileName } from 'lib/hash-file-name'
 import { setCache, getCache } from './lru-cache'
 
 const fileExists = s => new Promise(r => fs.access(s, fs.F_OK, e => r(!e)))
@@ -10,7 +11,8 @@ const fromLocalCache = async (settings, file) => {
     const filePath = [
         file.space,
         file.uuid,
-        `${file.meta.fileNameHashed}.stuff`,
+        // `${file.meta.fileNameHashed}.stuff`,
+        `${hashFileName(requestedFileName)}.stuff`,
     ].join('/')
 
     const cachePath = path.join(settings.storeS3.base, filePath)
@@ -28,7 +30,8 @@ const fromLocalStore = async (settings, file) => {
     const filePath = [
         file.space,
         file.uuid,
-        `${file.meta.fileNameHashed}.stuff`,
+        // `${file.meta.fileNameHashed}.stuff`,
+        `${hashFileName(requestedFileName)}.stuff`,
     ].join('/')
 
     const cachePath = path.join(settings.store.base, 'files', filePath)
@@ -42,7 +45,8 @@ const fromRemoteCache = (settings, file) => new Promise(async (resolve) => {
     const filePath = [
         file.space,
         file.uuid,
-        `${file.meta.fileNameHashed}.stuff`,
+        // `${file.meta.fileNameHashed}.stuff`,
+        `${hashFileName(requestedFileName)}.stuff`,
     ].join('/')
 
     const cachePath = path.join(settings.storeS3.base, filePath)
@@ -76,23 +80,23 @@ const fromRemoteCache = (settings, file) => new Promise(async (resolve) => {
 })
 
 export default settings => ({ setResolver }) =>
-    setResolver(async ({ file, base }) => {
+    setResolver(async ({ file, base, requestedFileName }) => {
         // check local cache
-        const local = await fromLocalCache(settings, file)
+        const local = await fromLocalCache(settings, file, requestedFileName)
         if (local) {
             file.filePath = local
             return
         }
 
         // check original path
-        const original = await fromLocalStore(settings, file)
+        const original = await fromLocalStore(settings, file, requestedFileName)
         if (original) {
             file.filePath = original
             return
         }
 
         // download from S3 to cache
-        const fetchit = await fromRemoteCache(settings, file)
+        const fetchit = await fromRemoteCache(settings, file, requestedFileName)
         if (fetchit) {
             file.filePath = fetchit
             return

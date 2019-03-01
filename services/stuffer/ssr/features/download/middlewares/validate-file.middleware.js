@@ -9,6 +9,7 @@ export default options => ({
             async: 'serie',
             args: {
                 file: req.data.download,
+                requestedFileName: req.params.fileName,
             },
         })
 

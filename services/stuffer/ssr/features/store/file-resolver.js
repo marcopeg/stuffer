@@ -8,12 +8,15 @@
  * try to read and stream out the file.
  */
 
-export default ({ file, base }) => {
+import { hashFileName } from 'lib/hash-file-name'
+
+export default ({ file, base, requestedFileName }) => {
     file.filePath = [
         base,
         'files',
         file.space,
         file.uuid,
-        `${file.meta.fileNameHashed}.stuff`,
+        // `${file.meta.fileNameHashed}.stuff`,
+        `${hashFileName(requestedFileName)}.stuff`,
     ].join('/')
 }

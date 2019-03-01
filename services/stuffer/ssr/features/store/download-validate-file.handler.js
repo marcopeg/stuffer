@@ -11,11 +11,11 @@ import { createHook } from '@marcopeg/hooks'
 import { STORE_CHANGE_RESOLVER } from './hooks'
 import fileResolver from './file-resolver'
 
-export const handler = ({ base }) => async ({ file }) => {
+export const handler = ({ base }) => async ({ file, requestedFileName }) => {
     // Let extensions set an custom resolver
     const setResolver = fn => (setResolver.fn = fn)
     createHook(STORE_CHANGE_RESOLVER, { args: { setResolver } })
     const resolver = setResolver.fn || fileResolver
 
-    return resolver({ file, base })
+    return resolver({ file, base, requestedFileName })
 }

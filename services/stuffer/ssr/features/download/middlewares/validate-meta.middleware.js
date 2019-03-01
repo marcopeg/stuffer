@@ -23,10 +23,10 @@ export default () => ({
         }
 
         // #15 Enforce that the requested file name is coherent with the download
-        if (req.params.fileName !== req.data.download.meta.fileName) {
-            res.status(404).send('file not found')
-            return
-        }
+        // if (req.params.fileName !== req.data.download.meta.fileName) {
+        //     res.status(404).send('file not found')
+        //     return
+        // }
 
         next()
     },

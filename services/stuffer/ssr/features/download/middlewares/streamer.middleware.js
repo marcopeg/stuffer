@@ -25,9 +25,19 @@ export default () => ({
 
         if (file.filePath) {
             logVerbose(`>> FILE >> ${file.space}/${file.uuid}/${file.fileName} - ${file.filePath}`)
-            res.sendFile(file.filePath)
+            res.sendFile(file.filePath, null, (err) => {
+                if (!err) return
+                res.set('Content-Type', 'text/plain')
+                res.status(404)
+                res.send('not found')
+            })
             return
         }
+
+        // any other case
+        res.set('Content-Type', 'text/plain')
+        res.status(404)
+        res.send('not found')
     },
 })
 
