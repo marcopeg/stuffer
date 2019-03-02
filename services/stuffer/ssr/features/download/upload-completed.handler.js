@@ -32,5 +32,10 @@ export const handler = settings => async ({ files, errors, options }) => {
             },
             meta: file.meta.data,
         }
+
+        // Add the file variants urls
+        Object.keys(file.fileVariants).forEach(key =>
+            files[field].url[key] = [ baseUrl, urlencode(file.fileVariants[key]) ].join('/')
+        )
     }
 }

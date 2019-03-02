@@ -23,6 +23,7 @@ const features = [
     require('./features/authentication'),
     require('./features/upload'),
     require('./features/store'),
+    require('./features/postprocess'),
     require('./features/download'),
 ]
 
@@ -80,6 +81,11 @@ registerAction({
             base: config.get('STORE_DATA_PATH', path.join(settings.stufferData, 'store')),
         }
 
+        settings.postprocess = {
+            base: config.get('POSTPROCESS_DATA_PATH', path.join(settings.stufferData, 'postprocess')),
+            rules: [],
+        }
+
         settings.auth = {
             isAnonymousUploadEnabled: config.get('AUTH_ENABLE_ANONYMOUS_UPLOAD', 'true') === 'true',
             isAnonymousDownloadEnabled: config.get('AUTH_ENABLE_ANONYMOUS_DOWNLOAD', 'true') === 'true',
@@ -90,6 +96,12 @@ registerAction({
             settings.download.modifiers = JSON.parse(config.get('DOWNLOAD_MODIFIERS', '{}'))
         } catch (err) {
             throw new Error('env variable "DOWNLOAD_MODIFIERS" contains invalid JSON')
+        }
+        
+        try {
+            settings.postprocess.rules = JSON.parse(config.get('POSTPROCESS_RULES', '[]'))
+        } catch (err) {
+            throw new Error('env variable "POSTPROCESS_RULES" contains invalid JSON')
         }
 
         // ---- EXTENSIONS
