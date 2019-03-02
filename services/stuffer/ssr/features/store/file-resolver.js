@@ -11,6 +11,7 @@
 import { hashFileName } from 'lib/hash-file-name'
 
 export default ({ file, base, requestedFileName }) => {
+    console.log('@DEPRECATED: should use the resolvers.js')
     file.filePath = [
         base,
         'files',

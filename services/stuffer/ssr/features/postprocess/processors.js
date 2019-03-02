@@ -16,3 +16,6 @@ export const processorIsValid = name => state.rules.includes(name)
 
 export const processorGetFileName = (name, file) =>
     state.processors[name].fileName(file)
+
+export const processorExec = (name, origin, target, options) =>
+    state.processors[name].exec(origin, target, options)

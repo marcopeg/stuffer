@@ -14,10 +14,11 @@
 
 import path from 'path'
 import fs from 'fs-extra'
+import { ulid } from 'ulid'
 import { processorIsValid, processorGetFileName } from './processors'
 
 const getTaskFileName = (file, rule) =>
-    `${Date.now()}_${file.space}@${file.uuid}:${rule.apply}.json`
+    `${ulid()}.json`
 
 export const handler = settings => {
     const jsonSerializeOptions = process.env.NODE_ENV === 'development'
@@ -40,7 +41,8 @@ export const handler = settings => {
                             space: file.space,
                             uuid: file.uuid,
                             rule: rule.apply,
-                            fileName: processorGetFileName(rule.apply, file),
+                            fileName: file.fileName,
+                            fileNameVariant: processorGetFileName(rule.apply, file),
                             options: rule.options,
                         }
                         file.fileVariants[rule.apply] = taskData.fileName
