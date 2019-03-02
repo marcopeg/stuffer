@@ -21,10 +21,7 @@ export default options => ({
         }
 
         await createHook(DOWNLOAD_CONTEXT, {
-            async: 'serie',
-            args: {
-                file,
-            },
+            args: { file },
         })
 
         req.data.download = file

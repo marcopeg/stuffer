@@ -6,6 +6,8 @@ import fs from 'fs-extra'
 import archiver from 'archiver'
 import { REGISTER_PROCESSORS } from 'features/postprocess/hooks'
 
+const fileName = file => `${file.fileName}.zip`
+
 const exec = (origin, target, task) => new Promise((resolve, reject) => {
     const output = fs.createWriteStream(target)
     const archive = archiver('zip', {
@@ -31,7 +33,7 @@ export const register = ({ registerAction }) =>
         name: 'processor--gzip--extension',
         handler: ({ registerProcessor }) => registerProcessor({
             name: 'gzip',
-            fileName: file => `${file.fileName}.zip`,
+            fileName,
             exec,
         }),
     })

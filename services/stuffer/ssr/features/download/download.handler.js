@@ -20,10 +20,10 @@ export const handler = ({ mountPoint, ...settings }) => ({ app }) => {
         // token middleware
         contextMiddleware(settings),
         validateMetaMiddleware(settings),
-        listModifiersMiddleware(settings, modifiers),
-        validateModifiersMiddleware(settings, modifiers),
+        // listModifiersMiddleware(settings, modifiers),
+        // validateModifiersMiddleware(settings, modifiers),
         validateFileMiddleware(settings),
-        applyModifiersMiddleware(settings, modifiers),
+        // applyModifiersMiddleware(settings, modifiers),
         streamerMiddleware(settings),
     ]
 
