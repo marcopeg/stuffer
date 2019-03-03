@@ -130,9 +130,10 @@ registerAction({
         const extensions = [ ...devExtensions, ...coreExtensions, ...communityExtensions ]
         for (const extensionPath of extensions) {
             const extension = require(extensionPath)
-            if (extension.register) {
+            const extensionHandler = extension.register || extension.default
+            if (extensionHandler) {
                 logInfo(`activate extension: ${extensionPath}`)
-                await extension.register({
+                await extensionHandler({
                     registerAction,
                     createHook,
                     settings: { ...settings },

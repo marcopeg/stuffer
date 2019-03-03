@@ -27,7 +27,7 @@ const exec = (origin, target, task) => new Promise((resolve, reject) => {
     archive.finalize()
 })
 
-export const register = ({ registerAction }) =>
+export default ({ registerAction }) =>
     registerAction({
         hook: REGISTER_PROCESSORS,
         name: 'processor--gzip--extension',
