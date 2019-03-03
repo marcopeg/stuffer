@@ -6,7 +6,9 @@ import fs from 'fs'
 import path from 'path'
 import Busboy from 'busboy'
 import { ulid } from 'ulid'
+import { createHook } from '@marcopeg/hooks'
 import { hashFileName } from 'lib/hash-file-name'
+import { UPLOAD_FILE_INFO } from '../hooks'
 
 export default options => ({
     name: 'stream',
@@ -70,9 +72,13 @@ export default options => ({
                 bytesWritten: 0,
                 tempPath,
                 metaPath: null,
-                variants: [], // contains optional file names for postprocessed variants
                 errors: [],
             }
+
+            // Extend upload file info
+            createHook(UPLOAD_FILE_INFO, { args: {
+                fileInfo: info,
+            }})
 
             const fileStream = fs.createWriteStream(tempPath)
 

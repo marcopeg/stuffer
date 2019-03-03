@@ -5,6 +5,8 @@
 import fs from 'fs-extra'
 import path from 'path'
 import md5File from 'md5-file'
+import { createHook } from '@marcopeg/hooks'
+import { UPLOAD_FILE_META } from '../hooks'
 
 export default options => ({
     name: 'meta',
@@ -28,8 +30,13 @@ export default options => ({
                 bytes: file.bytesWritten,
                 checksum: null,
                 data: (req.data.upload.form.fields[`${fieldName}_meta`] || {}),
-                variants: file.variants,
             }
+
+            // Extend upload file Meta
+            createHook(UPLOAD_FILE_META, { args: {
+                file,
+                fileMeta,
+            }})
 
             const markAsError = (error) => {
                 file.success = false

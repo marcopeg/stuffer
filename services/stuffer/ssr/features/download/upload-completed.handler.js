@@ -3,9 +3,10 @@
  * informations to the file retrieve.
  */
 
-import path from 'path'
 import prettyBytes from 'pretty-bytes'
 import urlencode from 'urlencode'
+import { createHook } from '@marcopeg/hooks'
+import { DOWNLOAD_FILE_INFO } from './hooks'
 
 export const handler = settings => async ({ files, errors, options }) => {
     const { mountPoint } = settings
@@ -34,10 +35,10 @@ export const handler = settings => async ({ files, errors, options }) => {
             meta: file.meta.data,
         }
 
-        // Add the file variants urls
-        file.variants.forEach(variant => {
-            const fileName = urlencode(variant.fileName)
-            files[field].url[variant.rule] = [ baseUrl, fileName ].join('/')
-        })
+        createHook(DOWNLOAD_FILE_INFO, { args: {
+            baseUrl,
+            fileInfo: file,
+            fileManifest: files[field],
+        }})
     }
 }
