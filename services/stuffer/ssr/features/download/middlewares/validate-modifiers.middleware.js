@@ -17,7 +17,7 @@ export default (settings, modifiers) => ({
                     // merge the modifier's settings with global / token / file
                     req.data.modifiers.settings[name] = {
                         ...(settings.modifiers[name] || {}),
-                        // @TODO: add token based modifiers settings
+                        // @TODO: add space/auth based modifiers settings
                         ...(req.data.download.meta.data[name] || {}),
                     }
 
