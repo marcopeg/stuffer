@@ -16,16 +16,19 @@ export default options => ({
 
             const fileMeta = {
                 createdAt: (new Date()).toISOString(),
+                space: file.space,
+                uuid: file.uuid,
                 fileName: file.fileName,
+                fileNameHashed: file.fileNameHashed,
                 fileNameOriginal: file.fileNameOriginal === file.fileName
                     ? null
                     : file.fileNameOriginal,
-                fileNameHashed: file.fileNameHashed,
                 type: file.mimeType,
                 encoding: file.encoding,
                 bytes: file.bytesWritten,
                 checksum: null,
                 data: (req.data.upload.form.fields[`${fieldName}_meta`] || {}),
+                variants: file.variants,
             }
 
             const markAsError = (error) => {

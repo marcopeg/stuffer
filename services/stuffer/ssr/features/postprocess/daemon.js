@@ -26,8 +26,8 @@ const loop = async () => {
 
     const taskFilePath = path.join(state.tasksPath, target)
     const data = await fs.readJSON(taskFilePath)
-    const sourceFilePath = await resolveFile(data.space, data.uuid, data.fileName)
-    const destFilePath = await computeFile(data.space, data.uuid, data.fileNameVariant)
+    const sourceFilePath = await resolveFile(data.space, data.uuid, data.originalFileName)
+    const destFilePath = await computeFile(data.space, data.uuid, data.fileName)
     await processorExec(data.rule, sourceFilePath, destFilePath, data)
     await fs.unlink(taskFilePath)
 

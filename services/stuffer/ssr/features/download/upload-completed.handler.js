@@ -3,6 +3,7 @@
  * informations to the file retrieve.
  */
 
+import path from 'path'
 import prettyBytes from 'pretty-bytes'
 import urlencode from 'urlencode'
 
@@ -27,15 +28,16 @@ export const handler = settings => async ({ files, errors, options }) => {
             size: prettyBytes(file.bytesWritten),
             bytes: file.bytesWritten,
             url: {
-                base: baseUrl,
+                resource: baseUrl,
                 original: [ baseUrl, urlencode(file.fileName) ].join('/'),
             },
             meta: file.meta.data,
         }
 
         // Add the file variants urls
-        Object.keys(file.fileVariants).forEach(key =>
-            files[field].url[key] = [ baseUrl, urlencode(file.fileVariants[key]) ].join('/')
-        )
+        file.variants.forEach(variant => {
+            const fileName = urlencode(variant.fileName)
+            files[field].url[variant.rule] = [ baseUrl, fileName ].join('/')
+        })
     }
 }

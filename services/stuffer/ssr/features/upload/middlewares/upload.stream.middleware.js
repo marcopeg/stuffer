@@ -70,7 +70,7 @@ export default options => ({
                 bytesWritten: 0,
                 tempPath,
                 metaPath: null,
-                fileVariants: {}, // contains optional file names for postprocessed variants
+                variants: [], // contains optional file names for postprocessed variants
                 errors: [],
             }
 
