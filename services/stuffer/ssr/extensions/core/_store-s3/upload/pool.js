@@ -1,4 +1,5 @@
 import { logInfo, logError, logDebug, logVerbose } from 'services/logger'
+import { isFree, lock } from 'features/store'
 import Uploader from './uploader'
 
 const settings = {
@@ -28,20 +29,26 @@ const loop = async () => {
         return
     }
 
-    state.current = tasks.shift()
-    if (!state.current) {
-        logVerbose('[store-s3] upload queue is empty')
-        state.timer = setTimeout(loop, settings.intervalOnEmpty)
-        return
-    }
+    // get first non busy task for upload
+    state.current = tasks.find(item => isFree(item.file))
+    console.log(state.current)
 
-    try {
-        await state.current.upload()
-        state.timer = setTimeout(loop, settings.interval)
-    } catch (err) {
-        logError(`[store-s3] upload error: ${err.message}`)
-        state.timer = setTimeout(loop, settings.intervalOnError)
-    }
+    // state.current = tasks.shift()
+    // if (!state.current) {
+    //     logVerbose('[store-s3] upload queue is empty')
+    //     state.timer = setTimeout(loop, settings.intervalOnEmpty)
+    //     return
+    // }
+
+    // try {
+    //     await state.current.upload()
+    //     tasks.splice(tasks.indexOf(state.current), 1)
+
+    //     state.timer = setTimeout(loop, settings.interval)
+    // } catch (err) {
+    //     logError(`[store-s3] upload error: ${err.message}`)
+    //     state.timer = setTimeout(loop, settings.intervalOnError)
+    // }
 }
 
 export const init = ({ filesPath, metaPath, cachePath, aws }) => {

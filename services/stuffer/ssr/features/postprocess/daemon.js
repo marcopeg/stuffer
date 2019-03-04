@@ -63,6 +63,12 @@ const getNextTask = () => new Promise(async (resolve, reject) => {
         const taskName = `task/${file}`
         currentIdx += 1
 
+        // Skip hidden files
+        if (file.substr(0, 1) === '.') {
+            next()
+            return
+        }
+
         // In memory lock, skip the task
         if (!isFree(taskName)) {
             next()

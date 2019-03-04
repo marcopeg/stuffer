@@ -2,6 +2,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import AWS from 'aws-sdk'
 import { logError, logVerbose } from 'services/logger'
+import { lock } from 'features/store'
 
 export default class Uploader {
     constructor (settings, file) {
@@ -68,11 +69,14 @@ export default class Uploader {
 
     upload () {
         return new Promise((resolve, reject) => {
+            const free = lock(this.file)
+
             Promise.all([
                 this.uploadMeta(),
                 this.uploadFile(),
             ])
                 .then(() => {
+                    free()
                     // @TODO: add the file to a local LRU
                     resolve()
                 })
