@@ -9,6 +9,8 @@ import { handler as uploadCompletedHandler } from './upload-completed.handler'
 export { resolveMeta, resolveFile } from './resolvers'
 export { computeMeta, computeFile } from './resolvers'
 
+export { lock, free, isFree } from './lockr'
+
 export const register = ({ settings, registerAction }) => {
     registerAction({
         hook: INIT_FEATURE,
