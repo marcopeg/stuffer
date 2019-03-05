@@ -43,7 +43,7 @@ export default options => ({
 
             // Try to rename the file according to the new file name
             try {
-                const newTempFileName = `${req.data.upload.space}__${customUUID}__${file.nameB64}.stuff`
+                const newTempFileName = `${req.data.upload.space}__${customUUID}__${file.fileNameHashed}.stuff`
                 const newTempPath = path.join(req.data.upload.tempPath, newTempFileName)
                 await fs.move(file.tempPath, newTempPath, { overwrite: true })
                 file.uuid = customUUID

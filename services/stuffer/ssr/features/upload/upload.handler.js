@@ -26,7 +26,7 @@ export const handler = (settings) => ({ app }) => {
     ]
     createHook(UPLOAD_MIDDLEWARES, { args: {
         addUploadMiddleware: mid => middlewares.push(mid),
-    } })
+    }})
 
     const sortedMiddlewares = middlewares
         .slice(0)

@@ -12,7 +12,7 @@ export default options => ({
         const file = {
             space: req.params.space,
             uuid: req.params.uuid,
-            name: req.params.name,
+            fileName: req.params.fileName,
             exists: null,
             meta: null,
             metaPath: null,
@@ -21,10 +21,7 @@ export default options => ({
         }
 
         await createHook(DOWNLOAD_CONTEXT, {
-            async: 'serie',
-            args: {
-                file,
-            },
+            args: { file },
         })
 
         req.data.download = file
