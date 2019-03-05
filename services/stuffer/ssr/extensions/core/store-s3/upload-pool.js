@@ -1,4 +1,4 @@
-import { logInfo, logError, logDebug, logVerbose } from 'services/logger'
+import { logError, logDebug } from 'services/logger'
 import UploadStuff from './upload-stuff'
 import UploadMeta from './upload-meta'
 
@@ -22,7 +22,7 @@ const loop = async () => {
     const task = tasks.find(item => item.isAvailable())
 
     if (!task) {
-        logVerbose('[store-s3] upload queue is empty')
+        logDebug('[store-s3] upload queue is empty')
         state.timer = setTimeout(loop, state.intervalOnEmpty)
         return
     }

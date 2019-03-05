@@ -1,5 +1,6 @@
 import path from 'path'
 import fs from 'fs-extra'
+import { hashFileName } from 'lib/hash-file-name'
 import { getCache } from './lru-cache'
 
 export default (settings) => ({
@@ -16,15 +17,12 @@ export default (settings) => ({
             .map(i => `${i.name}=${i.rawValue}`)
             .join('&')
 
-        const hashedCacheName = process.env.NODE_ENV === 'development'
-            ? cacheName
-            : (new Buffer(cacheName)).toString('base64')
-
-        const fullCacheName = [
+        const fullCacheName = hashFileName([
             req.data.download.space,
             req.data.download.uuid,
-            hashedCacheName,
-        ].join('___')
+            req.data.download.fileName,
+            cacheName,
+        ].join('___'))
 
         // provide cache name informations for writing it later in the request
         req.data.cache = {
