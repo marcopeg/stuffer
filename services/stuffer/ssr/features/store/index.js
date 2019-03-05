@@ -3,7 +3,6 @@ import { UPLOAD_COMPLETED } from 'features/upload/hooks'
 import { FEATURE_NAME } from './hooks'
 
 import { initFeatureHandler } from './init-feature.handler'
-import { startFeatureHandler } from './start-feature.handler'
 import { handler as uploadCompletedHandler } from './upload-completed.handler'
 
 export { resolveMeta, resolveFile } from './resolvers'
@@ -17,13 +16,6 @@ export const register = ({ settings, registerAction }) => {
         name: FEATURE_NAME,
         trace: __filename,
         handler: initFeatureHandler,
-    })
-
-    registerAction({
-        hook: START_FEATURE,
-        name: FEATURE_NAME,
-        trace: __filename,
-        handler: startFeatureHandler,
     })
 
     registerAction({

@@ -1,6 +1,9 @@
 import path from 'path'
 import fs from 'fs-extra'
-import { initResolvers } from './resolvers'
+import { createHook } from '@marcopeg/hooks'
+import { STORE_SET_RESOLVER } from './hooks'
+import { initResolvers, setMetaResolver, setFileResolver } from './resolvers'
+
 
 export const initFeatureHandler = async ({ store }) => {
     await Promise.all([
@@ -9,4 +12,11 @@ export const initFeatureHandler = async ({ store }) => {
     ])
 
     initResolvers(store.base)
+
+    createHook(STORE_SET_RESOLVER, {
+        args: {
+            setMetaResolver,
+            setFileResolver,
+        },
+    })
 }
