@@ -8,7 +8,7 @@
 
 import fs from 'fs-extra'
 
-export default (options, modifiers) => ({
+export default (modifiers) => ({
     name: 'apply-modifiers',
     priority: 600,
     handler: async (req, res, next) => {

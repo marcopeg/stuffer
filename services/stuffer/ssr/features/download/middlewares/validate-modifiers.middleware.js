@@ -2,7 +2,7 @@
  * Parses and validates the requested modifiers
  */
 
-export default (settings, modifiers) => ({
+export default (modifiers) => ({
     name: 'validate-modifiers',
     priority: 400,
     handler: async (req, res, next) => {
@@ -14,22 +14,22 @@ export default (settings, modifiers) => ({
                         throw new Error(`unknown download modifier - ${name}`)
                     }
 
-                    // merge the modifier's settings with global / token / file
-                    req.data.modifiers.settings[name] = {
-                        ...(settings.modifiers[name] || {}),
-                        // @TODO: add space/auth based modifiers settings
-                        ...(req.data.download.meta.data[name] || {}),
+                    let localSettings = {}
+                    try {
+                        localSettings = req.data.modifiers.settings[name]
+                    } catch (err) {
+                        throw new Error(`failed to retrieve modifier settings: ${name} - ${err.message}`)
                     }
 
                     let value
                     try {
-                        value = modifier.parse(rawValue, req.data.modifiers.settings[name], req, res)
+                        value = modifier.parse(rawValue, localSettings, req, res)
                     } catch (err) {
-                        throw new Error(`failed to parse modifier - ${name}`)
+                        throw new Error(`failed to parse modifier: ${name} - ${err.message}`)
                     }
 
-                    if (!modifier.validate(value, req.data.modifiers.settings[name], req, res)) {
-                        throw new Error(`failed to validate - ${name}`)
+                    if (!modifier.validate(value, localSettings, req, res)) {
+                        throw new Error(`failed to validate: ${name} - ${err.message}`)
                     }
 
                     return {

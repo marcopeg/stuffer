@@ -1,4 +1,5 @@
 import path from 'path'
+import fs from 'fs-extra'
 import glob from 'glob'
 import uuid from 'uuid/v1'
 import * as config from '@marcopeg/utils/lib/config'
@@ -47,7 +48,16 @@ registerAction({
     hook: SETTINGS,
     name: '♦ boot',
     handler: async ({ settings }) => {
-        settings.stufferData = config.get('STUFFER_DATA', '/var/lib/stuffer')
+        settings.stufferData = config.get('STUFFER_DATA', path.join(process.cwd(), 'data'))
+        settings.stufferConfig = config.get('STUFFER_CONFIG', path.join(process.cwd(), '.stuffrc'))
+
+        // Read the .stuffrc in memory
+        try {
+            settings.stuffrc = await fs.readJSON(settings.stufferConfig)
+        } catch (err) {
+            logVerbose(`[config] could not read .stuffrc: ${settings.stufferConfig} - ${err.message}`)
+            settings.stuffrc = {}
+        }
 
         settings.jwt = {
             secret: getJwtSecret(),
@@ -92,17 +102,17 @@ registerAction({
             isCrossSpaceDownloadEnabled: config.get('AUTH_ENABLE_CROSS_SPACE_DOWNLOAD', 'false') === 'true',
         }
 
-        try {
-            settings.download.modifiers = JSON.parse(config.get('DOWNLOAD_MODIFIERS', '{}'))
-        } catch (err) {
-            throw new Error('env variable "DOWNLOAD_MODIFIERS" contains invalid JSON')
-        }
+        // try {
+        //     settings.download.modifiers = JSON.parse(config.get('DOWNLOAD_MODIFIERS', '{}'))
+        // } catch (err) {
+        //     throw new Error('env variable "DOWNLOAD_MODIFIERS" contains invalid JSON')
+        // }
         
-        try {
-            settings.postprocess.rules = JSON.parse(config.get('POSTPROCESS_RULES', '[]'))
-        } catch (err) {
-            throw new Error('env variable "POSTPROCESS_RULES" contains invalid JSON')
-        }
+        // try {
+        //     settings.postprocess.rules = JSON.parse(config.get('POSTPROCESS_RULES', '[]'))
+        // } catch (err) {
+        //     throw new Error('env variable "POSTPROCESS_RULES" contains invalid JSON')
+        // }
 
         // ---- EXTENSIONS
 

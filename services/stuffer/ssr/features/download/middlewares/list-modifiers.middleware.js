@@ -15,6 +15,8 @@
  * /:space/:uuid/mod1:val/mod2:val/.../file.txt
  */
 
+import extend from 'extend'
+
 const getQueryModifiers = req =>
     Object.keys(req.query)
         .filter(name => name.substring(0, 1) !== '_')
@@ -38,7 +40,7 @@ const getParamsModifiers = (req) => {
         })
 }
 
-export default (settings, modifiers) => ({
+export default (settings) => ({
     name: 'list-modifiers',
     priority: 300,
     handler: async (req, res, next) => {
@@ -48,10 +50,23 @@ export default (settings, modifiers) => ({
                 ...getParamsModifiers(req),
             ]
 
+            let globalSettings = {}
+            let spaceSettings = {}
+            let resourceSettings = {}
+            try {
+                globalSettings = settings.stuffrc.modifiers
+            } catch (err) {}
+            try {
+                spaceSettings = settings.stuffrc.spaces[req.data.download.space].modifiers
+            } catch (err) {}
+            try {
+                resourceSettings = req.data.download.meta.data.modifiers
+            } catch (err) {}
+
             req.data.modifiers = {
                 requested: items,
                 validated: [],
-                settings: {},
+                settings: extend(true, {}, globalSettings, spaceSettings, resourceSettings),
             }
 
             next()
