@@ -7,7 +7,7 @@
 
     "postprocess": {
         "gzip": {
-            "match": "(.*).pdf",
+            "match": "(.*)",
             "apply":"gzip",
             "options": {}
         }

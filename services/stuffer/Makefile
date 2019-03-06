@@ -13,10 +13,10 @@ tag?=${organization}/${name}
 
 # Mish
 port?=8080
-loglevel?=info
+loglevel?=debug
 jwts?=stuffer
 ext?=cache
-url?=https://marcopeg.ngrok.io
+stuffrc=$(shell pwd)/.stuffrc
 
 # Build the project using cache
 image:
@@ -31,8 +31,7 @@ run:
 		-p ${port}:8080 \
 		-e LOG_LEVEL=${loglevel} \
 		-e JWT_SECRET=${jwts} \
-		-e STUFFER_CORE_EXTENSIONS=${ext} \
-		-e DOWNLOAD_BASE_URL=${url} \
+		-v ${stuffrc}:/var/lib/stuffer/.stuffrc \
 		${tag}
 
 stop:

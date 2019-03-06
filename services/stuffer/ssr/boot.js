@@ -3,7 +3,7 @@ import fs from 'fs-extra'
 import glob from 'glob'
 import uuid from 'uuid/v1'
 import * as config from '@marcopeg/utils/lib/config'
-import { logInfo } from 'services/logger'
+import { logInfo, logVerbose } from 'services/logger'
 import {
     createHook,
     registerAction,
