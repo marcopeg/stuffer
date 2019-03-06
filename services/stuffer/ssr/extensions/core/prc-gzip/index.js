@@ -24,13 +24,14 @@ const exec = (origin, target, task) => new Promise((resolve, reject) => {
     archive.append(fs.createReadStream(origin), {
         name: task.fileName,
     })
+
     archive.finalize()
 })
 
 export default ({ registerAction }) =>
     registerAction({
         hook: REGISTER_PROCESSORS,
-        name: 'processor--gzip--extension',
+        name: 'prc-gzip',
         handler: ({ registerProcessor }) => registerProcessor({
             name: 'gzip',
             fileName,

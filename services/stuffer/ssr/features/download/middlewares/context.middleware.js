@@ -5,7 +5,7 @@
 import { createHook } from '@marcopeg/hooks'
 import { DOWNLOAD_CONTEXT } from '../hooks'
 
-export default options => ({
+export default () => ({
     name: 'context',
     priority: 100,
     handler: async (req, res, next) => {

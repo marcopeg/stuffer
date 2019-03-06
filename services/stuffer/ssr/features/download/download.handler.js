@@ -10,7 +10,7 @@ import validateFileMiddleware from './middlewares/validate-file.middleware'
 import applyModifiersMiddleware from './middlewares/apply-modifiers.middleware'
 import streamerMiddleware from './middlewares/streamer.middleware'
 
-export const handler = ({ mountPoint, ...settings }) => ({ app }) => {
+export const handler = settings => ({ app }) => {
     // Build a list of available modifiers
     const modifiers = {}
     createHook(DOWNLOAD_MODIFIERS, { args: { modifiers } })
@@ -18,13 +18,13 @@ export const handler = ({ mountPoint, ...settings }) => ({ app }) => {
     // Build an expandable list of middlewares
     const middlewares = [
         // token middleware
-        contextMiddleware(settings),
-        validateMetaMiddleware(settings),
-        listModifiersMiddleware(settings, modifiers),
-        validateModifiersMiddleware(settings, modifiers),
-        validateFileMiddleware(settings),
-        applyModifiersMiddleware(settings, modifiers),
-        streamerMiddleware(settings),
+        contextMiddleware(),
+        validateMetaMiddleware(),
+        listModifiersMiddleware(settings),
+        validateModifiersMiddleware(modifiers),
+        validateFileMiddleware(),
+        applyModifiersMiddleware(modifiers),
+        streamerMiddleware(),
     ]
 
     createHook(DOWNLOAD_MIDDLEWARES, { args: {
@@ -37,6 +37,7 @@ export const handler = ({ mountPoint, ...settings }) => ({ app }) => {
 
     sortedMiddlewares.forEach(mid => logVerbose(`[download/middleware] ${mid.priority} - ${mid.name}`))
 
+    const mountPoint = settings.download.mountPoint
     const mountPoints = [
         `${mountPoint === '/' ? '' : mountPoint}/:space/:uuid/*/:fileName`,
         `${mountPoint === '/' ? '' : mountPoint}/:space/:uuid/:fileName`,

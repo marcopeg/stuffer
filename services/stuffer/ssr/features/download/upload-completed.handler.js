@@ -8,9 +8,9 @@ import urlencode from 'urlencode'
 import { createHook } from '@marcopeg/hooks'
 import { DOWNLOAD_FILE_INFO } from './hooks'
 
-export const handler = settings => async ({ files, errors, options }) => {
-    const { mountPoint } = settings
-    const serverUrl = `${settings.baseUrl}${mountPoint === '/' ? '' : mountPoint}`
+export const handler = ({ download }) => async ({ files, errors, options }) => {
+    const { mountPoint } = download
+    const serverUrl = `${download.baseUrl}${mountPoint === '/' ? '' : mountPoint}`
 
     for (const field in files) {
         const file = files[field]

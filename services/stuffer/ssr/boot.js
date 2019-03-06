@@ -1,8 +1,9 @@
 import path from 'path'
+import fs from 'fs-extra'
 import glob from 'glob'
 import uuid from 'uuid/v1'
 import * as config from '@marcopeg/utils/lib/config'
-import { logInfo } from 'services/logger'
+import { logInfo, logVerbose } from 'services/logger'
 import {
     createHook,
     registerAction,
@@ -47,7 +48,16 @@ registerAction({
     hook: SETTINGS,
     name: '♦ boot',
     handler: async ({ settings }) => {
-        settings.stufferData = config.get('STUFFER_DATA', '/var/lib/stuffer')
+        settings.stufferData = config.get('STUFFER_DATA', path.join(process.cwd(), 'data'))
+        settings.stufferConfig = config.get('STUFFER_CONFIG', path.join(process.cwd(), '.stuffrc'))
+
+        // Read the .stuffrc in memory
+        try {
+            settings.stuffrc = await fs.readJSON(settings.stufferConfig)
+        } catch (err) {
+            logVerbose(`[config] could not read .stuffrc: ${settings.stufferConfig} - ${err.message}`)
+            settings.stuffrc = {}
+        }
 
         settings.jwt = {
             secret: getJwtSecret(),
@@ -61,7 +71,7 @@ registerAction({
 
         settings.upload = {
             tempFolder: config.get('UPLOAD_DATA_PATH', path.join(settings.stufferData, 'uploads')),
-            mountPoint: config.get('UPLOAD_MOUNT_POINT', '/upload'),
+            mountPoint: config.get('UPLOAD_MOUNT_POINT', '/'),
             publicSpace: config.get('UPLOAD_PUBLIC_SPACE', 'public'),
             bufferSize: Number(config.get('UPLOAD_BUFFER_SIZE', 2 * 1048576)), // Set 2MiB buffer
             maxSize: Number(config.get('UPLOAD_MAX_SIZE', 1000 * 1048576)), // 100Mb
@@ -74,7 +84,6 @@ registerAction({
         settings.download = {
             baseUrl: config.get('DOWNLOAD_BASE_URL', 'http://localhost:8080'),
             mountPoint: config.get('DOWNLOAD_MOUNT_POINT', '/'),
-            modifiers: {},
         }
         
         settings.store = {
@@ -83,25 +92,12 @@ registerAction({
 
         settings.postprocess = {
             base: config.get('POSTPROCESS_DATA_PATH', path.join(settings.stufferData, 'postprocess')),
-            rules: [],
         }
 
         settings.auth = {
             isAnonymousUploadEnabled: config.get('AUTH_ENABLE_ANONYMOUS_UPLOAD', 'true') === 'true',
             isAnonymousDownloadEnabled: config.get('AUTH_ENABLE_ANONYMOUS_DOWNLOAD', 'true') === 'true',
             isCrossSpaceDownloadEnabled: config.get('AUTH_ENABLE_CROSS_SPACE_DOWNLOAD', 'false') === 'true',
-        }
-
-        try {
-            settings.download.modifiers = JSON.parse(config.get('DOWNLOAD_MODIFIERS', '{}'))
-        } catch (err) {
-            throw new Error('env variable "DOWNLOAD_MODIFIERS" contains invalid JSON')
-        }
-        
-        try {
-            settings.postprocess.rules = JSON.parse(config.get('POSTPROCESS_RULES', '[]'))
-        } catch (err) {
-            throw new Error('env variable "POSTPROCESS_RULES" contains invalid JSON')
         }
 
         // ---- EXTENSIONS
@@ -122,7 +118,8 @@ registerAction({
             .sync(path.resolve(communityExtensionsPath, '[!_]*', 'index.js'))
 
         // core extensions, will be filtered by environment variable
-        const enabledExtensions = config.get('STUFFER_CORE_EXTENSIONS', '---')
+        const rcExtensions = (settings.stuffrc.extensions || ['---']).filter(e => e.substr(0, 1) !== '_').join('|') || '---'
+        const enabledExtensions = config.get('STUFFER_CORE_EXTENSIONS', rcExtensions)
         const coreExtensions = glob
             .sync(path.resolve(__dirname, 'extensions', 'core', `@(${enabledExtensions})`, 'index.js'))
 
