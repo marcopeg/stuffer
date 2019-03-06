@@ -71,5 +71,8 @@ ADD index.js /usr/src/app
 # Default environment configuration:
 ENV NODE_ENV production
 ENV LOG_LEVEL error
+ENV STUFFER_DATA /var/lib/stuffer/data
+ENV STUFFER_COMMUNITY_EXTENSIONS /var/lib/stuffer/extensions
+ENV STUFFER_CONFIG /var/lib/stuffer/.stuffrc
 
 ENTRYPOINT [ "node", "index.js" ]

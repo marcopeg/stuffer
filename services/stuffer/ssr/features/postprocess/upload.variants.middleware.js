@@ -5,6 +5,7 @@
  * The task files will be created at a latter stage.
  */
 
+import extend from 'extend'
 import { processorIsValid, processorGetFileName } from './processors'
 import { hashFileName } from 'lib/hash-file-name'
 
@@ -15,15 +16,26 @@ export default settings => ({
         // walk through every uploaded files
         Object.values(req.data.upload.form.files)
             .map(file => {
-
-                // @TODO: postprocess rules can be specified by:
-                // - app level
-                // - space level
-                // - auth token level
-                // - file level
+                // Compose the postprocess rules for the file
+                // - global
+                // - space
+                // - resouce
+                let globalSettings = {}
+                let spaceSettings = {}
+                let resourceSettings = {}
+                try {
+                    globalSettings = settings.stuffrc.postprocess
+                } catch (err) {}
+                try {
+                    spaceSettings = settings.stuffrc.spaces[file.space].postprocess
+                } catch (err) {}
+                try {
+                    resourceSettings = req.data.upload.form.fields[`${file.field}_meta`].postprocess
+                } catch (err) {}
+                const rulesMap = extend(true, {}, globalSettings, spaceSettings, resourceSettings)
 
                 // walk through every applicable rule
-                settings.postprocess.rules
+                Object.values(rulesMap)
                     .filter(rule => processorIsValid(rule.apply))
                     .filter(rule => RegExp(rule.match, 'g').test(file.fileName))
                     .map(rule => {
