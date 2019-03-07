@@ -8,7 +8,7 @@
 
 import fs from 'fs-extra'
 
-export default (options, modifiers) => ({
+export default (modifiers) => ({
     name: 'apply-modifiers',
     priority: 600,
     handler: async (req, res, next) => {
@@ -19,7 +19,12 @@ export default (options, modifiers) => ({
         }
 
         // create a buffer and process it through all the listed modifiers
-        req.data.buffer = await fs.readFile(req.data.download.filePath)
+        try {
+            req.data.buffer = await fs.readFile(req.data.download.filePath)
+        } catch (err) {
+            res.status(404).send('file not found')
+            return
+        }
 
         // run through all the modifiers
         for (const modifier of req.data.modifiers.validated) {

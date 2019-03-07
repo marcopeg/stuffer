@@ -10,9 +10,7 @@
 
 import Lru from 'lru-cache'
 import fs from 'fs-extra'
-import path from 'path'
-import { logError, logDebug } from 'services/logger'
-import { importCache } from './lru-cache-import'
+import { logVerbose, logError, logDebug } from 'services/logger'
 
 let store = null
 
@@ -22,11 +20,11 @@ export const init = (settings) => {
         maxAge: settings.maxAge,
         length: (val) => val,
         dispose: async (key) => {
-            const uuidPath = path.dirname(key)
             try {
-                await fs.remove(uuidPath)
+                logVerbose(`[store-s3] LRU dispose: ${key}`)
+                await fs.remove(key)
             } catch (err) {
-                logError(`[store-s3] could not delete - ${uuidPath} - ${err.message}`)
+                logError(`[store-s3] could not delete: ${key} - ${err.message}`)
                 logDebug(err)
                 return
             }
@@ -35,9 +33,18 @@ export const init = (settings) => {
 
     // automatic prune the cache out
     setInterval(() => store.prune(), settings.pruneInterval)
-    return importCache(store, settings)
 }
 
 // Interface to the cache middlewares to ping into the cache
-export const setCache = (k, v) => store.set(k, v)
+export const setCache = (k, v) => {
+    const curr = store.get(k)
+
+    if (v === 0) {
+        return
+    }
+
+    if (curr === undefined) {
+        store.set(k, v)
+    }
+}
 export const getCache = (k) => store.get(k)

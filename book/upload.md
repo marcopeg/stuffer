@@ -8,7 +8,16 @@ The minimum requisite is a field file:
     fieldName: f1
     fieldType: file
 
-**NOTE:** try this with postman!
+You can perform an upload via CURL:
+
+    curl -X POST http://localhost:8080/upload \
+        -F f1_uuid=f1 \
+        -F f1_name=image.jpg \
+        -F f1=@/Users/marcopeg/Downloads/file.jpg
+
+Or you can use a UI tool like [postman](https://www.getpostman.com):
+
+![Upload with postman](./media/postman-upload.jpg)
 
 ## Expected Output
 
@@ -20,16 +29,16 @@ Here is an example of a standard response body:
     {
         "files": [
             {
-                "field": "f2",
-                "name": "abs-guide.pdf",
-                "checksum": "6708c6acfe5323a14123aff0b128abcb",
-                "type": "application/pdf",
+                "field": "file",
+                "fileName": "file.jpg",
+                "checksum": "d7fa2ae42c7e18ff5cfc405700641576",
+                "type": "image/jpeg",
                 "encoding": "7bit",
-                "size": "2.74 MB",
-                "bytes": 2741648,
+                "size": "55.8 kB",
+                "bytes": 55767,
                 "url": {
-                    "base": "http://localhost:8080/public/f2",
-                    "original": "http://localhost:8080/public/f2/abs-guide.pdf"
+                    "resource": "http://localhost:8080/public/01D5C49W9N2M8TZW8YE48VH9CZ",
+                    "original": "http://localhost:8080/public/01D5C49W9N2M8TZW8YE48VH9CZ/file.jpg"
                 },
                 "meta": {}
             }
@@ -39,7 +48,7 @@ Here is an example of a standard response body:
                 "type": "file",
                 "success": false,
                 "field": "f1",
-                "name": "elisa.txt",
+                "fileName": "elisa.txt",
                 "uuid": "f1",
                 "space": "public",
                 "encoding": "7bit",

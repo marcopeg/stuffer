@@ -137,20 +137,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="book/modifiers.html">
-            
-                <a href="book/modifiers.html">
-            
-                    
-                    Modifiers
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="2.4" data-path="book/authentication.html">
+        <li class="chapter " data-level="2.3" data-path="book/authentication.html">
             
                 <a href="book/authentication.html">
             
@@ -163,12 +150,25 @@
             
         </li>
     
-        <li class="chapter " data-level="2.5" data-path="book/configuration.html">
+        <li class="chapter " data-level="2.4" data-path="book/modifiers.html">
             
-                <a href="book/configuration.html">
+                <a href="book/modifiers.html">
             
                     
-                    Configuration
+                    Modifiers
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="book/processors.md">
+            
+                <span>
+            
+                    
+                    Processors
             
                 </a>
             
@@ -182,6 +182,19 @@
             
                     
                     Extensions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="book/configuration.html">
+            
+                <a href="book/configuration.html">
+            
+                    
+                    Configuration
             
                 </a>
             
@@ -215,6 +228,26 @@
             
                     
                     StoreS3
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Core Modifiers</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="book/core-extensions/mod-jimp.html">
+            
+                <a href="book/core-extensions/mod-jimp.html">
+            
+                    
+                    mod-jimp
             
                 </a>
             
@@ -285,7 +318,7 @@ the delivery of the final resources.</p>
 with your own implementation. Again, Stuffer is just a framework!</p>
 <hr>
 <h2 id="quick-start">Quick Start</h2>
-<pre><code>docker run -p 8080:8080 marcopeg/stuffer
+<pre><code>docker run --rm -p 8080:8080 marcopeg/stuffer
 </code></pre><p>Try to post a file to <code>http://localhost:8080/upload</code>:</p>
 <pre><code>curl -X POST http://localhost:8080/upload \
     -F f1_uuid=f1 \
@@ -296,9 +329,9 @@ with your own implementation. Again, Stuffer is just a framework!</p>
 </code></pre><hr>
 <h2 id="safe-start">Safe Start</h2>
 <p>This will create a secured instance that persists data in your local folder</p>
-<pre><code>docker run \
+<pre><code>docker run --rm \
   -p 8080:8080 \
-  -v ${PWD}/stuffer-data:/var/lib/stuffer \
+  -v ${PWD}/stuffer-data:/var/lib/stuffer/data \
   -e JWT_SECRET=12345 \
   -e AUTH_ENABLE_ANONYMOUS_UPLOAD=false \
   -e AUTH_ENABLE_ANONYMOUS_DOWNLOAD=false \
@@ -322,10 +355,11 @@ decades...</p>
 <ul>
 <li><a href="book/upload.html">Upload to Stuffer</a></li>
 <li><a href="book/download.html">Download from Stuffer</a></li>
-<li><a href="book/modifiers.html">Modifiers</a></li>
 <li><a href="book/authentication.html">Authentication</a></li>
-<li><a href="book/configuration.html">Configuration</a></li>
+<li><a href="book/modifiers.html">Modifiers</a></li>
+<li><a href="book/processors.md">Processors</a></li>
 <li><a href="book/extensions.html">Extensions</a></li>
+<li><a href="book/configuration.html">Configuration</a></li>
 </ul>
 <h2 id="core-extensions">Core Extensions</h2>
 <ul>
@@ -371,7 +405,7 @@ decades...</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"... I'm glad you asked ...","level":"1.1","depth":1,"next":{"title":"Upload to Stuffer","level":"2.1","depth":1,"path":"book/upload.md","ref":"./book/upload.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2019-02-23T09:50:52.954Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-23T10:14:48.648Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"... I'm glad you asked ...","level":"1.1","depth":1,"next":{"title":"Upload to Stuffer","level":"2.1","depth":1,"path":"book/upload.md","ref":"./book/upload.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2019-03-07T14:40:49.116Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-03-07T15:18:25.608Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

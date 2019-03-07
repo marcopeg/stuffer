@@ -5,19 +5,10 @@
 import fs from 'fs'
 import path from 'path'
 import Busboy from 'busboy'
-import uuid from 'uuid/v4'
-import hash from 'short-hash'
-
-const encodeFileName = (fileName) =>
-    Buffer
-        .from(fileName)
-        .toString('base64')
-        .replace(/\//g, '@')
-
-const generateUploadId = (fileName) =>
-    process.env.NODE_ENV === 'development'
-        ? `dev-${hash(fileName)}`
-        : uuid()
+import { ulid } from 'ulid'
+import { createHook } from '@marcopeg/hooks'
+import { hashFileName } from 'lib/hash-file-name'
+import { UPLOAD_FILE_INFO } from '../hooks'
 
 export default options => ({
     name: 'stream',
@@ -64,17 +55,17 @@ export default options => ({
         })
 
         busboy.on('file', (fieldName, file, fileName, encoding, mimeType) => {
-            const nameB64 = encodeFileName(fileName)
-            const uuid = generateUploadId(fileName)
-            const tempFileName = `${req.data.upload.space}__${uuid}__${nameB64}.stuff`
+            const fileNameHashed = hashFileName(fileName)
+            const uuid = ulid()
+            const tempFileName = `${req.data.upload.space}__${uuid}__${fileNameHashed}.stuff`
             const tempPath = path.join(req.data.upload.tempPath, tempFileName)
             const info = {
                 success: null,
-                field: fieldName,
-                name: fileName,
-                nameB64,
+                fileName,
+                fileNameHashed,
                 uuid,
                 space: req.data.upload.space,
+                field: fieldName,
                 encoding,
                 mimeType,
                 bytesReceived: 0,
@@ -83,6 +74,11 @@ export default options => ({
                 metaPath: null,
                 errors: [],
             }
+
+            // Extend upload file info
+            createHook(UPLOAD_FILE_INFO, { args: {
+                fileInfo: info,
+            }})
 
             const fileStream = fs.createWriteStream(tempPath)
 

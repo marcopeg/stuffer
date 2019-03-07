@@ -10,22 +10,17 @@ WORKDIR /usr/src/app
 ADD package.json /usr/src/app/package.json
 RUN npm install
 
-# Fix a weird building problem related to CRA
-# https://github.com/facebook/create-react-app/issues/6336
-# RUN npm install terser@3.14.1
-
 # Copy source files:
 WORKDIR /usr/src/app
 ADD index.js /usr/src/app
 ADD index.dev.js /usr/src/app
 ADD .babelrc /usr/src/app
-ADD .babelrc /usr/src/app
 ADD .env /usr/src/app
 ADD .eslintrc /usr/src/app
 ADD .eslintignore /usr/src/app
-#ADD webpack.config.extend.js /usr/src/app
-#ADD webpackDevServer.config.extend.js /usr/src/app
 ADD ssr /usr/src/app/ssr
-#ADD src /usr/src/app/src
-ADD public /usr/src/app/public
 
+# Default environment configuration:
+ENV STUFFER_DATA /var/lib/stuffer/data
+ENV STUFFER_COMMUNITY_EXTENSIONS /var/lib/stuffer/extensions
+ENV STUFFER_CONFIG /var/lib/stuffer/stuffer-config.json

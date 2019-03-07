@@ -73,6 +73,6 @@ ENV NODE_ENV production
 ENV LOG_LEVEL error
 ENV STUFFER_DATA /var/lib/stuffer/data
 ENV STUFFER_COMMUNITY_EXTENSIONS /var/lib/stuffer/extensions
-ENV STUFFER_CONFIG /var/lib/stuffer/.stuffrc
+ENV STUFFER_CONFIG /var/lib/stuffer/stuffer-config.json
 
 ENTRYPOINT [ "node", "index.js" ]

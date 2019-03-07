@@ -8,7 +8,7 @@ to the newly created resource:
             {
                 ...
                 "url": {
-                    "base": "http://localhost:8080/public/f2",
+                    "resource": "http://localhost:8080/public/f2",
                     "original": "http://localhost:8080/public/f2/image.jpg"
                 },
                 ...

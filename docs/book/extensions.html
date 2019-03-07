@@ -61,10 +61,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="core-extensions/cache.html" />
+    <link rel="next" href="configuration.html" />
     
     
-    <link rel="prev" href="configuration.html" />
+    <link rel="prev" href="processors.md" />
     
 
     </head>
@@ -139,20 +139,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="modifiers.html">
-            
-                <a href="modifiers.html">
-            
-                    
-                    Modifiers
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="2.4" data-path="authentication.html">
+        <li class="chapter " data-level="2.3" data-path="authentication.html">
             
                 <a href="authentication.html">
             
@@ -165,12 +152,25 @@
             
         </li>
     
-        <li class="chapter " data-level="2.5" data-path="configuration.html">
+        <li class="chapter " data-level="2.4" data-path="modifiers.html">
             
-                <a href="configuration.html">
+                <a href="modifiers.html">
             
                     
-                    Configuration
+                    Modifiers
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="processors.md">
+            
+                <span>
+            
+                    
+                    Processors
             
                 </a>
             
@@ -184,6 +184,19 @@
             
                     
                     Extensions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="configuration.html">
+            
+                <a href="configuration.html">
+            
+                    
+                    Configuration
             
                 </a>
             
@@ -217,6 +230,26 @@
             
                     
                     StoreS3
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Core Modifiers</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="core-extensions/mod-jimp.html">
+            
+                <a href="core-extensions/mod-jimp.html">
+            
+                    
+                    mod-jimp
             
                 </a>
             
@@ -273,11 +306,28 @@
 <p>Stuffer is a framework that handles uploads and downloads,
 the point is that you can, and should, extend it to suit your needs.</p>
 <h2 id="core-extensions">Core Extensions</h2>
-<p>Stuffer comes with some extensions already. They are basically features that you can
-opt-in with an enviroment variable:</p>
-<pre><code>STUFFER_CORE_EXTENSIONS=ext1|ext2|...
-</code></pre><p>Then you need to refer to each extension&apos;s documentation page to learn how to use it
+<p>Stuffer comes with some <strong>core extensions</strong>. They are basically features that you can
+opt-in in your <code>stuffer-config.json</code> file:</p>
+<pre><code>...
+&quot;extensions&quot;: [
+    &quot;prc-gzip&quot;,
+    &quot;mod-jimp&quot;,
+    ...
+],
+</code></pre><p><a href="configuration.html">Read more about the Stuffer configuration</a></p>
+<p>Then you need to refer to each extension&apos;s documentation page to learn how to use it
 and how to configure it.</p>
+<ul>
+<li>General<ul>
+<li><a href="core-extensions/store-s3.html">store-s3</a></li>
+<li><a href="core-extensions/cache.html">cache</a></li>
+</ul>
+</li>
+<li>Modifiers:<ul>
+<li><a href="core-extensions/mod-jimp.html">mod-jimp</a></li>
+</ul>
+</li>
+</ul>
 <h2 id="community-extensions">Community Extensions</h2>
 <p>[[ TBD ]]</p>
 <h2 id="create-your-extension">Create Your Extension</h2>
@@ -309,12 +359,12 @@ and how to configure it.</p>
 
             
                 
-                <a href="configuration.html" class="navigation navigation-prev " aria-label="Previous page: Configuration">
+                <a href="processors.md" class="navigation navigation-prev " aria-label="Previous page: Processors">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="core-extensions/cache.html" class="navigation navigation-next " aria-label="Next page: Cache">
+                <a href="configuration.html" class="navigation navigation-next " aria-label="Next page: Configuration">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -325,7 +375,7 @@ and how to configure it.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Extensions","level":"2.6","depth":1,"next":{"title":"Cache","level":"3.1","depth":1,"path":"book/core-extensions/cache.md","ref":"./book/core-extensions/cache.md","articles":[]},"previous":{"title":"Configuration","level":"2.5","depth":1,"path":"book/configuration.md","ref":"./book/configuration.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/extensions.md","mtime":"2019-02-23T07:10:49.558Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-23T10:14:48.648Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Extensions","level":"2.6","depth":1,"next":{"title":"Configuration","level":"2.7","depth":1,"path":"book/configuration.md","ref":"./book/configuration.md","articles":[]},"previous":{"title":"Processors","level":"2.5","depth":1,"path":"book/processors.md","ref":"./book/processors.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/extensions.md","mtime":"2019-03-07T14:44:55.143Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-03-07T15:18:25.608Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

@@ -61,10 +61,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="extensions.html" />
+    <link rel="next" href="core-extensions/cache.html" />
     
     
-    <link rel="prev" href="authentication.html" />
+    <link rel="prev" href="extensions.html" />
     
 
     </head>
@@ -139,20 +139,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="modifiers.html">
-            
-                <a href="modifiers.html">
-            
-                    
-                    Modifiers
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="2.4" data-path="authentication.html">
+        <li class="chapter " data-level="2.3" data-path="authentication.html">
             
                 <a href="authentication.html">
             
@@ -165,12 +152,25 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.5" data-path="configuration.html">
+        <li class="chapter " data-level="2.4" data-path="modifiers.html">
             
-                <a href="configuration.html">
+                <a href="modifiers.html">
             
                     
-                    Configuration
+                    Modifiers
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="processors.md">
+            
+                <span>
+            
+                    
+                    Processors
             
                 </a>
             
@@ -184,6 +184,19 @@
             
                     
                     Extensions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="2.7" data-path="configuration.html">
+            
+                <a href="configuration.html">
+            
+                    
+                    Configuration
             
                 </a>
             
@@ -217,6 +230,26 @@
             
                     
                     StoreS3
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Core Modifiers</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="core-extensions/mod-jimp.html">
+            
+                <a href="core-extensions/mod-jimp.html">
+            
+                    
+                    mod-jimp
             
                 </a>
             
@@ -272,53 +305,118 @@
                                 <h1 id="configuration">Configuration</h1>
 <p>Most of the Stuffer&apos;s features can be fine tuned via environment variables.
 Here is a comprehensive list of what you can define.</p>
-<h3 id="loglevel">LOG_LEVEL</h3>
+<h2 id="environment-variables">Environment Variables</h2>
+<p>Most of the Stuffer behaviours can be customized at boot time through the
+definition of environment variables that you normally add to your
+docker-compose file.</p>
+<h6 id="loglevel">LOG_LEVEL</h6>
 <p>Regulates the amount of logging that Stuffer generates: </p>
 <pre><code>LOG_LEVEL=error
 </code></pre><p>Possible values: error|info|verbose|debug</p>
-<h3 id="stufferdata">STUFFER_DATA</h3>
+<h6 id="stufferdata">STUFFER_DATA</h6>
 <p>Defines a writeable disk location where Stuffer will store its data.</p>
-<pre><code>STUFFER_DATA=/var/lib/stuffer
-</code></pre><h3 id="stuffercoreextensions">STUFFER_CORE_EXTENSIONS</h3>
-<pre><code>STUFFER_CORE_EXTENSIONS=---
-</code></pre><h3 id="jwtsecret">JWT_SECRET</h3>
+<pre><code>STUFFER_DATA=/var/lib/stuffer/data
+</code></pre><h6 id="stufferconfig">STUFFER_CONFIG</h6>
+<p>Path to a <code>.stufferc</code> configuration file.</p>
+<pre><code>STUFFER_CONFIG=/var/lib/stuffer/stuffer-config.json
+</code></pre><h6 id="jwtsecret">JWT_SECRET</h6>
 <p>Secret used to validate JWTs</p>
 <pre><code>JWT_SECRET=stuffer
-</code></pre><h3 id="uploadmountpoint">UPLOAD_MOUNT_POINT</h3>
+</code></pre><h6 id="uploadmountpoint">UPLOAD_MOUNT_POINT</h6>
 <pre><code>UPLOAD_MOUNT_POINT=/upload
-</code></pre><h3 id="uploadpublicspace">UPLOAD_PUBLIC_SPACE</h3>
+</code></pre><h6 id="uploadpublicspace">UPLOAD_PUBLIC_SPACE</h6>
 <pre><code>UPLOAD_PUBLIC_SPACE=public
-</code></pre><h3 id="uploadbuffersize">UPLOAD_BUFFER_SIZE</h3>
+</code></pre><h6 id="uploadbuffersize">UPLOAD_BUFFER_SIZE</h6>
 <p>In bits</p>
 <pre><code>UPLOAD_BUFFER_SIZE=2097152
 (2Mbit)
-</code></pre><h3 id="uploadmaxsize">UPLOAD_MAX_SIZE</h3>
+</code></pre><h6 id="uploadmaxsize">UPLOAD_MAX_SIZE</h6>
 <p>In bytes</p>
 <pre><code>UPLOAD_MAX_SIZE=1048576000
 (1Gb)
-</code></pre><h3 id="uploadmaxfilesize">UPLOAD_MAX_FILE_SIZE</h3>
+</code></pre><h6 id="uploadmaxfilesize">UPLOAD_MAX_FILE_SIZE</h6>
 <p>In bytes</p>
 <pre><code>UPLOAD_MAX_FILE_SIZE=1048576000
 (1Gb)
-</code></pre><h3 id="uploadmaxfieldsize">UPLOAD_MAX_FIELD_SIZE</h3>
+</code></pre><h6 id="uploadmaxfieldsize">UPLOAD_MAX_FIELD_SIZE</h6>
 <p>In bytes</p>
 <pre><code>UPLOAD_MAX_FIELD_SIZE=5120
-</code></pre><h3 id="uploadmaxfiles">UPLOAD_MAX_FILES</h3>
+</code></pre><h6 id="uploadmaxfiles">UPLOAD_MAX_FILES</h6>
 <pre><code>UPLOAD_MAX_FILES=10
-</code></pre><h3 id="uploadmaxfields">UPLOAD_MAX_FIELDS</h3>
+</code></pre><h6 id="uploadmaxfields">UPLOAD_MAX_FIELDS</h6>
 <pre><code>UPLOAD_MAX_FIELDS=30
-</code></pre><h3 id="downloadbaseurl">DOWNLOAD_BASE_URL</h3>
+</code></pre><h6 id="downloadbaseurl">DOWNLOAD_BASE_URL</h6>
 <pre><code>DOWNLOAD_BASE_URL=http://localhost:8080
-</code></pre><h3 id="downloadmountpoint">DOWNLOAD_MOUNT_POINT</h3>
+</code></pre><h6 id="downloadmountpoint">DOWNLOAD_MOUNT_POINT</h6>
 <pre><code>DOWNLOAD_MOUNT_POINT=/
-</code></pre><h3 id="authenableanonymousupload">AUTH_ENABLE_ANONYMOUS_UPLOAD</h3>
+</code></pre><h6 id="authenableanonymousupload">AUTH_ENABLE_ANONYMOUS_UPLOAD</h6>
 <pre><code>AUTH_ENABLE_ANONYMOUS_UPLOAD=true
-</code></pre><h3 id="authenableanonymousdownload">AUTH_ENABLE_ANONYMOUS_DOWNLOAD</h3>
+</code></pre><h6 id="authenableanonymousdownload">AUTH_ENABLE_ANONYMOUS_DOWNLOAD</h6>
 <pre><code>AUTH_ENABLE_ANONYMOUS_DOWNLOAD=true
-</code></pre><h3 id="authenablecrossspacedownload">AUTH_ENABLE_CROSS_SPACE_DOWNLOAD</h3>
+</code></pre><h6 id="authenablecrossspacedownload">AUTH_ENABLE_CROSS_SPACE_DOWNLOAD</h6>
 <pre><code>AUTH_ENABLE_CROSS_SPACE_DOWNLOAD=false
-</code></pre><h3 id="stuffercommunityextensions">STUFFER_COMMUNITY_EXTENSIONS</h3>
+</code></pre><h6 id="stuffercommunityextensions">STUFFER_COMMUNITY_EXTENSIONS</h6>
 <pre><code>STUFFER_COMMUNITY_EXTENSIONS=/var/lib/stuffer/extensions
+</code></pre><h2 id="stuffer-configjson">stuffer-config.json</h2>
+<p>We are in the process of migrating some configuration into a JSON file.
+The idea is let you write configurations that can be extended and detailed by:</p>
+<pre><code>- stuffer instance
+- space
+- uuid
+</code></pre><p>As an example you can define define the available sizes for the modifier &quot;resize&quot;
+for any image in a stuffer instance, but then you can override the configuration
+for a specific space.</p>
+<p>Here is an example of a <code>stuffer-config.json</code>:</p>
+<pre><code>{
+    &quot;extensions&quot;: [
+        &quot;prc-gzip&quot;,
+        &quot;mod-jimp&quot;,
+        &quot;#cache&quot;
+    ],
+
+    &quot;postprocess&quot;: {
+        &quot;gzip&quot;: {
+            &quot;match&quot;: &quot;(.*).pdf&quot;,
+            &quot;apply&quot;:&quot;gzip&quot;,
+            &quot;options&quot;: {}
+        }
+    },
+
+    &quot;modifiers&quot;: {
+        &quot;resize&quot;: {
+            &quot;small&quot;: [256, &quot;auto&quot;, 80],
+            &quot;medium&quot;: [512, &quot;auto&quot;, 80],
+        }
+    },
+
+    &quot;spaces&quot;: {
+        &quot;public&quot;: {
+            &quot;modifiers&quot;: {
+                &quot;resize&quot;: {
+                    &quot;small&quot;: [150, 150, 60, &quot;contain&quot;],
+                    &quot;thumb&quot;: [150, 150, 60, &quot;cover&quot;]
+                }
+            },
+        }
+    }
+}
+</code></pre><p>First thing we list which <strong>core extensions</strong> are enabled. <code>prc-gzip</code> and <code>mod-jimp</code> 
+are active, but <code>cache</code> is not. That&apos;s because of the <code>#</code> prefix. You can consider
+the <code>#</code> as commenting the extension out.</p>
+<p>Then we create a global configuration for the <code>postprocess</code> and <code>modifiers</code>. This
+will apply to any resource in this Stuffer instance.</p>
+<p>As instance we will always be able to download a &quot;small&quot; image as:  </p>
+<pre><code>http://stuffer-instance.com/space/uuid/image.jpg?resize=small
+</code></pre><p>The only thing is that if you download from the space <code>public</code> you will get a
+resized image of 150x150 with the original image inside this area, any other space
+will give you an image of 256px width that respect the original ratio.</p>
+<p><strong>NOTE:</strong> Future releases will increment the capabilities of <code>stuffer-config.json</code></p>
+<p>If you use Stuffer via Docker you can provide your own configuration as volume:</p>
+<pre><code>docker run --rm \
+  -p 8080:8080 \
+  -v ${PWD}/stuffer-data:/var/lib/stuffer/data \
+  -v ${PWD}/stuffer-config.json:/var/lib/stuffer/stuffer-config.json \
+  marcopeg/stuffer
 </code></pre>
                                 
                                 </section>
@@ -346,12 +444,12 @@ Here is a comprehensive list of what you can define.</p>
 
             
                 
-                <a href="authentication.html" class="navigation navigation-prev " aria-label="Previous page: Authentication">
+                <a href="extensions.html" class="navigation navigation-prev " aria-label="Previous page: Extensions">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="extensions.html" class="navigation navigation-next " aria-label="Next page: Extensions">
+                <a href="core-extensions/cache.html" class="navigation navigation-next " aria-label="Next page: Cache">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -362,7 +460,7 @@ Here is a comprehensive list of what you can define.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Configuration","level":"2.5","depth":1,"next":{"title":"Extensions","level":"2.6","depth":1,"path":"book/extensions.md","ref":"./book/extensions.md","articles":[]},"previous":{"title":"Authentication","level":"2.4","depth":1,"path":"book/authentication.md","ref":"./book/authentication.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/configuration.md","mtime":"2019-02-23T08:50:32.229Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-23T10:14:48.648Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Configuration","level":"2.7","depth":1,"next":{"title":"Cache","level":"3.1","depth":1,"path":"book/core-extensions/cache.md","ref":"./book/core-extensions/cache.md","articles":[]},"previous":{"title":"Extensions","level":"2.6","depth":1,"path":"book/extensions.md","ref":"./book/extensions.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/configuration.md","mtime":"2019-03-07T14:40:22.466Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-03-07T15:18:25.608Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

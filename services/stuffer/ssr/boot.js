@@ -49,7 +49,7 @@ registerAction({
     name: '♦ boot',
     handler: async ({ settings }) => {
         settings.stufferData = config.get('STUFFER_DATA', path.join(process.cwd(), 'data'))
-        settings.stufferConfig = config.get('STUFFER_CONFIG', path.join(process.cwd(), '.stuffrc'))
+        settings.stufferConfig = config.get('STUFFER_CONFIG', path.join(process.cwd(), 'stuffer-config.json'))
 
         // Read the .stuffrc in memory
         try {
@@ -71,7 +71,7 @@ registerAction({
 
         settings.upload = {
             tempFolder: config.get('UPLOAD_DATA_PATH', path.join(settings.stufferData, 'uploads')),
-            mountPoint: config.get('UPLOAD_MOUNT_POINT', '/'),
+            mountPoint: config.get('UPLOAD_MOUNT_POINT', '/upload'),
             publicSpace: config.get('UPLOAD_PUBLIC_SPACE', 'public'),
             bufferSize: Number(config.get('UPLOAD_BUFFER_SIZE', 2 * 1048576)), // Set 2MiB buffer
             maxSize: Number(config.get('UPLOAD_MAX_SIZE', 1000 * 1048576)), // 100Mb
@@ -113,13 +113,13 @@ registerAction({
         // community extensions from a mounted volume
         // @NOTE: extensions should be plain NodeJS compatible, if you want to use
         // weird ES6 syntax you have to transpile your extension yourself
-        const communityExtensionsPath = config.get('STUFFER_COMMUNITY_EXTENSIONS', '/var/lib/stuffer/extensions')
+        const communityExtensionsPath = config.get('COMMUNITY_EXTENSIONS', '/var/lib/stuffer/extensions')
         const communityExtensions = glob
             .sync(path.resolve(communityExtensionsPath, '[!_]*', 'index.js'))
 
         // core extensions, will be filtered by environment variable
-        const rcExtensions = (settings.stuffrc.extensions || ['---']).filter(e => e.substr(0, 1) !== '_').join('|') || '---'
-        const enabledExtensions = config.get('STUFFER_CORE_EXTENSIONS', rcExtensions)
+        const rcExtensions = (settings.stuffrc.extensions || ['---']).filter(e => e.substr(0, 1) !== '#').join('|') || '---'
+        const enabledExtensions = config.get('CORE_EXTENSIONS', rcExtensions)
         const coreExtensions = glob
             .sync(path.resolve(__dirname, 'extensions', 'core', `@(${enabledExtensions})`, 'index.js'))
 

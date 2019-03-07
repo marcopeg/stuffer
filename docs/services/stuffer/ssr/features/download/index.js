@@ -10,13 +10,13 @@ export const register = ({ settings, registerAction }) => {
         hook: UPLOAD_COMPLETED,
         name: FEATURE_NAME,
         trace: __filename,
-        handler: uploadCompletedHandler(settings.download),
+        handler: uploadCompletedHandler(settings),
     })
 
     registerAction({
         hook: EXPRESS_ROUTE,
         name: FEATURE_NAME,
         trace: __filename,
-        handler: downloadHandler(settings.download),
+        handler: downloadHandler(settings),
     })
 }

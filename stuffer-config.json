@@ -1,0 +1,12 @@
+{
+    "extensions": [
+        "mod-jimp"
+    ],
+    "modifiers": {
+        "resize": {
+            "small": [ 256, "auto", 80 ],
+            "thumb": [ 150, 150, 80 ],
+            "square": [ 256, 256, 80, "contain" ]
+        }
+    }
+}

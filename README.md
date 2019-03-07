@@ -47,7 +47,7 @@ This will create a secured instance that persists data in your local folder
 
     docker run --rm \
       -p 8080:8080 \
-      -v ${PWD}/stuffer-data:/var/lib/stuffer \
+      -v ${PWD}/stuffer-data:/var/lib/stuffer/data \
       -e JWT_SECRET=12345 \
       -e AUTH_ENABLE_ANONYMOUS_UPLOAD=false \
       -e AUTH_ENABLE_ANONYMOUS_DOWNLOAD=false \
@@ -80,10 +80,11 @@ And then try to retrieve it by surfing to:
 
 * [Upload to Stuffer](./book/upload.md)
 * [Download from Stuffer](./book/download.md)
-* [Modifiers](./book/modifiers.md)
 * [Authentication](./book/authentication.md)
-* [Configuration](./book/configuration.md)
+* [Modifiers](./book/modifiers.md)
+* [Processors](./book/processors.md)
 * [Extensions](./book/extensions.md)
+* [Configuration](./book/configuration.md)
 
 ## Core Extensions
 

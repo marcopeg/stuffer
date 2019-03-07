@@ -1,3 +1,26 @@
+/**
+ * Resize an image.
+ * 
+ * It takes desired width, height and resulting quality.
+ * quality === "auto" -> 80
+ * 
+ * You can set width or height to "auto" to have a resize that
+ * keeps the aspect ratio.
+ * 
+ * If you specify both width and height then you can pass a 4th
+ * parameter "cover" or "contain" to set how you want to the boxing
+ * done. "contain" is default.
+ * 
+ * {
+ *   "resize":{
+ *     "v1": [350, "auto", "auto"],
+ *     "v2":["auto", 80, 60],
+ *     "v3": [150, 150, 60],
+ *     "v4": [150, 150, 60, "cover"]
+ *   }
+ * }
+ */
+
 import Jimp from 'jimp'
 
 export default (settings) => ({
@@ -31,8 +54,19 @@ export default (settings) => ({
     handler: (buff, value, options) => {
         const size = options[value]
         return Jimp.read(buff)
-            .then(tpl => tpl.cover(size[0], size[1]))
-            .then(tpl => tpl.quality(size[2]))
+            .then(tpl => {
+                const w = size[0] === 'auto' ? Jimp.AUTO : Number(size[0])
+                const h = size[1] === 'auto' ? Jimp.AUTO : Number(size[1])
+                
+                if (w === Jimp.AUTO || h === Jimp.AUTO) {
+                    return tpl.resize(w, h)
+                } else {
+                    return size[3] === 'cover'
+                        ? tpl.cover(w, h)
+                        : tpl.contain(w, h)
+                }
+            })
+            .then(tpl => tpl.quality(size[2] === 'auto' ? 80 : size[2]))
             .then(tpl => tpl.getBufferAsync(Jimp.AUTO))
     },
 })

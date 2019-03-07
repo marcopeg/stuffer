@@ -139,20 +139,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="modifiers.html">
-            
-                <a href="modifiers.html">
-            
-                    
-                    Modifiers
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="2.4" data-path="authentication.html">
+        <li class="chapter " data-level="2.3" data-path="authentication.html">
             
                 <a href="authentication.html">
             
@@ -165,12 +152,25 @@
             
         </li>
     
-        <li class="chapter " data-level="2.5" data-path="configuration.html">
+        <li class="chapter " data-level="2.4" data-path="modifiers.html">
             
-                <a href="configuration.html">
+                <a href="modifiers.html">
             
                     
-                    Configuration
+                    Modifiers
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="processors.md">
+            
+                <span>
+            
+                    
+                    Processors
             
                 </a>
             
@@ -184,6 +184,19 @@
             
                     
                     Extensions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="configuration.html">
+            
+                <a href="configuration.html">
+            
+                    
+                    Configuration
             
                 </a>
             
@@ -217,6 +230,26 @@
             
                     
                     StoreS3
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Core Modifiers</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="core-extensions/mod-jimp.html">
+            
+                <a href="core-extensions/mod-jimp.html">
+            
+                    
+                    mod-jimp
             
                 </a>
             
@@ -275,7 +308,13 @@
 <p>The minimum requisite is a field file:</p>
 <pre><code>fieldName: f1
 fieldType: file
-</code></pre><p><strong>NOTE:</strong> try this with postman!</p>
+</code></pre><p>You can perform an upload via CURL:</p>
+<pre><code>curl -X POST http://localhost:8080/upload \
+    -F f1_uuid=f1 \
+    -F f1_name=image.jpg \
+    -F f1=@/Users/marcopeg/Downloads/file.jpg
+</code></pre><p>Or you can use a UI tool like <a href="https://www.getpostman.com" target="_blank">postman</a>:</p>
+<p><img src="media/postman-upload.jpg" alt="Upload with postman"></p>
 <h2 id="expected-output">Expected Output</h2>
 <p>The <code>/upload</code> endpoint returns a list of <code>files</code> that have been succesfully uploaded,
 and a list of <code>errors</code> that might have happened along the way.</p>
@@ -283,16 +322,16 @@ and a list of <code>errors</code> that might have happened along the way.</p>
 <pre><code>{
     &quot;files&quot;: [
         {
-            &quot;field&quot;: &quot;f2&quot;,
-            &quot;name&quot;: &quot;abs-guide.pdf&quot;,
-            &quot;checksum&quot;: &quot;6708c6acfe5323a14123aff0b128abcb&quot;,
-            &quot;type&quot;: &quot;application/pdf&quot;,
+            &quot;field&quot;: &quot;file&quot;,
+            &quot;fileName&quot;: &quot;file.jpg&quot;,
+            &quot;checksum&quot;: &quot;d7fa2ae42c7e18ff5cfc405700641576&quot;,
+            &quot;type&quot;: &quot;image/jpeg&quot;,
             &quot;encoding&quot;: &quot;7bit&quot;,
-            &quot;size&quot;: &quot;2.74 MB&quot;,
-            &quot;bytes&quot;: 2741648,
+            &quot;size&quot;: &quot;55.8 kB&quot;,
+            &quot;bytes&quot;: 55767,
             &quot;url&quot;: {
-                &quot;base&quot;: &quot;http://localhost:8080/public/f2&quot;,
-                &quot;original&quot;: &quot;http://localhost:8080/public/f2/abs-guide.pdf&quot;
+                &quot;resource&quot;: &quot;http://localhost:8080/public/01D5C49W9N2M8TZW8YE48VH9CZ&quot;,
+                &quot;original&quot;: &quot;http://localhost:8080/public/01D5C49W9N2M8TZW8YE48VH9CZ/file.jpg&quot;
             },
             &quot;meta&quot;: {}
         }
@@ -302,7 +341,7 @@ and a list of <code>errors</code> that might have happened along the way.</p>
             &quot;type&quot;: &quot;file&quot;,
             &quot;success&quot;: false,
             &quot;field&quot;: &quot;f1&quot;,
-            &quot;name&quot;: &quot;elisa.txt&quot;,
+            &quot;fileName&quot;: &quot;elisa.txt&quot;,
             &quot;uuid&quot;: &quot;f1&quot;,
             &quot;space&quot;: &quot;public&quot;,
             &quot;encoding&quot;: &quot;7bit&quot;,
@@ -421,7 +460,7 @@ tries to download you resized image, a validation can take place.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Upload to Stuffer","level":"2.1","depth":1,"next":{"title":"Download from Stuffer","level":"2.2","depth":1,"path":"book/download.md","ref":"./book/download.md","articles":[]},"previous":{"title":"... I'm glad you asked ...","level":"1.1","depth":1,"path":"README.md","ref":"./README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/upload.md","mtime":"2019-02-23T07:18:14.277Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-23T10:14:48.648Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Upload to Stuffer","level":"2.1","depth":1,"next":{"title":"Download from Stuffer","level":"2.2","depth":1,"path":"book/download.md","ref":"./book/download.md","articles":[]},"previous":{"title":"... I'm glad you asked ...","level":"1.1","depth":1,"path":"README.md","ref":"./README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["code","collapsible-menu"],"pluginsConfig":{"code":{"copyButtons":true},"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"book/upload.md","mtime":"2019-03-07T13:18:18.551Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-03-07T15:18:25.608Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

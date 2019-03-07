@@ -1,0 +1,41 @@
+{
+    "extensions": [
+        "prc-gzip",
+        "mod-jimp",
+        "#cache"
+    ],
+
+    "postprocess": {
+        "gzip": {
+            "match": "(.*)",
+            "apply":"gzip",
+            "options": {}
+        }
+    },
+
+    "modifiers": {
+        "resize": {
+            "small": [256, "auto", 80],
+            "medium": [512, "auto", 80],
+            "big": [1024, "auto", 80],
+            "thumb": [150, 150, 80, "cover"]
+        }
+    },
+
+    "spaces": {
+        "__public": {
+            "modifiers": {
+                "resize": {
+                    "medium": [ 250, "auto", 10 ]
+                }
+            },
+            "postprocess": {
+                "gzip": {
+                    "options": {
+                        "level": 1
+                    }
+                }
+            }
+        }
+    }
+}

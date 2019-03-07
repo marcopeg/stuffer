@@ -1,8 +1,9 @@
 import path from 'path'
+import fs from 'fs-extra'
 import glob from 'glob'
 import uuid from 'uuid/v1'
 import * as config from '@marcopeg/utils/lib/config'
-import { logInfo } from 'services/logger'
+import { logInfo, logVerbose } from 'services/logger'
 import {
     createHook,
     registerAction,
@@ -23,6 +24,7 @@ const features = [
     require('./features/authentication'),
     require('./features/upload'),
     require('./features/store'),
+    require('./features/postprocess'),
     require('./features/download'),
 ]
 
@@ -46,7 +48,16 @@ registerAction({
     hook: SETTINGS,
     name: '♦ boot',
     handler: async ({ settings }) => {
-        settings.stufferData = config.get('STUFFER_DATA', '/var/lib/stuffer')
+        settings.stufferData = config.get('STUFFER_DATA', path.join(process.cwd(), 'data'))
+        settings.stufferConfig = config.get('STUFFER_CONFIG', path.join(process.cwd(), 'stuffer-config.json'))
+
+        // Read the .stuffrc in memory
+        try {
+            settings.stuffrc = await fs.readJSON(settings.stufferConfig)
+        } catch (err) {
+            logVerbose(`[config] could not read .stuffrc: ${settings.stufferConfig} - ${err.message}`)
+            settings.stuffrc = {}
+        }
 
         settings.jwt = {
             secret: getJwtSecret(),
@@ -73,23 +84,20 @@ registerAction({
         settings.download = {
             baseUrl: config.get('DOWNLOAD_BASE_URL', 'http://localhost:8080'),
             mountPoint: config.get('DOWNLOAD_MOUNT_POINT', '/'),
-            modifiers: {},
         }
         
         settings.store = {
             base: config.get('STORE_DATA_PATH', path.join(settings.stufferData, 'store')),
         }
 
+        settings.postprocess = {
+            base: config.get('POSTPROCESS_DATA_PATH', path.join(settings.stufferData, 'postprocess')),
+        }
+
         settings.auth = {
             isAnonymousUploadEnabled: config.get('AUTH_ENABLE_ANONYMOUS_UPLOAD', 'true') === 'true',
             isAnonymousDownloadEnabled: config.get('AUTH_ENABLE_ANONYMOUS_DOWNLOAD', 'true') === 'true',
             isCrossSpaceDownloadEnabled: config.get('AUTH_ENABLE_CROSS_SPACE_DOWNLOAD', 'false') === 'true',
-        }
-
-        try {
-            settings.download.modifiers = JSON.parse(config.get('DOWNLOAD_MODIFIERS', '{}'))
-        } catch (err) {
-            throw new Error('env variable "DOWNLOAD_MODIFIERS" contains invalid JSON')
         }
 
         // ---- EXTENSIONS
@@ -105,12 +113,13 @@ registerAction({
         // community extensions from a mounted volume
         // @NOTE: extensions should be plain NodeJS compatible, if you want to use
         // weird ES6 syntax you have to transpile your extension yourself
-        const communityExtensionsPath = config.get('STUFFER_COMMUNITY_EXTENSIONS', '/var/lib/stuffer/extensions')
+        const communityExtensionsPath = config.get('COMMUNITY_EXTENSIONS', '/var/lib/stuffer/extensions')
         const communityExtensions = glob
             .sync(path.resolve(communityExtensionsPath, '[!_]*', 'index.js'))
 
         // core extensions, will be filtered by environment variable
-        const enabledExtensions = config.get('STUFFER_CORE_EXTENSIONS', '---')
+        const rcExtensions = (settings.stuffrc.extensions || ['---']).filter(e => e.substr(0, 1) !== '#').join('|') || '---'
+        const enabledExtensions = config.get('CORE_EXTENSIONS', rcExtensions)
         const coreExtensions = glob
             .sync(path.resolve(__dirname, 'extensions', 'core', `@(${enabledExtensions})`, 'index.js'))
 
@@ -118,9 +127,10 @@ registerAction({
         const extensions = [ ...devExtensions, ...coreExtensions, ...communityExtensions ]
         for (const extensionPath of extensions) {
             const extension = require(extensionPath)
-            if (extension.register) {
+            const extensionHandler = extension.register || extension.default
+            if (extensionHandler) {
                 logInfo(`activate extension: ${extensionPath}`)
-                await extension.register({
+                await extensionHandler({
                     registerAction,
                     createHook,
                     settings: { ...settings },
