@@ -31,13 +31,14 @@ Here is an example of a standard response body:
             {
                 "field": "file",
                 "fileName": "file.jpg",
+                "space": "public",
+                "uuid": "01D5C49W9N2M8TZW8YE48VH9CZ",
                 "checksum": "d7fa2ae42c7e18ff5cfc405700641576",
                 "type": "image/jpeg",
                 "encoding": "7bit",
                 "size": "55.8 kB",
                 "bytes": 55767,
                 "url": {
-                    "resource": "http://localhost:8080/public/01D5C49W9N2M8TZW8YE48VH9CZ",
                     "original": "http://localhost:8080/public/01D5C49W9N2M8TZW8YE48VH9CZ/file.jpg"
                 },
                 "meta": {}

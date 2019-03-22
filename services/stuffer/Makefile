@@ -6,7 +6,7 @@
 # Running container's name
 organization?=marcopeg
 name?=stuffer
-version:= $(shell node -p "require('../../package.json').version")
+version:= $(shell node -p "require('./package.json').version")
 
 # Docker image tag name
 tag?=${organization}/${name}
