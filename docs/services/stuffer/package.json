@@ -1,6 +1,9 @@
 {
-  "name": "@pigtail/barn",
+  "name": "stuffer",
+  "description": "File upload, storage and manipulation framework",
   "version": "0.0.1",
+  "author": "Marco Pegoraro",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "start": "./node_modules/.bin/nodemon --watch ssr --watch build -e js index.dev.js",
@@ -10,7 +13,6 @@
     "test": "./node_modules/.bin/react-scripts test",
     "lint": "./node_modules/.bin/eslint ."
   },
-  "proxy": "http://localhost:8080",
   "eslintConfig": {
     "extends": "react-app"
   },

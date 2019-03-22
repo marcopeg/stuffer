@@ -23,13 +23,14 @@ export const handler = ({ download }) => async ({ files, errors, options }) => {
 
         files[field] = {
             fileName: file.fileName,
+            space: file.space,
+            uuid: file.uuid,
             checksum: file.meta.checksum,
             mimeType: file.mimeType,
             encoding: file.encoding,
             size: prettyBytes(file.bytesWritten),
             bytes: file.bytesWritten,
             url: {
-                resource: baseUrl,
                 original: [ baseUrl, urlencode(file.fileName) ].join('/'),
             },
             meta: file.meta.data,

@@ -7,6 +7,7 @@ export default (modifiers) => ({
     priority: 400,
     handler: async (req, res, next) => {
         try {
+
             req.data.modifiers.validated = req.data.modifiers.requested
                 .map(({ name, rawValue }) => {
                     const modifier = modifiers[name]
