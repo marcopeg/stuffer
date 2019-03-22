@@ -41,13 +41,16 @@ export default (settings) => ({
         // tries to stream out the cached file, if anything goes wrong the
         // normal download request goes straight to the end
         try {
-            const stream = fs.createReadStream(req.data.cache.path)
-            stream.on('error', () => next())
-
             const file = req.data.download
             res.set('Content-Type', `${file.meta.type}; charset=utf-8`)
             res.set('Content-Disposition', `inline; filename="${file.name}"`)
-            stream.pipe(res)
+
+            res.sendFile(req.data.cache.path, null, (err) => {
+                if (!err) return
+                res.set('Content-Type', 'text/plain')
+                res.status(404)
+                res.send('not found')
+            })
         } catch (err) {
             next()
         }
