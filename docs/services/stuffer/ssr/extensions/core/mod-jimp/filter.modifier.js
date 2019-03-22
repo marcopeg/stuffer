@@ -14,7 +14,14 @@ export default (settings) => ({
             throw new Error(`filter modifier: unknown policy "${value}"`)
         }
 
-        if (!Object.values(options).includes(value)) {
+        if (!options) {
+            throw new Error(`filter modifier: missing setup options`)
+        }
+
+        const configPolicies = Object.keys(options)
+            .filter(key => options[key])
+
+        if (!configPolicies.includes(value)) {
             throw new Error(`filter modifier: policy "${value}" not allowed`)
         }
 

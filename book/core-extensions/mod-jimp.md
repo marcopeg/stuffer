@@ -30,7 +30,10 @@ Configuration:
 
     ...
     "modifiers": {
-        "filter": [ "bw" ]
+        "filter": {
+            "bw": true,
+            "xxx": false
+        }
     }
 
 Supported filters:

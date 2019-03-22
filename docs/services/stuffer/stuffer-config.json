@@ -2,7 +2,7 @@
     "extensions": [
         "prc-gzip",
         "mod-jimp",
-        "#cache"
+        "cache"
     ],
 
     "postprocess": {
@@ -19,6 +19,9 @@
             "medium": [512, "auto", 80],
             "big": [1024, "auto", 80],
             "thumb": [150, 150, 80, "cover"]
+        },
+        "filter": {
+            "bw": true
         }
     },
 

@@ -15,6 +15,8 @@ export const handler = settings => ({ app }) => {
     const modifiers = {}
     createHook(DOWNLOAD_MODIFIERS, { args: { modifiers } })
 
+    console.log('!!!!!', modifiers)
+
     // Build an expandable list of middlewares
     const middlewares = [
         // token middleware

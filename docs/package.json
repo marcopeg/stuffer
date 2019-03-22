@@ -1,7 +1,7 @@
 {
-    "name": "stuffer",
+    "name": "stuffer-book",
     "version": "0.0.0",
-    "description": "Docker based file storage service",
+    "description": "Gitbook documentation for Stuffer",
     "scripts": {
       "book:serve": "node_modules/.bin/gitbook serve",
       "book:build": "node_modules/.bin/gitbook build . docs",
