@@ -2,7 +2,7 @@
     "extensions": [
         "prc-gzip",
         "mod-jimp",
-        "#cache"
+        "cache"
     ],
 
     "postprocess": {
